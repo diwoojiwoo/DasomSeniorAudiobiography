@@ -1,0 +1,2 @@
+rootProject.name = "DasomSeniorContents"
+include ':app'

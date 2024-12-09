@@ -1,0 +1,43 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    ext {
+        kotlin_version = "1.5.0"
+        retrofit_version = "2.6.0"
+        okHttpVersion = "3.12.0"
+        coroutinesVersion = "1.3.9"
+        fragmentVersion = '1.1.0-alpha09'
+        lifecycleVersion = '2.2.0-alpha01'
+        navigationVersion = '2.2.0'
+        composeVersion = '1.0.0-alpha06'
+        toastyVersion = '1.5.2'
+    }
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            url "https://dasom-beanq.firebaseapp.com/repository/"
+        }
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:4.2.1"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.20"
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVersion"
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            url "https://dasom-beanq.firebaseapp.com/repository/"
+        }
+        maven { url "https://jitpack.io" }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

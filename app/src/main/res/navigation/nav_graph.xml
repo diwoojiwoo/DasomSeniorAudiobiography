@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_tutorial"
+    app:startDestination="@id/main_fragment">
+
+    <!-- MainFragment-->
+    <fragment
+        android:id="@+id/main_fragment"
+        android:name="com.onethefull.dasomcontents.MainFragment"
+        tools:layout="@layout/fragment_main">
+        <action
+            android:id="@+id/action_main_fragment_to_memory_fragment"
+            app:destination="@id/memory_fragment"
+            app:launchSingleTop="true" />
+
+    </fragment>
+
+    <!--     MemoryContentFragment-->
+    <fragment
+        android:id="@+id/memory_fragment"
+        android:name="com.onethefull.dasomcontents.ui.memoryquiz.MemoryContentFragment"
+        tools:layout="@layout/fragment_memoryquiz"/>
+</navigation>

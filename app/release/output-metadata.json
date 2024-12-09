@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "com.onethefull.dasomtutorial",
+  "variantName": "release",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "versionCode": 9,
+      "versionName": "1.0.9.r_w_check_meal",
+      "outputFile": "DasomTutorial_1.0.9.r_w_check_meal_9.apk"
+    }
+  ]
+}

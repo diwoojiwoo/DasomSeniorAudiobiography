@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorBeanQBackground">#de763f</color>
+    <color name="colorKebbiBackground">#87db1a</color>
+    <color name="colorKebbiNewBackground">#38c0ff</color>
+    <color name="colorUserBackground">#7cc381</color>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+
+    <color name="colorBackground">#E6D011</color>
+    <color name="colorOnBackground">#fff</color>
+    <color name="colorSurface">#E7E8EC</color>
+    <color name="colorOptionsSurface">#E6E2E2</color>
+    <color name="colorOnSurface">#1D1B1F</color>
+    <color name="colorError">#B00020</color>
+    <color name="colorOnError">#fff</color>
+    <color name="colorAccent">#F48B2B</color>
+
+    <color name="success">#7CB342</color>
+    <color name="error">#E53935</color>
+    <color name="information">#039BE5</color>
+    <color name="warning">#FFC400</color>
+
+    <color name="transparent">#00000000</color>
+</resources>
