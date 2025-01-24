@@ -1,25 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.onethefull.dasomcontents">
+    package="com.onethefull.dasomautobiography">
 
     <application
-        android:name="com.onethefull.dasomcontents.App"
+        android:name="com.onethefull.dasomautobiography.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.DasomSeniorContents">
-        <activity android:name="com.onethefull.dasomcontents.MainActivity">
+        android:theme="@style/Theme.DasomSeniorAudiobiography">
+        <activity android:name="com.onethefull.dasomautobiography.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
+
+        <service
+            android:name="com.onethefull.wonderfulrobotmodule.DefaultService"
+            android:exported="true" />
+
         <meta-data
             android:name="ROOBO_MODULE_NAME"
-            android:value="DASOM_CONTENTS" />
+            android:value="DASOM_SENIOR_AUTOBIOGRAPHY" />
 
         <meta-data
             android:name="ROOBO_MODULE_TYPE"

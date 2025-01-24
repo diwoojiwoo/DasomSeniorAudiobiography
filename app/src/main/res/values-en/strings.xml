@@ -1,4 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">DasomSeniorContents</string>
-
+    <string name="app_name">DasomAutobiography</string>
+    <string name="message_memoryquiz_not_exist_1">No MemoryQuiz have been registered.</string>
+    <string name="message_memoryquiz_not_exist_2">In ‘Dasom Guardian Mobile App > Dementia Cognitive Enhancement Exercise > MemoryQuiz’ \n Please register a quiz.</string>
+    <string name="message_memoryquiz_hint">hint</string>
+    <string name="message_memoryquiz_hint_check">check</string>
+    <string name="message_memoryquiz_loading_recognize_anwer">Recognizing the correct answer</string>
+    <string name="message_memoryquiz_quiz_title">MemoryQuiz</string>
+    <string name="message_memoryquiz_quiz_check">Check your answers</string>
+    <string name="message_memoryquiz_quiz_next">Next quiz</string>
+    <string name="message_memoryquiz_intro_1">"It's MemoryQuiz. "</string>
+    <string name="message_memoryquiz_intro_2">",Please tell me the correct answer."</string>
+    <string name="message_memoryquiz_quiz_wrong_answer1">"That's incorrect. Could you take a closer look at the picture and think about it again?"</string>
+    <string name="message_memoryquiz_quiz_correct_answer">"That's correct! You got the question right that the guardian provided!"</string>
+    <string name="message_memoryquiz_quiz_wrong_answer2">"That's incorrect. You can check the correct answer by clicking the blue 'Check Answer' button below."</string>
 </resources>

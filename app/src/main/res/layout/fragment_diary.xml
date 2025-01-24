@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/img_intro_diary"
+        android:fitsSystemWindows="true">
+
+        <FrameLayout
+            android:id="@+id/fl_not_exist_diary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_diary"
+            android:layout_marginTop="15dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_no"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:layout_gravity="center_horizontal" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="322dp"
+                android:fontFamily="@font/pretendard_bold"
+                android:lineSpacingExtra="16sp"
+                android:textColor="#333333"
+                android:textSize="48sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="404dp"
+                android:lineSpacingExtra="16sp"
+                android:gravity="center"
+                android:fontFamily="@font/pretendard_regular"
+                android:textColor="#333333"
+                android:textSize="32sp"
+                android:textStyle="normal" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/fl_diary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_diary"
+            android:visibility="gone"
+            android:layout_marginTop="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|start"
+                android:layout_marginStart="26dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/icon_diary" />
+
+            <ImageView
+                android:id="@+id/btn_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|end"
+                android:layout_marginEnd="26dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/btn_close" />
+
+            <Button
+                android:id="@+id/btn_pagedown"
+                android:layout_width="50dp"
+                android:layout_height="52dp"
+                android:layout_marginBottom="32dp"
+                android:layout_gravity="center_horizontal|bottom"
+                android:background="@drawable/icon_pagedown"/>
+
+            <TextView
+                android:id="@+id/tv_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|start"
+                android:layout_marginStart="120dp"
+                android:fontFamily="@font/pretendard_bold"
+                android:lineSpacingExtra="16sp"
+                android:textColor="#333333"
+                android:textSize="48sp"
+                android:textStyle="bold"
+                android:layout_marginTop="5dp"/>
+
+            <TextView
+                android:id="@+id/tv_content"
+                android:layout_width="864dp"
+                android:layout_height="368dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="102dp"
+                android:fontFamily="@font/pretendard_regular"
+                android:gravity="top"
+                android:scrollbars="vertical"
+                android:lineHeight="78sp"
+                android:textColor="#333333"
+                android:textSize="32sp"
+                android:textStyle="normal" />
+
+        </FrameLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewmodel"
+            type="com.onethefull.dasomautobiography.ui.diary.DiaryViewModel" />
+    </data>
+</layout>

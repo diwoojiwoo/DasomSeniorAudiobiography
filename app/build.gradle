@@ -18,7 +18,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.onethefull.dasomcontents"
+        applicationId "com.onethefull.dasomautobiography"
         minSdkVersion 19
         versionCode 1
         versionName "1.0"
@@ -27,7 +27,7 @@ android {
         buildConfigField("String", "CHARACTER_TYPE", '"NewDasom"') // Dasom,Secretary
 //        buildConfigField("String", "CHARACTER_TYPE", '"Dasom"') // Dasom,Secretary
         buildConfigField("int", "ANIMATION_TYPE", "0")    // 0:기존 에니메이션 // 1:신규에니메이션 (텍스트)
-        buildConfigField("String", "PRODUCT_TYPE", '"WONDERFUL"') // KT , WONDERFUL
+        buildConfigField("String", "PRODUCT_TYPE", '"KT"') // KT , WONDERFUL
         buildConfigField("String", "LANGUAGE_TYPE", '"KO"') // "EN" , "KO(default)"
         buildConfigField("boolean", "DISPLAY_LOG", "true")    // 0:default(Google STT)1
 
@@ -111,7 +111,7 @@ android {
                 def versionCode = variant.versionCode
                 def productName = variant.productFlavors[0].name
                 def date = new java.text.SimpleDateFormat("yyyyMMddHHmm").format(new Date())
-                def newName = "${productName}_DasomContents_${versionName}_${versionCode}.apk"
+                def newName = "${productName}_DasomAutobiography_${versionName}_${versionCode}.apk"
                 outputFileName = newName
             }
         } else if (variant.buildType.name == "debug") {
@@ -120,7 +120,7 @@ android {
                 def versionCode = variant.versionCode
                 def productName = variant.productFlavors[0].name
                 def date = new java.text.SimpleDateFormat("yyyyMMddHHmm").format(new Date())
-                def newName = "${productName}_DasomContents_${versionName}_C_${versionCode}_${date}.apk"
+                def newName = "${productName}_DasomAutobiography_${versionName}_C_${versionCode}_${date}.apk"
                 outputFileName = newName
             }
         }
@@ -182,6 +182,10 @@ dependencies {
 
     // Toasty
     implementation "com.github.GrenderG:Toasty:$toastyVersion"
+
+
+    // Recyclerview
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
     
     if (JavaVersion.current() != JavaVersion.VERSION_1_8) {
         kapt "com.sun.xml.bind:jaxb-core:2.3.0.1"

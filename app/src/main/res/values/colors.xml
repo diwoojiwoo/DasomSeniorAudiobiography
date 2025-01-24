@@ -28,4 +28,5 @@
     <color name="warning">#FFC400</color>
 
     <color name="transparent">#00000000</color>
+    <color name="background_color">#fbfaf9</color>
 </resources>
