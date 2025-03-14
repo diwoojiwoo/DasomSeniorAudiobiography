@@ -1,5 +1,4 @@
 package com.onethefull.dasomautobiography.utils.record
-
 import com.onethefull.dasomautobiography.utils.logger.DWLog
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -13,9 +12,9 @@ import java.lang.NullPointerException
 class WavFileUitls {
 
     companion object {
-        private const val wavFileName = "recorded_audio"
-        private const val wavTempFileName = "recorded_audio_temp"
-        private const val wavTempFileName2 = "recorded_audio_temp2"
+        private const val wavFileName = "recorded_bio_reply"
+        private const val wavTempFileName = "recorded_bio_reply_temp"
+        private const val wavTempFileName2 = "recorded_bio_reply_temp2"
         private const val wavDirPath = "/sdcard/audio/temp/"
         private const val wavExt = ".wav"
         private const val pcmExt = ".pcm"
@@ -24,7 +23,7 @@ class WavFileUitls {
         private const val HEADER_SIZE = 0x2c
         private const val RECORDER_BPP = 16
 
-        private const val debug = false
+        private const val debug = true
     }
 
     enum class Type(var ext: String) {
@@ -49,7 +48,8 @@ class WavFileUitls {
      * Init File
      */
     private fun initFile() {
-        val dir = File(WavFileUitls.wavDirPath)
+        if (debug) DWLog.d("initFile")
+        val dir = File(wavDirPath)
         val fileTemp = File("$wavDirPath$wavTempFileName${type.ext}")
         val fileTemp2 = File("$wavDirPath$wavTempFileName2${type.ext}")
         val fileNew = File("$wavDirPath$wavFileName${type.ext}")
@@ -119,6 +119,8 @@ class WavFileUitls {
             if (debug) DWLog.e("WavFileUitls ==> [finish::saveWaveFile] $currentTempFilePath")
         } catch (e: NullPointerException) {
             e.printStackTrace()
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
         }
     }
 
@@ -130,7 +132,7 @@ class WavFileUitls {
             recordFile.createNewFile()
         }
         return MultipartBody.Part.createFormData(
-            "FILE",
+            "file",
             recordFile.name,
             RequestBody.create(MediaType.parse("multipart/form-data"), recordFile)
         )

@@ -58,7 +58,6 @@
             android:id="@+id/fl_diary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_diary"
             android:visibility="gone"
             android:layout_marginTop="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -71,8 +70,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|start"
                 android:layout_marginStart="26dp"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/icon_diary" />
+                android:layout_marginTop="5dp" />
 
             <ImageView
                 android:id="@+id/btn_close"
@@ -80,16 +78,14 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|end"
                 android:layout_marginEnd="26dp"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/btn_close" />
+                android:layout_marginTop="5dp" />
 
             <Button
                 android:id="@+id/btn_pagedown"
                 android:layout_width="50dp"
                 android:layout_height="52dp"
                 android:layout_marginBottom="32dp"
-                android:layout_gravity="center_horizontal|bottom"
-                android:background="@drawable/icon_pagedown"/>
+                android:layout_gravity="center_horizontal|bottom"/>
 
             <TextView
                 android:id="@+id/tv_date"

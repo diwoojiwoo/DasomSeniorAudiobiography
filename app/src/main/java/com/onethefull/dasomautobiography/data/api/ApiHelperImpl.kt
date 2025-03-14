@@ -5,6 +5,13 @@ import com.onethefull.dasomautobiography.data.api.service.ApiService
 import com.onethefull.dasomautobiography.data.model.diary.GetDiarySentenceResponse
 import com.onethefull.dasomautobiography.utils.ParamGeneratorUtils
 import com.onethefull.dasomautobiography.BuildConfig
+import com.onethefull.dasomautobiography.data.model.audiobiography.DeleteLogResponse
+import com.onethefull.dasomautobiography.data.model.audiobiography.GetAutobiographyLogDtlResponse
+import com.onethefull.dasomautobiography.data.model.audiobiography.GetAutobiographyMenuResponse
+import com.onethefull.dasomautobiography.data.model.audiobiography.GetCategoryListResponse
+import com.onethefull.dasomautobiography.data.model.audiobiography.InsertLogResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.Locale
@@ -24,6 +31,69 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
             false
         }
     }
+
+    override suspend fun getCategoryList(
+        customerCode: String,
+        deviceCode: String,
+        serialNum: String
+    ): GetCategoryListResponse = apiService.getCategoryList(
+        customerCode,
+        deviceCode,
+        serialNum
+    )
+
+    override suspend fun getQuestionList(
+        customerCode: String,
+        deviceCode: String,
+        serialNum: String,
+        type: String
+    ): GetAutobiographyMenuResponse = apiService.getQuestionList(
+        customerCode,
+        deviceCode,
+        serialNum,
+        type
+    )
+
+    override suspend fun insertLog(
+        customerCode: String,
+        deviceCode: String,
+        serialNum: RequestBody,
+        autobiographyId: RequestBody,
+        type: RequestBody,
+        answerYN: RequestBody,
+        file: MultipartBody.Part
+    ): InsertLogResponse = apiService.insertLog(
+        customerCode,
+        deviceCode,
+        serialNum,
+        autobiographyId,
+        type,
+        answerYN,
+        file
+    )
+
+    override suspend fun deleteLog(
+        customerCode: String,
+        deviceCode: String,
+        serialNum: String,
+        autobiographyId: String
+    ): DeleteLogResponse = apiService.deleteLog(
+        customerCode,
+        deviceCode,
+        ParamGeneratorUtils.getDeleteLogParam(serialNum, autobiographyId)
+    )
+
+    override suspend fun getLogDtl(
+        customerCode: String,
+        deviceCode: String,
+        serialNum: String,
+        logId: String
+    ): GetAutobiographyLogDtlResponse = apiService.getLogDtl(
+        customerCode,
+        deviceCode,
+        serialNum,
+        logId
+    )
 
     override suspend fun getDiarySentence(
         customerCode: String,

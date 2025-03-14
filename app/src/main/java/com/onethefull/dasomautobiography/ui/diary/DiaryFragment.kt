@@ -60,7 +60,7 @@ class DiaryFragment : Fragment() {
         viewModel.diaryStatus.observe(viewLifecycleOwner) {
             when (it) {
                 DiaryStatus.INTRO -> {
-                    binding.clBg.setBackgroundResource(R.drawable.img_intro_diary)
+//                    binding.clBg.setBackgroundResource(R.drawable.img_intro_diary)
                     binding.flNotExistDiary.visibility = View.GONE
                     binding.flDiary.visibility = View.GONE
                 }

@@ -33,6 +33,8 @@ class GenieSpeechToTextImpl(private val context: Activity) : GCSpeechToText {
     @Nullable
     private var mSTTCallback: GCSpeechToText.SpeechToTextCallback? = null
 
+
+    @Volatile
     private var isSuccessRecog = false
 
     @Volatile
@@ -54,7 +56,6 @@ class GenieSpeechToTextImpl(private val context: Activity) : GCSpeechToText {
     }
 
     override fun release() {
-        DWLog.d("GenieSpeechToTextImpl release")
         stopServiceBind()
 
     }
@@ -197,7 +198,7 @@ class GenieSpeechToTextImpl(private val context: Activity) : GCSpeechToText {
      */
     private fun doStartVoice() {
         DWLog.d("VoiceRecorder::doStartVoice ${App.instance.isRunning}")
-        if(!App.instance.isRunning) {
+        if (!App.instance.isRunning) {
             mVoiceRecorder?.stop()
             return
         }

@@ -17,9 +17,8 @@ class RxEvent {
     companion object {
         const val AppDestroy = 0x00
         const val AppDestroyUpdate = 0x01
-        const val AppDestroyRemove = -0x01
-        const val noResponse = 0x30
-        const val SpeechDelayUpdate = 0x40
+        const val NavigateToMenuFragment = 0x02
+
         val map = HashMap<Int, String>()
 
         val destroyApp = Event(AppDestroy, 1 * 1000L, "AppDestroy")
@@ -28,14 +27,15 @@ class RxEvent {
 
         val destroyShortAppUpdate = Event(AppDestroyUpdate, 5 * 1000L, "AppDestroyUpdate")
 
-        val destroyLongAppUpdate = Event(AppDestroyUpdate, 60 * 1000L, "AppDestroyUpdate")
+        val destroyLongAppUpdate60 = Event(AppDestroyUpdate, 60 * 1000L, "AppDestroyUpdate")
+        val destroyLongAppUpdate90 = Event(AppDestroyUpdate, 90 * 1000L, "AppDestroyUpdate")
+
+        val navigateMenuFragment60 = Event(NavigateToMenuFragment, 60 * 1000L, "NavigateToMenuFragment")
     }
 
     init {
         map[AppDestroy] = "AppDestroy"
         map[AppDestroyUpdate] = "AppDestroyUpdate"
-        map[AppDestroyRemove] = "AppDestroyRemove"
-        map[noResponse] = "noResponse"
-        map[SpeechDelayUpdate] = "SpeechDelayUpdate"
+        map[NavigateToMenuFragment] = "NavigateToMenuFragment"
     }
 }

@@ -3,7 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_tutorial"
-    app:startDestination="@id/main_fragment">
+    app:startDestination="@id/splash_fragment">
+
+    <!--    SplashFragment-->
+    <fragment
+        android:id="@+id/splash_fragment"
+        android:name="com.onethefull.dasomautobiography.SplashFragment"
+        tools:layout="@layout/fragment_splash">
+        <action
+            android:id="@+id/action_splashFragment_to_menuFragment"
+            app:destination="@id/menu_fragment"
+            app:launchSingleTop="true" />
+
+        <action
+            android:id="@+id/action_splashFragment_to_speechFragment"
+            app:destination="@id/speech_fragment"
+            app:launchSingleTop="true" />
+    </fragment>
 
     <!-- MainFragment-->
     <fragment
@@ -14,11 +30,74 @@
             android:id="@+id/action_main_fragment_to_diary_fragment"
             app:destination="@id/diary_fragment"
             app:launchSingleTop="true" />
-
     </fragment>
 
+    <!-- DiaryFragment-->
     <fragment
         android:id ="@+id/diary_fragment"
         android:name="com.onethefull.dasomautobiography.ui.diary.DiaryFragment"
         tools:layout="@layout/fragment_diary"/>
+
+    <!-- MenuFragment -->
+    <fragment
+        android:id="@+id/menu_fragment"
+        android:name="com.onethefull.dasomautobiography.ui.menu.MenuFragment"
+        tools:layout="@layout/fragment_menu" >
+
+        <action
+            android:id="@+id/action_menu_fragment_to_questionlist_fragment"
+            app:destination="@id/questionlist_fragment"
+            app:launchSingleTop="true" />
+    </fragment>
+
+    <!-- QuestionListFragment -->
+    <fragment
+        android:id ="@+id/questionlist_fragment"
+        android:name="com.onethefull.dasomautobiography.ui.question.QuestionListFragment"
+        tools:layout="@layout/fragment_questionlist">
+
+        <argument
+            android:name="item"
+            app:argType="com.onethefull.dasomautobiography.data.model.audiobiography.Item"/>
+
+        <action
+            android:id="@+id/action_questionlist_fragment_to_speech_fragment"
+            app:destination="@id/speech_fragment"
+            app:launchSingleTop="true" />
+
+        <action
+            android:id="@+id/action_questionlist_fragment_to_detail_fragment"
+            app:destination="@+id/question_detail_fragment"
+            app:launchSingleTop="true"/>
+    </fragment>
+
+    <!-- SpeechFragment -->
+    <fragment
+        android:id="@+id/speech_fragment"
+        android:name="com.onethefull.dasomautobiography.ui.speech.SpeechFragment"
+        tools:layout="@layout/fragment_speech">
+
+        <action
+            android:id="@+id/action_speech_fragment_to_questionlist_fragment"
+            app:destination="@id/questionlist_fragment"
+            app:launchSingleTop="true"/>
+
+        <action
+            android:id="@+id/action_speech_to_menu_fragment"
+            app:destination="@+id/menu_fragment"
+            app:launchSingleTop="true"/>
+    </fragment>
+
+    <!-- QuestionDetailFragment   -->
+    <fragment
+        android:id="@+id/question_detail_fragment"
+        android:name="com.onethefull.dasomautobiography.ui.questiondetail.QuestionDetailFragment"
+        tools:layout="@layout/fragment_question_detail">
+
+        <action
+            android:id="@+id/action_detail_fragment_to_menu_fragment"
+            app:destination="@+id/menu_fragment"
+            app:launchSingleTop="true"/>
+    </fragment>
+
 </navigation>

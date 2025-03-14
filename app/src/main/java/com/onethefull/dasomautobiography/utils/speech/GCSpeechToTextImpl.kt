@@ -5,14 +5,19 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
-import android.os.Handler
 import android.os.IBinder
 import android.os.RemoteException
 import com.google.cloud.android.speech.IRemoteService
 import com.google.cloud.android.speech.IRemoteServiceCallback
+import com.onethefull.dasomautobiography.App
+import com.onethefull.dasomautobiography.MainActivity
 import com.onethefull.dasomautobiography.utils.logger.DWLog
 import com.onethefull.dasomautobiography.utils.record.VoiceRecorder
 import com.onethefull.dasomautobiography.utils.record.WavFileUitls
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.jetbrains.annotations.Nullable
 
 /**
@@ -66,31 +71,16 @@ class GCSpeechToTextImpl(private val context: Activity) : GCSpeechToText {
     }
 
     /**
-     * 서비스 시작 핸들러
-     */
-    private val startService = Runnable {
-        DWLog.d("Start Speech Service")
-        val intent = Intent().apply {
-            component = ComponentName(
-                SERVICE_APP_PACKAGE,
-                SERVICE_APP_CLASS
-            )
-        }
-        context.startService(intent)
-        context.bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE)
-
-    }
-
-    /**
      * 서비스 연결 리스너
      */
     private val mServiceConnection = object : ServiceConnection {
         override fun onServiceDisconnected(name: ComponentName?) {
-            DWLog.d("onServiceDisconnected ==> $name")
+            DWLog.d("[GC] onServiceDisconnected ==> $name")
             if (mService != null) {
                 try {
                     mService?.unregisterCallback(mRemoteCallback)
                     mSTTCallback?.onSTTDisconneted()
+                    mService = null
                 } catch (e: RemoteException) {
                     e.printStackTrace()
                 }
@@ -98,7 +88,8 @@ class GCSpeechToTextImpl(private val context: Activity) : GCSpeechToText {
         }
 
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-            DWLog.d("onServiceConnected ==> $name")
+            DWLog.d("[GC] onServiceConnected ==> $name")
+            // TODO add Callback init success of Google Speech
             mSTTCallback?.onSTTConnected()
             service?.let {
                 try {
@@ -107,11 +98,27 @@ class GCSpeechToTextImpl(private val context: Activity) : GCSpeechToText {
                     }
                     startVoiceRecorder()
                     mSTTCallback?.onSTTConnected()
+
                 } catch (e: RemoteException) {
                     e.printStackTrace()
                     DWLog.e("onServiceConnected ==> ${e.message}")
                 }
             }
+//            setWakeupSentence()
+        }
+    }
+
+    // 연속어 처리 추가
+    private fun setWakeupSentence() {
+        (context as MainActivity).apply {
+            if (this.mSentence.isNullOrBlank()) {
+//                Thread().run {
+                isSuccessRecog = true
+                mVoiceRecorder?.pasue()
+                mSTTCallback?.onVoiceResult(mSentence)
+                mSentence = ""
+            }
+//                }
         }
     }
 
@@ -167,6 +174,8 @@ class GCSpeechToTextImpl(private val context: Activity) : GCSpeechToText {
                 e1.printStackTrace()
             } catch (e2: IllegalStateException) {
                 e2.printStackTrace()
+            } catch (e3: IllegalArgumentException) {
+                e3.printStackTrace()
             }
         }
     }
@@ -181,6 +190,8 @@ class GCSpeechToTextImpl(private val context: Activity) : GCSpeechToText {
                 mService?.finishRecognizing()
                 if (!isSuccessRecog) wavUtils?.finish()
             } catch (e: RemoteException) {
+                e.printStackTrace()
+            } catch (e:IllegalStateException){
                 e.printStackTrace()
             }
         }
@@ -206,20 +217,22 @@ class GCSpeechToTextImpl(private val context: Activity) : GCSpeechToText {
         }
     }
 
+    var isBluetooth =false
+
     /**
      * 음성 레코드 시작
      */
-    private fun startVoiceRecorder() {
-        DWLog.d("VoiceRecorder::startVoiceRecorder")
+    private fun startVoiceRecorder(isBluetooth:Boolean = false) {
+        DWLog.d("[GC] VoiceRecorder::startVoiceRecorder isBluetooth:$isBluetooth")
         if (mVoiceRecorder != null) {
             mVoiceRecorder?.stop()
         }
         mVoiceRecorder = VoiceRecorder(voiceCallback)
         try {
-            DWLog.d("VoiceRecorder::startVoiceRecorder $mVoiceRecorder")
+            DWLog.d("[GC] VoiceRecorder::startVoiceRecorder $mVoiceRecorder")
             mVoiceRecorder?.start()
         } catch (e: Exception) {
-            DWLog.e("VoiceRecorder::Exception::" + e.message)
+            DWLog.e("[GC] VoiceRecorder::Exception::" + e.message)
             e.printStackTrace()
         }
     }
@@ -239,17 +252,28 @@ class GCSpeechToTextImpl(private val context: Activity) : GCSpeechToText {
      * 음성인식 서비스 바인드
      */
     private fun startServiceBind() {
-        DWLog.d("startServiceBind")
-        try {
-            Handler().post(startService)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            DWLog.e("startServiceBind :: Exception ==> " + e.message)
+        DWLog.d("GCSpeech startServiceBind")
+        CoroutineScope(Dispatchers.Main).launch {
+            delay(20)
+            DWLog.d("GCSpeech Start Speech Service")
             try {
-                stopServiceBind()
-            } catch (e2: NullPointerException) {
-                DWLog.e("startServiceBind :: Exception [Destory] ==> " + e.message)
+                Intent().apply {
+                    component = ComponentName(
+                        SERVICE_APP_PACKAGE,
+                        SERVICE_APP_CLASS
+                    )
+                }.run {
+                    App.instance.let {
+                        DWLog.d("[GC] startService ${App.instance}")
+                        it.startService(this)
+                        delay(100)
+                        it.bindService(this, mServiceConnection, Context.BIND_AUTO_CREATE)
+                    }
+                }
+            } catch (e: Exception) {
+                DWLog.e("startServiceBind :: Exception ==> " + e.message)
                 e.printStackTrace()
+                stopServiceBind()
             }
         }
     }
@@ -259,21 +283,23 @@ class GCSpeechToTextImpl(private val context: Activity) : GCSpeechToText {
      */
     private fun stopServiceBind() {
         try {
+            DWLog.w("[GC] stopServiceBind")
             stopVoiceRecorder()
             mService?.unregisterCallback(mRemoteCallback)
-            context.unbindService(mServiceConnection)
+            App.instance.unbindService(mServiceConnection)
         } catch (e: RemoteException) {
+            DWLog.w("[GC] stopServiceBind :: exception => " + e.message)
             e.printStackTrace()
         } catch (e2: IllegalArgumentException) {
+            DWLog.w("[GC] stopServiceBind :: exception => " + e2.message)
             e2.printStackTrace()
         }
-
     }
 
     companion object {
         const val ERROR_OUT_OF_RANGE = "RVJST1JfT1VUX09GX1JBTkdF"
-        private const val SERVICE_APP_CLASS = "com.google.cloud.android.speech.SpeechService"
-        private const val SERVICE_APP_PACKAGE = "com.google.cloud.android.speech"
+        const val SERVICE_APP_CLASS = "com.google.cloud.android.speech.SpeechService"
+        const val SERVICE_APP_PACKAGE = "com.google.cloud.android.speech"
         private const val TIME_APP_TERMINATE = 90 * 1000L
     }
 

@@ -7,10 +7,9 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.onethefull.dasomautobiography.base.BaseActivity
-import com.onethefull.dasomautobiography.base.OnethefullBase
-import com.onethefull.dasomautobiography.utils.speech.GCTextToSpeech
 import com.onethefull.dasomautobiography.databinding.ActivityMainBinding
 import com.onethefull.dasomautobiography.utils.logger.DWLog
+import com.onethefull.dasomautobiography.utils.speech.GCTextToSpeech
 
 /**
  * Created by sjw on 2021/11/10
@@ -19,7 +18,11 @@ class MainActivity : BaseActivity() {
     private lateinit var binding: ActivityMainBinding
     lateinit var navController: NavController
     private var resId: Int? = null
-    private lateinit var viewModel: MainViewModel
+    lateinit var viewModel: MainViewModel
+
+    // 웨이크업 연속어 문장 수신
+    var mSentence: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = setContentView(this, R.layout.activity_main)
@@ -41,27 +44,15 @@ class MainActivity : BaseActivity() {
      */
     fun startFragment() {
         DWLog.d("MainActivity - startFragment")
-        when {
-            intent.hasExtra(OnethefullBase.PARAM_ACTION_NAME) -> {
-                val action = intent.getStringExtra(OnethefullBase.PARAM_ACTION_NAME)
-                startDiary()
-            }
-
-            else -> {
-                startDiary()
-            }
-        }
+        start()
     }
 
-    private fun startDiary() {
-        if (navController.currentDestination?.id == R.id.main_fragment) {
-            navController.navigate(R.id.diary_fragment, Bundle().apply {
-            })
-        }
+    private fun start() {
+        navController.navigate(R.id.splash_fragment, Bundle().apply {})
     }
 
-    private fun navigateFragment(resId: Int) {
-        navController.navigate(resId)
+    fun back() {
+        navController.navigateUp()
     }
 
     override fun onPause() {
@@ -80,7 +71,5 @@ class MainActivity : BaseActivity() {
         ).get(MainViewModel::class.java)
     }
 
-    companion object {
-        const val MIN_CLICK_INTERVAL = 10 * 1000L
-    }
+    companion object {}
 }

@@ -1,0 +1,53 @@
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="32dp"
+    app:cardElevation="0dp"
+    app:cardBackgroundColor="#FFFFFFFF">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <!-- 이미지 -->
+        <ImageView
+            android:id="@+id/iv_menu"
+            android:layout_width="280dp"
+            android:layout_height="280dp"
+            android:background="@color/colorKebbiBackground"
+            android:scaleType="fitCenter" />
+
+        <!-- 메뉴 이름  -->
+        <TextView
+            android:id="@+id/tv_menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:fontFamily="@font/notosans_kr_b"
+            android:lineSpacingExtra="19sp"
+            android:padding="4dp"
+            android:text="첫 질문"
+            android:textColor="@android:color/white"
+            android:textSize="40sp"
+            android:textStyle="bold" />
+
+        <!-- 메뉴 카운트-->
+        <TextView
+            android:id="@+id/tv_total_cnt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:layout_gravity="bottom"
+            android:fontFamily="@font/notosans_kr_medium"
+            android:gravity="bottom|end"
+            android:lineSpacingExtra="19sp"
+            android:padding="4dp"
+            android:text="2/3"
+            android:textColor="@android:color/white"
+            android:textSize="32sp"
+            android:textStyle="normal" />
+    </FrameLayout>
+</androidx.cardview.widget.CardView>

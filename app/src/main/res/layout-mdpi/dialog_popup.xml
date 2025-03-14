@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/fl_layout"
+        android:layout_width="720dp"
+        android:layout_height="390dp"
+        android:background="@drawable/popup_dialog_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|center_horizontal"
+            android:layout_marginTop="48dp"
+            android:fontFamily="@font/notosans_kr_r"
+            android:gravity="center"
+            android:lineHeight="64sp"
+            android:textAlignment="center"
+            android:textColor="#141940"
+            android:textSize="40sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_title_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginStart="24dp"
+            android:fontFamily="@font/notosans_kr_medium"
+            android:gravity="center"
+            android:lineHeight="48sp"
+            android:textAlignment="center"
+            android:textColor="#141940"
+            android:textSize="36sp" />
+
+        <TextView
+            android:id="@+id/btn_cancel"
+            android:layout_width="304dp"
+            android:layout_height="96dp"
+            android:layout_gravity="bottom|start"
+            android:layout_marginBottom="46dp"
+            android:layout_marginStart="40dp"
+            android:background="@drawable/btn_cancel_background"
+            android:fontFamily="@font/notosans_kr_r"
+            android:gravity="center"
+            android:lineSpacingExtra="19sp"
+            android:text="취소"
+            android:textColor="#ffffff"
+            android:textSize="40sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/btn_confirm"
+            android:layout_width="304dp"
+            android:layout_height="96dp"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="46dp"
+            android:layout_marginEnd="40dp"
+            android:background="@drawable/btn_confirm_background"
+            android:fontFamily="@font/notosans_kr_r"
+            android:gravity="center"
+            android:lineSpacingExtra="19sp"
+            android:text="확인"
+            android:textColor="#ffffff"
+            android:textSize="40sp"
+            android:textStyle="bold" />
+    </FrameLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

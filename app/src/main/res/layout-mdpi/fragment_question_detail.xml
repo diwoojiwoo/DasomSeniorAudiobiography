@@ -1,0 +1,489 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Toolbar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/customToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="126dp"
+        android:background="#ffffff"
+        android:elevation="0dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- 뒤로 가기 버튼 -->
+            <ImageButton
+                android:id="@+id/btn_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="뒤로가기 버튼"
+                android:src="@drawable/btn_back_black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <!-- 홈 버튼 -->
+            <ImageButton
+                android:id="@+id/btn_home"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="홈 버튼"
+                android:src="@drawable/btn_home_black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <!-- 타이틀 -->
+            <TextView
+                android:id="@+id/toolbarTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/notosans_kr_medium"
+                android:textColor="#333333"
+                android:textSize="56sp"
+                android:layout_marginBottom="39dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_question_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/question_detail_background"
+        android:padding="30dp"
+        android:gravity="center">
+
+        <!-- 왼쪽 이미지 -->
+        <TextView
+            android:id="@+id/tv_number"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:background="@drawable/circular_background"
+            android:fontFamily="@font/notosans_kr_b"
+            android:lineSpacingExtra="19sp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_launcher_background"
+            android:textColor="#ffffff"
+            android:textSize="40sp"
+            android:textStyle="normal"
+            android:gravity ="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- 중앙 텍스트 -->
+        <TextView
+            android:id="@+id/tv_question"
+            android:layout_width="650dp"
+            android:layout_height="wrap_content"
+            android:textColor="#333333"
+            android:textSize="40sp"
+            android:fontFamily="@font/notosans_kr_b"
+            android:maxLines="2"
+            android:layout_marginStart="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_listen"
+            app:layout_constraintHorizontal_bias="0.1"
+            app:layout_constraintStart_toEndOf="@id/tv_number"
+            app:layout_constraintTop_toTopOf="parent"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMaxTextSize="40sp"
+            android:autoSizeMinTextSize="16sp"
+            android:autoSizeStepGranularity="2sp"
+            tools:targetApi="o" />
+
+        <!-- 오른쪽 이미지 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/btn_listen"
+            android:layout_width="160dp"
+            android:layout_height="80dp"
+            android:background="@drawable/btn_listen_bg_selector"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" >
+
+            <ImageView
+                android:id="@+id/icon_sound"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/icon_sound"
+                android:layout_marginStart="15dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_question_listen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/notosans_kr_medium"
+                android:textStyle="normal"
+                android:textSize="32sp"
+                android:textColor="#ffffff"
+                android:text="듣기"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:layout_marginBottom="15dp"
+                app:layout_constraintStart_toEndOf="@id/icon_sound"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_answer_detail"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:gravity="center"
+        android:background="@drawable/answer_detail_background"
+        app:layout_constraintTop_toBottomOf="@+id/layout_question_detail">
+
+        <TextView
+            android:id="@+id/tv_answer"
+            android:layout_width="700dp"
+            android:layout_height="wrap_content"
+            android:text="답변 : "
+            android:maxLines="2"
+            android:fontFamily="@font/notosans_kr_medium"
+            android:textStyle="normal"
+            android:textSize="40sp"
+            android:textColor="#333333"
+            android:lineSpacingExtra="19sp"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMaxTextSize="40sp"
+            android:autoSizeMinTextSize="16sp"
+            android:autoSizeStepGranularity="2sp"
+            android:layout_marginStart="32dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:targetApi="o" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/btn_answer_listen"
+            android:layout_width="160dp"
+            android:layout_height="80dp"
+            android:layout_marginEnd="32dp"
+            android:background="@drawable/btn_listen_bg_selector"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" >
+
+            <ImageView
+                android:id="@+id/icon_sound2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/icon_sound"
+                android:layout_marginStart="15dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/notosans_kr_medium"
+                android:textStyle="normal"
+                android:textSize="32sp"
+                android:textColor="#ffffff"
+                android:text="듣기"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:layout_marginBottom="15dp"
+                app:layout_constraintStart_toEndOf="@id/icon_sound2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_select_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:gravity="center"
+        android:background="@drawable/select_detail_background"
+        app:layout_constraintTop_toBottomOf="@+id/layout_answer_detail">
+
+        <FrameLayout
+            android:id="@+id/btn_delete"
+            android:layout_width="368dp"
+            android:layout_height="120dp"
+            android:layout_marginStart="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|start"
+                android:layout_marginStart="122dp"
+                android:background="@drawable/icon_delete"/>
+
+            <TextView
+                android:id="@+id/tv_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|start"
+                android:fontFamily="@font/notosans_kr_b"
+                android:textStyle="bold"
+                android:textSize="40sp"
+                android:textColor="#707070"
+                android:text="답변 삭제"
+                android:layout_marginStart="178dp"/>
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="864dp"
+            android:layout_height="1dp"
+            android:background="#cecece"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <FrameLayout
+            android:layout_width="2dp"
+            android:layout_height="88dp"
+            android:background="#cecece"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <FrameLayout
+            android:id="@+id/btn_retry"
+            android:layout_width="368dp"
+            android:layout_height="120dp"
+            android:layout_marginEnd="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_retry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"
+                android:layout_marginEnd="293dp"
+                android:background="@drawable/icon_mic"/>
+
+            <TextView
+                android:id="@+id/tv_retry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"
+                android:fontFamily="@font/notosans_kr_b"
+                android:textStyle="bold"
+                android:textSize="40sp"
+                android:textColor="#2994ff"
+                android:text="다시 답변"
+                android:layout_marginEnd="122dp"/>
+        </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_recording"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="#80000000"
+        android:visibility="gone">
+
+        <FrameLayout
+            android:id="@+id/fl_layout"
+            android:layout_width="880dp"
+            android:layout_height="480dp"
+            android:background="@drawable/recording_dialog_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tv_left_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/notosans_kr_r"
+                android:textStyle="normal"
+                android:textSize="32sp"
+                android:textColor="#ff6363"
+                android:lineSpacingExtra="19sp"
+                android:gravity="top|start"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="45dp"
+                android:text="남은시간 00:30"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|center_horizontal"
+                android:layout_marginTop="48dp"
+                android:fontFamily="@font/notosans_kr_r"
+                android:gravity="center"
+                android:lineHeight="59sp"
+                android:text="다시 답변"
+                android:textAlignment="center"
+                android:textColor="#333333"
+                android:textSize="40sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|center_horizontal"
+                android:layout_marginTop="113dp"
+                android:fontFamily="@font/notosans_kr_r"
+                android:gravity="center"
+                android:lineHeight="59sp"
+                android:text="Q. 가족 구성원을 소개해 주세요."
+                android:textAlignment="center"
+                android:textColor="#333333"
+                android:textSize="40sp"
+                android:textStyle="normal"/>
+
+
+            <ImageView
+                android:id="@+id/iv_cancel"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:layout_gravity="top|end"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="32dp"
+                android:background="@android:drawable/ic_menu_close_clear_cancel"/>
+
+
+            <!--    듣기    -->
+            <ImageView
+                android:id="@+id/iv_listen"
+                android:layout_width="168dp"
+                android:layout_height="168dp"
+                android:layout_gravity="start"
+                android:layout_marginTop="201dp"
+                android:layout_marginStart="108dp"
+                android:src="@drawable/btn_rec_not_play_" />
+
+            <TextView
+                android:id="@+id/tv_listen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/notosans_kr_r"
+                android:textStyle="bold"
+                android:textSize="32sp"
+                android:layout_gravity="start"
+                android:layout_marginTop="385dp"
+                android:layout_marginStart="163dp"
+                android:text="듣기"
+                android:textColor="@android:color/darker_gray"
+                android:lineSpacingExtra="15sp"
+                android:gravity="center_horizontal" />
+
+            <!--    답변하기    -->
+            <ImageView
+                android:id="@+id/iv_recording"
+                android:layout_width="168dp"
+                android:layout_height="168dp"
+                android:layout_gravity="start"
+                android:layout_marginTop="201dp"
+                android:layout_marginStart="356dp"
+                android:src="@drawable/btn_rec_not_start_"
+                android:visibility="gone"/>
+
+            <!--    답변종료   -->
+            <ImageView
+                android:id="@+id/iv_recording_end"
+                android:layout_width="168dp"
+                android:layout_height="168dp"
+                android:layout_gravity="start"
+                android:layout_marginTop="201dp"
+                android:layout_marginStart="356dp"
+                android:src="@drawable/btn_rec_end"
+                android:visibility="gone"/>
+
+            <!--    답변종료   -->
+            <ImageView
+                android:id="@+id/iv_recording_restart"
+                android:layout_width="168dp"
+                android:layout_height="168dp"
+                android:layout_gravity="start"
+                android:layout_marginTop="201dp"
+                android:layout_marginStart="356dp"
+                android:src="@drawable/btn_rec_not_start_"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/tv_recording"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/notosans_kr_r"
+                android:textStyle="bold"
+                android:textSize="32sp"
+                android:layout_gravity="start"
+                android:layout_marginTop="385dp"
+                android:layout_marginStart="377dp"
+                android:text="답변 하기"
+                android:textColor="#333333"
+                android:lineSpacingExtra="15sp"
+                android:gravity="center_horizontal" />
+
+            <!--    저장하기    -->
+            <ImageView
+                android:id="@+id/iv_save"
+                android:layout_width="168dp"
+                android:layout_height="168dp"
+                android:layout_gravity="end"
+                android:layout_marginTop="201dp"
+                android:layout_marginEnd="108dp"
+                android:src="@drawable/btn_rec_not_save_" />
+
+            <TextView
+                android:id="@+id/tv_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/notosans_kr_r"
+                android:textStyle="bold"
+                android:textSize="32sp"
+                android:layout_gravity="end"
+                android:layout_marginTop="385dp"
+                android:layout_marginEnd="163dp"
+                android:text="저장"
+                android:textColor="@android:color/darker_gray"
+                android:lineSpacingExtra="15sp"
+                android:gravity="center_horizontal" />
+        </FrameLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

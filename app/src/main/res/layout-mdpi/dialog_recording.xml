@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/fl_layout"
+        android:layout_width="880dp"
+        android:layout_height="480dp"
+        android:background="@drawable/recording_dialog_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_left_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/notosans_kr_r"
+            android:textStyle="normal"
+            android:textSize="32sp"
+            android:textColor="#ff6363"
+            android:lineSpacingExtra="19sp"
+            android:gravity="top|start"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="45dp"
+            android:text="남은시간 00:30"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|center_horizontal"
+            android:layout_marginTop="48dp"
+            android:fontFamily="@font/notosans_kr_r"
+            android:gravity="center"
+            android:lineHeight="59sp"
+            android:text="다시 답변"
+            android:textAlignment="center"
+            android:textColor="#333333"
+            android:textSize="40sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|center_horizontal"
+            android:layout_marginTop="113dp"
+            android:fontFamily="@font/notosans_kr_r"
+            android:gravity="center"
+            android:lineHeight="59sp"
+            android:text="Q. 가족 구성원을 소개해 주세요."
+            android:textAlignment="center"
+            android:textColor="#333333"
+            android:textSize="40sp"
+            android:textStyle="normal"/>
+
+
+        <ImageView
+            android:id="@+id/iv_cancel"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_gravity="top|end"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
+            android:background="@android:drawable/ic_menu_close_clear_cancel"/>
+
+
+        <!--    듣기    -->
+        <ImageView
+            android:id="@+id/iv_listen"
+            android:layout_width="168dp"
+            android:layout_height="168dp"
+            android:layout_gravity="start"
+            android:layout_marginTop="201dp"
+            android:layout_marginStart="108dp"
+            android:src="@drawable/btn_rec_not_play_" />
+
+        <TextView
+            android:id="@+id/tv_listen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/notosans_kr_r"
+            android:textStyle="bold"
+            android:textSize="32sp"
+            android:layout_gravity="start"
+            android:layout_marginTop="385dp"
+            android:layout_marginStart="163dp"
+            android:text="듣기"
+            android:textColor="@android:color/darker_gray"
+            android:lineSpacingExtra="15sp"
+            android:gravity="center_horizontal" />
+
+        <!--    답변하기    -->
+        <ImageView
+            android:id="@+id/iv_recording"
+            android:layout_width="168dp"
+            android:layout_height="168dp"
+            android:layout_gravity="start"
+            android:layout_marginTop="201dp"
+            android:layout_marginStart="356dp"
+            android:src="@drawable/btn_rec_not_start_" />
+
+        <TextView
+            android:id="@+id/tv_recording"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/notosans_kr_r"
+            android:textStyle="bold"
+            android:textSize="32sp"
+            android:layout_gravity="start"
+            android:layout_marginTop="385dp"
+            android:layout_marginStart="377dp"
+            android:text="답변 하기"
+            android:textColor="#333333"
+            android:lineSpacingExtra="15sp"
+            android:gravity="center_horizontal" />
+
+        <!--    저장하기    -->
+        <ImageView
+            android:id="@+id/iv_save"
+            android:layout_width="168dp"
+            android:layout_height="168dp"
+            android:layout_gravity="end"
+            android:layout_marginTop="201dp"
+            android:layout_marginEnd="108dp"
+            android:src="@drawable/btn_rec_not_save_" />
+
+        <TextView
+            android:id="@+id/tv_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/notosans_kr_r"
+            android:textStyle="bold"
+            android:textSize="32sp"
+            android:layout_gravity="end"
+            android:layout_marginTop="385dp"
+            android:layout_marginEnd="163dp"
+            android:text="저장"
+            android:textColor="@android:color/darker_gray"
+            android:lineSpacingExtra="15sp"
+            android:gravity="center_horizontal" />
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -137,7 +137,7 @@ class DiaryViewModel(
 
     private fun showNotExitContent() {
         Thread.sleep(2000L)
-        _data.value = repository.getNotExistDiaryComment().random()
+//        _data.value = repository.getNotExistDiaryComment().random()
         _diaryStatus.value = data.value!!.status
         GCTextToSpeech.getInstance()?.speech(data.value!!.speechText)
     }
@@ -202,5 +202,29 @@ class DiaryViewModel(
 
 
     override fun onGenieSTTResult(result: String) {
+    }
+
+    override fun onFinishService() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onWonderfulRequest(result: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onRequestHardwareControl(result: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onGenieSTTResultNoAction(result: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onGenieCommandStart(result: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun requestSendGenieLog(sttResult: String, genieResponse: String) {
+        TODO("Not yet implemented")
     }
 }

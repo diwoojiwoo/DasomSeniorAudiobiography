@@ -14,4 +14,8 @@
     <string name="message_memoryquiz_quiz_wrong_answer1">"That's incorrect. Could you take a closer look at the picture and think about it again?"</string>
     <string name="message_memoryquiz_quiz_correct_answer">"That's correct! You got the question right that the guardian provided!"</string>
     <string name="message_memoryquiz_quiz_wrong_answer2">"That's incorrect. You can check the correct answer by clicking the blue 'Check Answer' button below."</string>
+
+    <string name="message_network_error">"Please check your network connection."</string>
+    <string name="message_not_exist_elderly_info">"어르신 성별, 생년월일을 입력해주세요."</string>
+    <string name="message_not_registration_elderly">어르신을 등록해주세요.</string>
 </resources>

@@ -72,13 +72,6 @@ class App : MultiDexApplication() {
      * Scene onCommand 공통 동작
      */
     fun onCommand(action: String?, params: Bundle?, suggestion: Serializable?) {
-        (getSystemService(Context.AUDIO_SERVICE) as AudioManager).apply {
-            if (VolumeManager[this@App] == 1) {
-                VolumeManager.setLevel(this@App, 1)
-            } else if (VolumeManager[this@App] == 2) {
-                VolumeManager.setLevel(this@App, 2)
-            }
-        }
         val send = Intent(instance, MainActivity::class.java)
         send.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
         send.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -89,6 +82,10 @@ class App : MultiDexApplication() {
                 send.putExtra(
                     OnethefullBase.PARAM_ACTION_NAME,
                     action
+                )
+                send.putExtra(
+                    OnethefullBase.PARAM_NEXT_SCENE_ACTION,
+                    params?.getString(OnethefullBase.PARAM_NEXT_SCENE_ACTION,"")
                 )
             }
             else -> {
@@ -130,6 +127,6 @@ class App : MultiDexApplication() {
         lateinit var instance: App
             private set
 
-        const val TAG = "[DasomSeniorAudiobiography]"
+        const val TAG = "[DASOM_AUTOGRAPHY]"
     }
 }

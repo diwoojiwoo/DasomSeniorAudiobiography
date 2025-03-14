@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <FrameLayout
+            android:id="@+id/fl_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_bg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <View
+                android:id="@+id/iv_bg_black"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#99000000"
+                android:visibility="gone"/>
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/fl_title"
+            android:layout_width="366dp"
+            android:layout_height="88dp"
+            android:layout_marginStart="24dp"
+            android:background="@drawable/speech_title_background"
+            android:fontFamily="@font/pretendard_bold"
+            android:gravity="center"
+            android:lineSpacingExtra="32sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="40dp"
+                android:src="@drawable/icon_book"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="32dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="자서전 만들기"
+                android:fontFamily="@font/pretendard_bold"
+                android:textStyle="bold"
+                android:textSize="44sp"
+                android:textColor="#ffffff"
+                android:lineSpacingExtra="12sp"
+                android:layout_gravity="center_vertical|end"
+                android:layout_marginRight="40dp"/>
+        </FrameLayout>
+
+        <!--   다른질문하기 버튼    -->
+        <FrameLayout
+            android:id="@+id/fl_another_question"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="284dp"
+                android:layout_height="88dp"
+                android:background="@drawable/btn_another_question_bg"
+                android:layout_marginTop="268dp"
+                android:layout_marginEnd="24dp"
+                android:text="\t다른 질문 보기\t\t\t"
+                android:fontFamily="@font/pretendard_bold"
+                android:textStyle="bold"
+                android:textSize="32sp"
+                android:textColor="#333333"
+                android:lineSpacingExtra="24sp"
+                android:gravity="center" />
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src ="@drawable/icon_arrow_right_orange"
+                android:layout_gravity="end"
+                android:layout_marginTop="290dp"
+                android:layout_marginEnd="48dp"/>
+        </FrameLayout>
+
+        <!--   답변하기 마이크 버튼    -->
+        <ImageView
+            android:id="@+id/btn_answer"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:src="@drawable/btn_answer_selector"
+            android:layout_marginTop="56dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone"/>
+
+        <!-- include를 사용하여 툴바 추가 -->
+        <include
+            android:id="@+id/include_record_start"
+            layout="@layout/toolbar_record_start_layout"
+            android:visibility="gone"/>
+
+        <include
+            android:id="@+id/include_record_stop"
+            layout="@layout/toolbar_record_stop_layout"
+            android:visibility="gone"/>
+
+        <include
+            android:id="@+id/include_record_restart"
+            layout="@layout/toolbar_record_restart_layout"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/tv_left_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/notosans_kr_r"
+            android:textStyle="bold"
+            android:textSize="40sp"
+            android:textColor="#ffffff"
+            android:lineSpacingExtra="19sp"
+            android:gravity="end"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="213dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <!--  질문 타입 타이틀    -->
+        <TextView
+            android:id="@+id/tv_question_title"
+            android:layout_width="240dp"
+            android:layout_height="72dp"
+            android:layout_marginStart="24dp"
+            android:background="@drawable/speech_question_title_background"
+            android:fontFamily="@font/pretendard_bold"
+            android:gravity="center"
+            android:lineSpacingExtra="32sp"
+            android:text=""
+            android:layout_marginTop="328dp"
+            android:textColor="#eeeceb"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/tv_question"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!--  질문 내용   -->
+        <TextView
+            android:id="@+id/tv_question"
+            android:layout_width="976dp"
+            android:layout_height="176dp"
+            android:layout_marginTop="400dp"
+            android:autoSizeMaxTextSize="48sp"
+            android:autoSizeMinTextSize="12sp"
+            android:autoSizeStepGranularity="1sp"
+            android:autoSizeTextType="uniform"
+            android:background="@drawable/speech_question_background"
+            android:fontFamily="@font/pretendard_bold"
+            android:lineSpacingExtra="8sp"
+            android:paddingBottom="30dp"
+            android:paddingEnd="48sp"
+            android:paddingStart="48dp"
+            android:paddingTop="30dp"
+            android:textColor="#333333"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:targetApi="o" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

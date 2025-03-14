@@ -42,13 +42,15 @@ public class VoiceRecorder {
     public static final int CHANNEL = AudioFormat.CHANNEL_IN_MONO;
     public static final int ENCODING = AudioFormat.ENCODING_PCM_16BIT;
     public static int CURRENT_SAMPLE_RATE = 16000;
-        public static int BUFFER_SIZE = 2048;
+    public static int BUFFER_SIZE = 2048;
 //    public static int BUFFER_SIZE = 4096;
 
     private static final int AMPLITUDE_THRESHOLD = 1500;
     private static final int AMPLITUDE_THRESHOLD_GENIE = 1675;
-    private static final int SPEECH_TIMEOUT_MILLIS = 2000;
-    private static final int MAX_SPEECH_LENGTH_MILLIS = 10 * 1000;
+//    private static final int SPEECH_TIMEOUT_MILLIS = 2000;
+//    private static final int MAX_SPEECH_LENGTH_MILLIS = 10 * 1000;
+    private static final int SPEECH_TIMEOUT_MILLIS = 60 * 1000;
+    private static final int MAX_SPEECH_LENGTH_MILLIS = 65 * 1000;
 
 
     public static abstract class Callback {

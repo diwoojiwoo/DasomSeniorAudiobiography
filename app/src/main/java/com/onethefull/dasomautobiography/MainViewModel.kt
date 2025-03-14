@@ -2,7 +2,11 @@ package com.onethefull.dasomautobiography
 
 import android.os.Handler
 import android.os.Looper
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.navigation.findNavController
 import com.onethefull.dasomautobiography.base.BaseViewModel
+import com.onethefull.dasomautobiography.data.model.audiobiography.Item
 import com.onethefull.dasomautobiography.utils.bus.RxBus
 import com.onethefull.dasomautobiography.utils.bus.RxEvent
 import com.onethefull.dasomautobiography.utils.logger.DWLog
@@ -33,15 +37,28 @@ class MainViewModel : BaseViewModel() {
                 updateTerminator(event.time)
             }
 
-            RxEvent.AppDestroyRemove -> {
-                removeTerminator()
-            }
-
-            RxEvent.SpeechDelayUpdate -> {
-                updateDelaySpeech(event.time)
+            RxEvent.NavigateToMenuFragment-> {
+                updateNavigator(event.time)
             }
         }
     }
+
+    private val mHandlerCallback = Handler.Callback { msg ->
+        when (msg.what) {
+            MESSAGE_WHAT_TERMINATE_APP -> {
+                SceneHelper.switchOut()
+                App.instance.currentActivity?.finishAffinity()
+            }
+
+            MESSAGE_WHAT_NAVIGATE_MENU_FRAGMENT-> {
+                DWLog.d("NavigateToMenuFragment")
+                App.instance.currentActivity?.findNavController(R.id.nav_host)?.navigate(R.id.action_speech_to_menu_fragment)
+            }
+        }
+        false
+    }
+
+    private val handler = Handler(Looper.getMainLooper(), mHandlerCallback)
 
     fun start() {
         DWLog.d("Start")
@@ -71,22 +88,6 @@ class MainViewModel : BaseViewModel() {
         )
     }
 
-
-    private val mHandlerCallback = Handler.Callback { msg ->
-        when (msg.what) {
-            MESSAGE_WHAT_TERMINATE_APP -> {
-                SceneHelper.switchOut()
-                App.instance.currentActivity?.finishAffinity()
-            }
-            MESSAGE_WHAT_DELAY_SPEECH -> {
-
-            }
-        }
-        false
-    }
-
-    private val handler = Handler(Looper.getMainLooper(), mHandlerCallback)
-
     /**
      * 자동 종료 시간 갱신
      */
@@ -108,37 +109,44 @@ class MainViewModel : BaseViewModel() {
         handler.removeMessages(MESSAGE_WHAT_TERMINATE_APP)
     }
 
-    /**
-     * 자동 종료 발화 시간 갱신
-     */
-    private fun updateDelaySpeech(time: Long) {
-        DWLog.i("MESSAGE_WHAT_DELAY_SPEECH")
-        removeDelaySpeech()
+    private fun updateNavigator(time: Long) {
+        DWLog.i("MESSAGE_WHAT_NAVIGATE_MENU_FRAGMENT ==> updateNavigator $time")
+        removeNavigator()
         handler.sendMessageDelayed(
-            handler.obtainMessage(MESSAGE_WHAT_DELAY_SPEECH),
+            handler.obtainMessage(MESSAGE_WHAT_NAVIGATE_MENU_FRAGMENT),
             time
         )
     }
 
+
     /**
-     * 자동 종료 발화 제거
+     * 자동 종료 제거
      */
-    private fun removeDelaySpeech() {
-        DWLog.i("MESSAGE_WHAT_DELAY_SPEECH ==> removeDelaySpeech")
-        handler.removeMessages(MESSAGE_WHAT_DELAY_SPEECH)
+    private fun removeNavigator() {
+        DWLog.i("MESSAGE_WHAT_NAVIGATE_MENU_FRAGMENT ==> removeNavigator")
+        handler.removeMessages(MESSAGE_WHAT_NAVIGATE_MENU_FRAGMENT)
     }
 
     override fun onCleared() {
         super.onCleared()
     }
 
+    /**
+     * fragment 간 값 공유
+     */
+    private val _selectedItem = MutableLiveData<Item>()
+    val selectedItem: LiveData<Item> get() = _selectedItem
+
+    fun selectItem(item: Item) {
+        _selectedItem.value = item
+    }
+
     companion object {
-        // TUTRIAL TIME
         const val TIME_TERMINATE_APP = 90 * 1000L
 
         // MESSAGE ID
         const val MESSAGE_WHAT_TERMINATE_APP = 0x202
-        const val MESSAGE_WHAT_DELAY_SPEECH = 0x203
+        const val MESSAGE_WHAT_NAVIGATE_MENU_FRAGMENT = 0x204
     }
 
 }
