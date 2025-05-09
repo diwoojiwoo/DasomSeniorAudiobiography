@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ダソム自叙伝</string>
+    <string name="message_network_error">ネットワーク状態を確認してください。</string>
+    <string name="message_not_exist_elderly_info">ご高齢者の性別と生年月日を入力してください。</string>
+    <string name="message_not_registration_elderly">ご高齢者を登録してください。</string>
+</resources>

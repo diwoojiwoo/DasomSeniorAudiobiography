@@ -11,12 +11,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DasomSeniorAudiobiography">
         <activity android:name="com.onethefull.dasomautobiography.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
         </activity>
 
+        <receiver android:name=".receiver.AutobiographyReceiver">
+            <intent-filter>
+                <action android:name="ACTION_AUTOBIOGRAPHY_STT_TEXT"/>
+            </intent-filter>
+        </receiver>
 
         <service
             android:name="com.onethefull.wonderfulrobotmodule.DefaultService"

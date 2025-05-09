@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_tutorial"
+    android:id="@+id/nav_graph"
     app:startDestination="@id/splash_fragment">
 
     <!--    SplashFragment-->
@@ -62,29 +62,12 @@
 
         <action
             android:id="@+id/action_questionlist_fragment_to_speech_fragment"
-            app:destination="@id/speech_fragment"
+            app:destination="@+id/speech_fragment"
             app:launchSingleTop="true" />
 
         <action
             android:id="@+id/action_questionlist_fragment_to_detail_fragment"
             app:destination="@+id/question_detail_fragment"
-            app:launchSingleTop="true"/>
-    </fragment>
-
-    <!-- SpeechFragment -->
-    <fragment
-        android:id="@+id/speech_fragment"
-        android:name="com.onethefull.dasomautobiography.ui.speech.SpeechFragment"
-        tools:layout="@layout/fragment_speech">
-
-        <action
-            android:id="@+id/action_speech_fragment_to_questionlist_fragment"
-            app:destination="@id/questionlist_fragment"
-            app:launchSingleTop="true"/>
-
-        <action
-            android:id="@+id/action_speech_to_menu_fragment"
-            app:destination="@+id/menu_fragment"
             app:launchSingleTop="true"/>
     </fragment>
 
@@ -100,4 +83,17 @@
             app:launchSingleTop="true"/>
     </fragment>
 
+
+    <fragment
+        android:id="@+id/speech_fragment"
+        android:name="com.onethefull.dasomautobiography.ui.speech.SpeechFragment">
+        <action
+            android:id="@+id/action_speech_fragment_to_questiondetail_fragment"
+            app:destination="@id/question_detail_fragment"/>
+
+        <action
+            android:id="@+id/action_speech_to_menu_fragment"
+            app:destination="@id/menu_fragment"/>
+
+    </fragment>
 </navigation>

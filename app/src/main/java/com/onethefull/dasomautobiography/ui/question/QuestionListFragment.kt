@@ -1,23 +1,22 @@
 package com.onethefull.dasomautobiography.ui.question
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.onethefull.dasomautobiography.MainActivity
-import com.onethefull.dasomautobiography.R
 import com.onethefull.dasomautobiography.data.model.audiobiography.Item
 import com.onethefull.dasomautobiography.databinding.FragmentQuestionlistBinding
-import com.onethefull.dasomautobiography.ui.menu.MenuItem
 import com.onethefull.dasomautobiography.utils.InjectorUtils
 import com.onethefull.dasomautobiography.utils.bus.RxBus
 import com.onethefull.dasomautobiography.utils.bus.RxEvent
-import com.onethefull.dasomautobiography.utils.logger.DWLog
+import com.onethefull.dasomautobiography.R
 
 class QuestionListFragment : Fragment(), ListAdapter.OnItemClickListener {
     private lateinit var binding: FragmentQuestionlistBinding
@@ -50,7 +49,7 @@ class QuestionListFragment : Fragment(), ListAdapter.OnItemClickListener {
         item.typeName = mItem.typeName
         (activity as MainActivity).viewModel.selectItem(item)  // 데이터 저장
         if (item.answerYn == "N") {
-            findNavController().navigate(QuestionListFragmentDirections.actionQuestionlistFragmentToSpeechFragment()) // 답변이 없는 경우 음성입력 화면으로 이동
+            (activity as MainActivity).navigateToSpeechFragment()  // 답변이 없는 경우 음성입력 화면으로 이동
         } else {
             findNavController().navigate(QuestionListFragmentDirections.actionQuestionlistFragmentToDetailFragment()) // 답변이 있는 경우 질문상세화면으로 이도
         }

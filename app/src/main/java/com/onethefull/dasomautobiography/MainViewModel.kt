@@ -6,6 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.findNavController
 import com.onethefull.dasomautobiography.base.BaseViewModel
+import com.onethefull.dasomautobiography.data.model.audiobiography.AutobiographyMap
+import com.onethefull.dasomautobiography.data.model.audiobiography.GetAutobiographyLogDtlResponse
 import com.onethefull.dasomautobiography.data.model.audiobiography.Item
 import com.onethefull.dasomautobiography.utils.bus.RxBus
 import com.onethefull.dasomautobiography.utils.bus.RxEvent
@@ -39,6 +41,10 @@ class MainViewModel : BaseViewModel() {
 
             RxEvent.NavigateToMenuFragment-> {
                 updateNavigator(event.time)
+            }
+
+            RxEvent.RemoveNavigateToMenuFragment-> {
+                removeNavigator()
             }
         }
     }
@@ -120,7 +126,7 @@ class MainViewModel : BaseViewModel() {
 
 
     /**
-     * 자동 종료 제거
+     * 자동 SpeechFragment에서 MenuFragment 화면으로 이동 제거
      */
     private fun removeNavigator() {
         DWLog.i("MESSAGE_WHAT_NAVIGATE_MENU_FRAGMENT ==> removeNavigator")
@@ -139,6 +145,17 @@ class MainViewModel : BaseViewModel() {
 
     fun selectItem(item: Item) {
         _selectedItem.value = item
+    }
+
+
+    /**
+     * 로그 아이디를 통해 자서전 로그 상세 값 저장
+     */
+    private val _logDtlApiResponse = MutableLiveData<AutobiographyMap>()
+    val logDtlApiResponse : LiveData<AutobiographyMap> get() = _logDtlApiResponse
+
+    fun setLogDtlApiResponse(map: AutobiographyMap) {
+        _logDtlApiResponse.value = map
     }
 
     companion object {

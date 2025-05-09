@@ -18,6 +18,7 @@ class RxEvent {
         const val AppDestroy = 0x00
         const val AppDestroyUpdate = 0x01
         const val NavigateToMenuFragment = 0x02
+        const val RemoveNavigateToMenuFragment = 0x03
 
         val map = HashMap<Int, String>()
 
@@ -37,5 +38,6 @@ class RxEvent {
         map[AppDestroy] = "AppDestroy"
         map[AppDestroyUpdate] = "AppDestroyUpdate"
         map[NavigateToMenuFragment] = "NavigateToMenuFragment"
+        map[RemoveNavigateToMenuFragment] = "RemoveNavigateToMenuFragment"
     }
 }

@@ -39,7 +39,6 @@ class ResultDialog(context: Context) : BaseDialog<DialogResultBinding>(context),
         _binding = setViewBinding(layoutInflater)
         window?.apply {
             setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-            addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
         }
 
         binding.tvTitle.text = title

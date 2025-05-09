@@ -11,6 +11,7 @@ import com.onethefull.dasomautobiography.R
 import com.onethefull.dasomautobiography.base.BaseViewModel
 import com.onethefull.dasomautobiography.contents.toast.Toasty
 import com.onethefull.dasomautobiography.data.model.audiobiography.DeleteLogResponse
+import com.onethefull.dasomautobiography.data.model.audiobiography.GetAutobiographyLogDtlResponse
 import com.onethefull.dasomautobiography.data.model.audiobiography.Item
 import com.onethefull.dasomautobiography.provider.DasomProviderHelper
 import com.onethefull.dasomautobiography.repository.QuestionDetailRepository
@@ -54,7 +55,7 @@ class QuestionDetailViewModel(
     val isRecording: LiveData<Boolean> = _isRecording
 
     // 녹음 타이머 (1분)
-    private val _timeLeft = MutableLiveData(59) // 59초 타이머
+    private val _timeLeft = MutableLiveData(60) // 60초 타이머
     val timeLeft: LiveData<Int> = _timeLeft
 
     private val _isRunning = MutableLiveData(false) // 타이머 실행 여부
@@ -71,8 +72,9 @@ class QuestionDetailViewModel(
     private val _deleteEvent = MutableLiveData<Unit>()
     val deleteEvent: LiveData<Unit> get() = _deleteEvent
 
+    // 녹음 파일 재생 하기
     private var mediaPlayer: MediaPlayer? = null
-    private val _isPlaying = MutableLiveData<Boolean>(false)
+    private val _isPlaying = MutableLiveData<Boolean>()
     val isPlaying: LiveData<Boolean> get() = _isPlaying
 
     // 답변 가져오기
@@ -81,6 +83,10 @@ class QuestionDetailViewModel(
 
     private val _answerAudioUrl= MutableLiveData<String>()
     val answerAudioUrl: LiveData<String> get() = _answerAudioUrl
+
+    private val _receivedLogId = MutableLiveData<String>()
+    val receivedLogId : LiveData<String> get() = _receivedLogId
+
 
     init {
         connect()
@@ -98,7 +104,7 @@ class QuestionDetailViewModel(
         DWLog.d("connect")
         GCTextToSpeech.getInstance()?.setCallback(this)
         GCTextToSpeech.getInstance()?.start(context)
-        RxBus.publish(RxEvent.Event(RxEvent.AppDestroyUpdate, 60 * 1000L, "AppDestroyUpdate"))
+        RxBus.publish(RxEvent.Event(RxEvent.AppDestroyUpdate, 90 * 1000L, "AppDestroyUpdate"))
     }
 
     fun disconnect() {
@@ -359,6 +365,12 @@ class QuestionDetailViewModel(
         stopWavFile() // ViewModel 종료 시 정리
     }
 
+    private val _logDtlEvent = MutableLiveData<GetAutobiographyLogDtlResponse>()
+    val logDtlEvent: LiveData<GetAutobiographyLogDtlResponse> get() = _logDtlEvent
+
+    private val _networkErrorEvent = MutableLiveData<Boolean>()
+    val networkErrorEvent: LiveData<Boolean> get() = _networkErrorEvent
+
     fun getLogDtl(logId : String) {
         uiScope.launch {
             val check204 = repository.check204() ?: false
@@ -371,19 +383,36 @@ class QuestionDetailViewModel(
                 ).let { response ->
                     when (response.statusCode) {
                         1001 -> {
-                            Toasty.error(context, context.getString(R.string.message_not_exist_elderly_info)).show()
+//                            Toasty.error(context, context.getString(R.string.message_not_exist_elderly_info)).show()
+                            _logDtlEvent.postValue(GetAutobiographyLogDtlResponse(
+                                statusCode = response.statusCode,
+                                status = response.status ?: "",
+                                message = context.getString(R.string.message_not_exist_elderly_info).toString() ?: null,
+                                autobiographyMap = null
+                            ))
                             RxBus.publish(RxEvent.destroyApp)
                         }
 
                         -3 -> {
-                            Toasty.error(context, context.getString(R.string.message_not_registration_elderly)).show()
+//                            Toasty.error(context, context.getString(R.string.message_not_registration_elderly)).show()
+                            _logDtlEvent.postValue(GetAutobiographyLogDtlResponse(
+                                statusCode = response.statusCode,
+                                status = response.status ?: "",
+                                message = context.getString(R.string.message_not_registration_elderly).toString() ?: null,
+                                autobiographyMap = null
+                            ))
                             RxBus.publish(RxEvent.destroyApp)
                         }
 
                         0 -> {
                             response.autobiographyMap?.let { map ->
+                                _logDtlEvent.postValue(GetAutobiographyLogDtlResponse(
+                                    statusCode = 0,
+                                    status = response.status,
+                                    message = response.message ?:"",
+                                    autobiographyMap = map
+                                ))
                                 _answerAudioUrl.value = map.answerAudioUrl ?: ""
-                                _transText.value = map.transText ?: ""
                             } ?: run {
                                 Toasty.error(context, "responseMap is null").show()
                                 DWLog.e("responseMap is null")
@@ -391,7 +420,12 @@ class QuestionDetailViewModel(
 
                         }
                         else -> {
-                            Toasty.error(context, "에러코드가 없습니다.").show()
+                            _logDtlEvent.postValue(GetAutobiographyLogDtlResponse(
+                                statusCode = response.statusCode,
+                                status = response.status ?: "",
+                                message = "에러코드가 없습니다.",
+                                autobiographyMap = null
+                            ))
                             RxBus.publish(RxEvent.destroyApp)
                         }
                     }
@@ -403,6 +437,9 @@ class QuestionDetailViewModel(
         }
     }
 
+    /**
+     * 자서전 로그 저장
+     * */
     fun insertLog() {
         uiScope.launch {
             val check204 = repository.check204() ?: false
@@ -455,6 +492,9 @@ class QuestionDetailViewModel(
         }
     }
 
+    /**
+     * 자서전 로그 삭제
+     * */
     fun deleteLog() {
         uiScope.launch {
             val check204 = repository.check204() ?: false
@@ -491,6 +531,15 @@ class QuestionDetailViewModel(
         if (url != "" && URLUtil.isValidUrl(url)) {
             GCTextToSpeech.getInstance()?.urlMediaSpeech(url)
         }
+    }
+
+    fun setReceivedLogId(logId: String) {
+        if (logId.isNullOrBlank()) {
+            DWLog.e("Invalid logId received: $logId")
+            return
+        }
+        _receivedLogId.value = logId
+        getLogDtl(logId)
     }
 
     companion object {

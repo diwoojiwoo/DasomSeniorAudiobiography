@@ -1,24 +1,22 @@
 package com.onethefull.dasomautobiography.ui.questiondetail
 
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
+import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
 import com.onethefull.dasomautobiography.MainActivity
 import com.onethefull.dasomautobiography.MainViewModel
 import com.onethefull.dasomautobiography.R
 import com.onethefull.dasomautobiography.contents.dialog.PopupDialog
 import com.onethefull.dasomautobiography.contents.dialog.ResponseEditDialog
-import com.onethefull.dasomautobiography.contents.dialog.ResultDialog
+import com.onethefull.dasomautobiography.contents.toast.Toasty
 import com.onethefull.dasomautobiography.databinding.FragmentQuestionDetailBinding
 import com.onethefull.dasomautobiography.utils.InjectorUtils
 import com.onethefull.dasomautobiography.utils.bus.RxBus
@@ -40,9 +38,16 @@ class QuestionDetailFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        DWLog.d("onCreate")
         arguments?.let {
             itemName = it.getString("itemName", "")
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        DWLog.d("onResume")
+        initView()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -53,11 +58,11 @@ class QuestionDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.toolbarTitle.text = itemName
 
         sharedViewModel.selectedItem.observe(viewLifecycleOwner) { item ->
             if (item != null) {
                 DWLog.d("Received item [name]:: ${itemName},  [title]:: ${item.type}  ${item.sort}, ${item.id} [question]::${item.viewQuestion}")
+                binding.toolbarTitle.text = item.typeName
                 binding.tvNumber.text = item.sort
                 binding.tvQuestion.text = item.viewQuestion
                 viewModel.getLogDtl(item.logId.toString())
@@ -66,9 +71,12 @@ class QuestionDetailFragment : Fragment() {
             }
         }
 
-        viewModel.transText.observe(viewLifecycleOwner) { transText ->
-            if(viewModel.transText.value != "") {
-                binding.tvAnswer.text = "답변 : $transText"
+        sharedViewModel.logDtlApiResponse.observe(viewLifecycleOwner) { map ->
+            DWLog.d("API 응답 받음 map::$map")
+            map?.let {
+                if (viewModel.transText.value != "") {
+                    binding.tvAnswer.text = "답변 : ${it.transText}"
+                }
             }
         }
 
@@ -85,6 +93,7 @@ class QuestionDetailFragment : Fragment() {
                             override fun checkAnswer() {
                                 dismiss()
                             }
+
                             override fun moveHome() {
                                 findNavController().navigate(QuestionDetailFragmentDirections.actionDetailFragmentToMenuFragment())
                             }
@@ -95,16 +104,56 @@ class QuestionDetailFragment : Fragment() {
             }
         }
 
+        viewModel.logDtlEvent.observe(viewLifecycleOwner) { event ->
+            when (event.statusCode) {
+                1001 -> {
+                    Toasty.error(activity as MainActivity, event.message.toString()).show()
+                    RxBus.publish(RxEvent.destroyApp)
+                }
+
+                -3 -> {
+                    Toasty.error(activity as MainActivity, event.message.toString()).show()
+                    RxBus.publish(RxEvent.destroyApp)
+                }
+
+                0 -> {
+                    event.autobiographyMap?.let { map ->
+                        if (viewModel.transText.value != "") {
+                            binding.tvAnswer.text = "답변 : ${map.transText}"
+                        }
+                    }
+                }
+
+                else -> {
+                    Toasty.error(activity as MainActivity, event.message ?: "알 수 없는 오류").show()
+                    RxBus.publish(RxEvent.destroyApp)
+                }
+            }
+        }
+
+        /**
+         * 문제 듣기 버튼 클릭 리스너
+         * */
         binding.btnListen.setOnClickListener {
             viewModel.startSpeech(sharedViewModel.selectedItem.value?.viewQuestion.toString())
         }
 
+        /**
+         * 답변 듣기 버튼 클릭 리스너
+         * */
         binding.btnAnswerListen.setOnClickListener {
-            if (viewModel.answerAudioUrl.value != null || viewModel.answerAudioUrl.value != "") {
-                viewModel.startUrlSpeech(viewModel.answerAudioUrl.value.toString())
+            val audioUrl = viewModel.answerAudioUrl.value
+            if (!audioUrl.isNullOrBlank()) {
+                viewModel.startUrlSpeech(audioUrl)
+            } else {
+                DWLog.e("Audio URL is null or blank")
+                viewModel.startSpeech(viewModel.transText.value.toString())
             }
         }
 
+        /**
+         * "답변 삭제" 버튼 클릭 리스너
+         * */
         binding.btnDelete.setOnClickListener {
             activity?.let { activity ->
                 PopupDialog(activity).apply {
@@ -120,6 +169,9 @@ class QuestionDetailFragment : Fragment() {
             }
         }
 
+        /**
+         * "다시 답변" 버튼 클릭 리스너
+         */
         binding.btnRetry.setOnClickListener {
             activity?.let { activity ->
                 PopupDialog(activity).apply {
@@ -134,9 +186,7 @@ class QuestionDetailFragment : Fragment() {
                             binding.layoutSelectDetail.visibility = View.GONE
                             binding.layoutRecording.visibility = View.VISIBLE
 
-                            binding.ivRecording.visibility = View.VISIBLE
-                            binding.ivRecordingEnd.visibility = View.GONE
-                            binding.ivRecordingRestart.visibility = View.GONE
+                            initView()
                         }
                     })
                     show()
@@ -144,8 +194,11 @@ class QuestionDetailFragment : Fragment() {
             }
         }
 
+        /**
+         * "다시 답변 버튼 클릭 리스너"
+         */
         binding.btnBack.setOnClickListener {
-            parentFragmentManager.popBackStack()
+            findNavController().navigate(QuestionDetailFragmentDirections.actionDetailFragmentToMenuFragment())
         }
 
         binding.btnHome.setOnClickListener {
@@ -157,86 +210,85 @@ class QuestionDetailFragment : Fragment() {
 
         // 1초마다 TextView 자동 업데이트
         viewModel.timeLeft.observe(viewLifecycleOwner) { time ->
-            binding.tvLeftTime.setTextColor(Color.parseColor("#FAFF5E"))
-            binding.tvLeftTime.text = String.format("남은 시간 00:%02d", time)
-        }
-        binding.tvLeftTime.visibility = View.VISIBLE
-        binding.tvLeftTime.setTextColor(Color.parseColor("#FFFFFF"))
-        binding.tvLeftTime.text = "남은 시간 01:00"
-
-        binding.ivRecording.setOnClickListener { // "답변 하기" 버튼 누르기 -> "답변 종료" 버튼 활성화, 나머지 비활성화
-            binding.ivRecordingEnd.visibility = View.VISIBLE
-            binding.ivRecordingRestart.visibility = View.GONE
-            binding.ivRecording.visibility = View.GONE
-
-            binding.tvRecording.text = "답변 종료"
-            binding.tvRecording.setTextColor(Color.RED)
-            binding.ivRecording.visibility = View.GONE
-
-            binding.ivListen.isClickable = false
-            binding.ivListen.setBackgroundResource(R.drawable.btn_rec_not_play_)
-            binding.tvListen.setTextColor(Color.DKGRAY)
-
-            binding.ivSave.isClickable = false
-            binding.ivSave.setBackgroundResource(R.drawable.btn_rec_not_save_)
-            binding.tvSave.setTextColor(Color.DKGRAY)
-
-            viewModel.startTimer() // 타이머 시작
-            viewModel.startRecording()
+            if (time < 60) {
+                binding.tvLeftTime.setTextColor(Color.parseColor("#FAFF5E"))
+                binding.tvLeftTime.text = String.format("남은 시간 00:%02d", time)
+            }
         }
 
-        binding.ivRecordingEnd.setOnClickListener {  // "답변 종료" 버튼 누르기 -> "재답변하기" 버튼, "듣기", "저장"버튼 활성화
-            binding.ivRecordingRestart.visibility = View.VISIBLE
-            binding.ivRecording.visibility = View.GONE
-            binding.ivRecordingEnd.visibility = View.GONE
+        binding.cbRecording.setOnCheckedChangeListener { cb, isChecked ->
+            if (cb.isChecked) {
+                DWLog.d("답변 하기")
 
-            binding.tvRecording.text = "답변 하기"
-            binding.tvRecording.setTextColor(Color.BLACK)
+                // 듣기 버튼 상태
+                binding.btnPlay.isEnabled = false
+                binding.tvPlay.setTextColor(Color.DKGRAY)
 
-            binding.ivRecording.visibility = View.GONE
-            binding.ivRecordingEnd.visibility = View.GONE
+                // 저장 버튼 상태
+                binding.btnSave.isEnabled = false
+                binding.tvSave.setTextColor(Color.DKGRAY)
 
-            binding.ivListen.isClickable = true
-            binding.ivListen.setBackgroundResource(R.drawable.btn_rec_play_)
-            binding.tvListen.setTextColor(Color.BLACK)
+                // 녹음 텍스트
+                binding.tvRecording.text = "답변 종료"
+                binding.tvRecording.setTextColor(Color.parseColor("#ff6363"))
 
+                viewModel.startTimer() // 타이머 시작
+                viewModel.startRecording()
+            } else {
+                DWLog.d("답변 종료")
 
-            binding.ivSave.isClickable = true
-            binding.ivSave.setBackgroundResource(R.drawable.btn_rec_save_)
-            binding.tvSave.setTextColor(Color.BLACK)
+                // 듣기 버튼 상태
+                binding.btnPlay.isEnabled = true
+                binding.tvPlay.setTextColor(Color.GRAY)
 
+                // 저장 버튼 상태
+                binding.btnSave.isEnabled = true
+                binding.tvSave.setTextColor(Color.GRAY)
 
-            binding.tvLeftTime.setTextColor(Color.parseColor("#FFFFFF"))
-            viewModel.stopTimer() // 타이머 중지
-            viewModel.stopRecording()
+                // 녹음 텍스트
+                binding.tvRecording.text = "답변 하기"
+                binding.tvRecording.setTextColor(Color.BLACK)
+
+                viewModel.stopTimer() // 타이머 중지
+                viewModel.stopRecording()
+            }
         }
 
-        binding.ivRecordingRestart.setOnClickListener {
-            binding.ivRecordingEnd.visibility = View.VISIBLE
-            binding.ivRecording.visibility = View.GONE
-            binding.ivRecordingRestart.visibility = View.GONE
+        viewModel.isPlaying.observe(viewLifecycleOwner) { it ->
+            if (it) {
+                // 듣기
+                binding.btnPlay.isEnabled = true
+                binding.tvPlay.setTextColor(Color.BLACK)
 
-            binding.tvRecording.text = "답변 종료"
-            binding.tvRecording.setTextColor(Color.RED)
-            binding.ivRecording.visibility = View.GONE
+                // 녹음
+                binding.cbRecording.isEnabled = false
+                binding.tvRecording.text = "답변 하기"
+                binding.tvRecording.setTextColor(Color.GRAY)
 
-            binding.ivListen.isClickable = false
-            binding.ivListen.setBackgroundResource(R.drawable.btn_rec_not_play_)
-            binding.tvListen.setTextColor(Color.DKGRAY)
+                // 저장
+                binding.btnSave.isEnabled = false
+                binding.tvSave.setTextColor(Color.GRAY)
+            } else {
+                // 듣기
+                binding.btnPlay.isEnabled = true
+                binding.tvPlay.setTextColor(Color.BLACK)
 
-            binding.ivSave.isClickable = false
-            binding.ivSave.setBackgroundResource(R.drawable.btn_rec_not_save_)
-            binding.tvSave.setTextColor(Color.DKGRAY)
+                // 저장
+                binding.btnSave.isEnabled = true
+                binding.tvSave.setTextColor(Color.BLACK)
 
-            viewModel.startRecording()
-            viewModel.startTimer() // 다시 타이머 시작
+                // 녹음 상태
+                binding.cbRecording.isEnabled = true
+                binding.tvRecording.text = "답변 하기"
+                binding.tvRecording.setTextColor(Color.parseColor("#333333"))
+            }
         }
 
-        binding.ivListen.setOnClickListener{
+        binding.btnPlay.setOnClickListener {
             viewModel.playWavFile()
         }
 
-        binding.ivSave.setOnClickListener {
+        binding.btnSave.setOnClickListener {
             viewModel.insertLog()
         }
 
@@ -247,6 +299,26 @@ class QuestionDetailFragment : Fragment() {
             binding.layoutSelectDetail.visibility = View.VISIBLE
             binding.layoutRecording.visibility = View.GONE
         }
+    }
+
+    private fun initView() {
+        // 듣기 버튼 상태
+        binding.btnPlay.isEnabled = false
+        binding.tvPlay.setTextColor(Color.GRAY)
+
+        // 저장 버튼 상태
+        binding.btnSave.isEnabled = false
+        binding.tvSave.setTextColor(Color.GRAY)
+
+        // 녹음 텍스트
+        binding.cbRecording.isChecked = false
+        binding.tvRecording.text = "답변 하기"
+        binding.tvRecording.setTextColor(Color.parseColor("#333333"))
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.disconnect()
     }
 
 }

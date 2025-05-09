@@ -12,7 +12,8 @@
         android:layout_height="126dp"
         android:background="#ffffff"
         android:elevation="0dp"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:visibility="gone">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -70,7 +71,8 @@
         android:layout_marginEnd="20dp"
         android:background="@drawable/question_detail_background"
         android:padding="30dp"
-        android:gravity="center">
+        android:gravity="center"
+        android:visibility="gone">
 
         <!-- 왼쪽 이미지 -->
         <TextView
@@ -159,7 +161,8 @@
         android:layout_marginEnd="20dp"
         android:gravity="center"
         android:background="@drawable/answer_detail_background"
-        app:layout_constraintTop_toBottomOf="@+id/layout_question_detail">
+        app:layout_constraintTop_toBottomOf="@+id/layout_question_detail"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/tv_answer"
@@ -229,7 +232,8 @@
         android:layout_marginEnd="20dp"
         android:gravity="center"
         android:background="@drawable/select_detail_background"
-        app:layout_constraintTop_toBottomOf="@+id/layout_answer_detail">
+        app:layout_constraintTop_toBottomOf="@+id/layout_answer_detail"
+        android:visibility="gone">
 
         <FrameLayout
             android:id="@+id/btn_delete"
@@ -317,8 +321,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="#80000000"
-        android:visibility="gone">
+        android:background="#80000000">
 
         <FrameLayout
             android:id="@+id/fl_layout"
@@ -342,7 +345,7 @@
                 android:gravity="top|start"
                 android:layout_marginStart="40dp"
                 android:layout_marginTop="45dp"
-                android:text="남은시간 00:30"
+                android:text="남은 시간 00:60"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent" />
 
@@ -385,19 +388,20 @@
                 android:layout_marginEnd="32dp"
                 android:background="@android:drawable/ic_menu_close_clear_cancel"/>
 
-
-            <!--    듣기    -->
-            <ImageView
-                android:id="@+id/iv_listen"
-                android:layout_width="168dp"
-                android:layout_height="168dp"
+            <!--    듣기 이미지  -->
+            <ImageButton
+                android:id="@+id/btn_play"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:layout_marginTop="201dp"
                 android:layout_marginStart="108dp"
-                android:src="@drawable/btn_rec_not_play_" />
+                android:enabled="false"
+                android:background="@drawable/selector_dialog_play_btn" />
 
+            <!--    듣기 텍스트-->
             <TextView
-                android:id="@+id/tv_listen"
+                android:id="@+id/tv_play"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/notosans_kr_r"
@@ -411,39 +415,19 @@
                 android:lineSpacingExtra="15sp"
                 android:gravity="center_horizontal" />
 
-            <!--    답변하기    -->
-            <ImageView
-                android:id="@+id/iv_recording"
+            <!--    답변하기 이미지 -->
+            <CheckBox
+                android:id="@+id/cb_recording"
                 android:layout_width="168dp"
                 android:layout_height="168dp"
                 android:layout_gravity="start"
                 android:layout_marginTop="201dp"
                 android:layout_marginStart="356dp"
-                android:src="@drawable/btn_rec_not_start_"
-                android:visibility="gone"/>
+                android:button="@null"
+                android:checked="false"
+                android:background="@drawable/selector_dialog_rec_btn"/>
 
-            <!--    답변종료   -->
-            <ImageView
-                android:id="@+id/iv_recording_end"
-                android:layout_width="168dp"
-                android:layout_height="168dp"
-                android:layout_gravity="start"
-                android:layout_marginTop="201dp"
-                android:layout_marginStart="356dp"
-                android:src="@drawable/btn_rec_end"
-                android:visibility="gone"/>
-
-            <!--    답변종료   -->
-            <ImageView
-                android:id="@+id/iv_recording_restart"
-                android:layout_width="168dp"
-                android:layout_height="168dp"
-                android:layout_gravity="start"
-                android:layout_marginTop="201dp"
-                android:layout_marginStart="356dp"
-                android:src="@drawable/btn_rec_not_start_"
-                android:visibility="gone"/>
-
+            <!--   답변하기 텍스트-->
             <TextView
                 android:id="@+id/tv_recording"
                 android:layout_width="wrap_content"
@@ -459,16 +443,18 @@
                 android:lineSpacingExtra="15sp"
                 android:gravity="center_horizontal" />
 
-            <!--    저장하기    -->
-            <ImageView
-                android:id="@+id/iv_save"
+            <!--    저장하기  이미지  -->
+            <ImageButton
+                android:id="@+id/btn_save"
                 android:layout_width="168dp"
                 android:layout_height="168dp"
                 android:layout_gravity="end"
                 android:layout_marginTop="201dp"
                 android:layout_marginEnd="108dp"
-                android:src="@drawable/btn_rec_not_save_" />
+                android:enabled="false"
+                android:background="@drawable/selector_dialog_save_btn" />
 
+            <!--    저장하기  텍스트  -->
             <TextView
                 android:id="@+id/tv_save"
                 android:layout_width="wrap_content"

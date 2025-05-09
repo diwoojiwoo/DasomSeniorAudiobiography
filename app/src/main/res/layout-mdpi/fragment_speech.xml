@@ -60,6 +60,7 @@
                 android:lineSpacingExtra="12sp"
                 android:layout_gravity="center_vertical|end"
                 android:layout_marginRight="40dp"/>
+
         </FrameLayout>
 
         <!--   다른질문하기 버튼    -->
@@ -179,7 +180,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:targetApi="o" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

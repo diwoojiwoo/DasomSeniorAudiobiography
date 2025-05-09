@@ -2,27 +2,27 @@ package com.onethefull.dasomautobiography.ui.speech
 
 import android.graphics.Color
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.onethefull.dasomautobiography.MainActivity
 import com.onethefull.dasomautobiography.MainViewModel
 import com.onethefull.dasomautobiography.R
 import com.onethefull.dasomautobiography.contents.dialog.ResultDialog
-import com.onethefull.dasomautobiography.data.model.audiobiography.Item
 import com.onethefull.dasomautobiography.databinding.FragmentSpeechBinding
 import com.onethefull.dasomautobiography.utils.InjectorUtils
 import com.onethefull.dasomautobiography.utils.bus.RxBus
 import com.onethefull.dasomautobiography.utils.bus.RxEvent
 import com.onethefull.dasomautobiography.utils.logger.DWLog
 import com.onethefull.dasomautobiography.utils.speech.SpeechStatus
+
 
 class SpeechFragment : Fragment() {
     private lateinit var binding: FragmentSpeechBinding
@@ -96,8 +96,9 @@ class SpeechFragment : Fragment() {
                         window?.requestFeature(Window.FEATURE_NO_TITLE)
                         setText("자서전 내용이 저장되었습니다!", "답변 확인하기", "처음으로 돌아가기")
                         setDialogListener(object : ResultDialog.DialogListener {
-                            override fun checkAnswer() {
-                                findNavController().navigate(SpeechFragmentDirections.actionSpeechFragmentToQuestionlistFragment(sharedViewModel.selectedItem.value!!))
+                            override fun checkAnswer() { // 답변 확인하기
+                                DWLog.d("답변 확인하기 버튼 클릭 ==> 답변 확인 UI")
+                                findNavController().navigate(SpeechFragmentDirections.actionSpeechFragmentToQuestiondetailFragment())
                             }
 
                             override fun moveHome() {
@@ -105,9 +106,7 @@ class SpeechFragment : Fragment() {
                             }
                         })
                         setDismissListener(object : ResultDialog.DialogDismissListener {
-                            override fun onDismiss() {
-                                findNavController().navigate(SpeechFragmentDirections.actionSpeechToMenuFragment())
-                            }
+                            override fun onDismiss() {}
                         })
                         show()
                     }

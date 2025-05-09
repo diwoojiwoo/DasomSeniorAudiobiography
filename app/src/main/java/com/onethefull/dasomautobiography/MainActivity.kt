@@ -51,6 +51,10 @@ class MainActivity : BaseActivity() {
         navController.navigate(R.id.splash_fragment, Bundle().apply {})
     }
 
+    fun navigateToSpeechFragment() {
+        navController.navigate(R.id.action_questionlist_fragment_to_speech_fragment)
+    }
+
     fun back() {
         navController.navigateUp()
     }

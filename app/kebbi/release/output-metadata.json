@@ -10,9 +10,9 @@
     {
       "type": "SINGLE",
       "filters": [],
-      "versionCode": 6,
-      "versionName": "6.0.alpha_update0314",
-      "outputFile": "kebbi_DasomAutobiography_6.0.alpha_update0314_6.apk"
+      "versionCode": 7,
+      "versionName": "7.0.rm_intent_filter_update0318",
+      "outputFile": "kebbi_DasomAutobiography_7.0.rm_intent_filter_update0318_7.apk"
     }
   ]
 }

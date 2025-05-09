@@ -1,20 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">다솜 자서전</string>
-    <string name="message_memoryquiz_not_exist_1">추억 소환 문제가 등록되지 않았어요.</string>
-    <string name="message_memoryquiz_not_exist_2">\'보호자앱 → 추억소환\'에서 문제를 등록해 주세요.</string>
-    <string name="message_memoryquiz_hint">힌트</string>
-    <string name="message_memoryquiz_hint_check">확인</string>
-    <string name="message_memoryquiz_loading_recognize_anwer">정답 인식 중 입니다</string>
-    <string name="message_memoryquiz_quiz_title">추억소환 문제</string>
-    <string name="message_memoryquiz_quiz_check">정답 확인하기</string>
-    <string name="message_memoryquiz_quiz_next">다음 문제 풀기</string>
-    <string name="message_memoryquiz_intro_1">"추억소환 문제입니다."</string>
-    <string name="message_memoryquiz_intro_2">",정답을 말씀해주세요."</string>
-    <string name="message_memoryquiz_quiz_wrong_answer1">"오답이에요. 사진을 주의깊게 살펴보시고 다시 한번 고민해 보시겠어요?"</string>
-    <string name="message_memoryquiz_quiz_correct_answer">"정답입니다. 보호자님께서 내주신 문제를 맞추셨어요!"</string>
-    <string name="message_memoryquiz_quiz_wrong_answer2">"오답이에요. 아래 파란색 정답 확인하기 버튼을 누르시면 문제에 대한 정답을 확인하실 수 있어요."</string>
-
     <string name="message_network_error">"네트워크 상태를 확인하세요."</string>
     <string name="message_not_exist_elderly_info">"어르신 성별, 생년월일을 입력해주세요."</string>
     <string name="message_not_registration_elderly">어르신을 등록해주세요.</string>

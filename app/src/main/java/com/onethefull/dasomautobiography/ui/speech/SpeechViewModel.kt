@@ -19,6 +19,9 @@ import com.onethefull.dasomautobiography.utils.Product
 import com.onethefull.dasomautobiography.utils.WMediaPlayer
 import com.onethefull.dasomautobiography.utils.bus.RxBus
 import com.onethefull.dasomautobiography.utils.bus.RxEvent
+import com.onethefull.dasomautobiography.utils.bus.RxEvent.Companion.NavigateToMenuFragment
+import com.onethefull.dasomautobiography.utils.bus.RxEvent.Companion.RemoveNavigateToMenuFragment
+import com.onethefull.dasomautobiography.utils.bus.RxEvent.Event
 import com.onethefull.dasomautobiography.utils.logger.DWLog
 import com.onethefull.dasomautobiography.utils.record.VoiceRecorder
 import com.onethefull.dasomautobiography.utils.record.WavFileUitls
@@ -97,6 +100,7 @@ class SpeechViewModel(
         DWLog.d("disconnect")
         GCTextToSpeech.getInstance()?.release()
         WMediaPlayer.instance.setListener(null)
+        RxBus.publish(Event(RemoveNavigateToMenuFragment, 0L, "RemoveNavigateToMenuFragment"))
     }
 
     /***
