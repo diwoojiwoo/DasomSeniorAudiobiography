@@ -12,7 +12,7 @@ class QuestionDetailViewModelFactory (
     private val context: Activity,
     private val repository: QuestionDetailRepository,
 ) : ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return if (modelClass.isAssignableFrom(QuestionDetailViewModel::class.java)) {
             QuestionDetailViewModel(context, repository) as T
         } else {

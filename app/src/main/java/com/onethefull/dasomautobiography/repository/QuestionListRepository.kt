@@ -8,6 +8,7 @@ import com.onethefull.dasomautobiography.data.api.ApiHelperImpl
 import com.onethefull.dasomautobiography.data.api.RetrofitBuilder
 import com.onethefull.dasomautobiography.data.model.NotExistData
 import com.onethefull.dasomautobiography.data.model.audiobiography.GetAutobiographyMenuResponse
+import com.onethefull.dasomautobiography.data.model.audiobiography.GetAutobiographyMenuResponseV2
 import com.onethefull.dasomautobiography.data.model.audiobiography.GetCategoryListResponse
 import com.onethefull.dasomautobiography.data.model.diary.GetDiarySentenceResponse
 import com.onethefull.dasomautobiography.ui.diary.DiaryStatus
@@ -26,9 +27,23 @@ class QuestionListRepository(
         customerCode: String,
         deviceCode: String,
         serialNum: String,
-        type : String
-    ) : GetAutobiographyMenuResponse {
-        return  apiHelper.getQuestionList(
+        type: String
+    ): GetAutobiographyMenuResponse {
+        return apiHelper.getQuestionList(
+            customerCode,
+            deviceCode,
+            serialNum,
+            type
+        )
+    }
+
+    suspend fun getQuestionListV2(
+        customerCode: String,
+        deviceCode: String,
+        serialNum: String,
+        type: String
+    ): GetAutobiographyMenuResponseV2 {
+        return apiHelper.getQuestionListV2(
             customerCode,
             deviceCode,
             serialNum,

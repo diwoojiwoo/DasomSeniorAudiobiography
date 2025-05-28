@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 33
     signingConfigs {
         release {
             storeFile file("/Users/sjw/Desktop/beanQ_platform_key.jks")
@@ -129,7 +129,7 @@ android {
 
 dependencies {
     // Wonderful SDK
-    implementation 'com.onethefull:wonderfulrobot:1.0.3-pose-with-text'
+    implementation 'com.onethefull:wonderfulrobot:1.0.30-provider'
 
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofit_version"
@@ -186,12 +186,5 @@ dependencies {
 
     // Recyclerview
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
-    
-    if (JavaVersion.current() != JavaVersion.VERSION_1_8) {
-        kapt "com.sun.xml.bind:jaxb-core:2.3.0.1"
-        kapt "javax.xml.bind:jaxb-api:2.3.1"
-        kapt "com.sun.xml.bind:jaxb-impl:2.3.2"
-        annotationProcessor "com.sun.xml.bind:jaxb-core:2.3.0.1"
-        annotationProcessor "javax.xml.bind:jaxb-api:2.3.1"
-    }
+
 }

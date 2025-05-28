@@ -12,7 +12,7 @@ class QuestionListViewModelFactory (
     private val context: Activity,
     private val repository: QuestionListRepository,
 ) : ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return if (modelClass.isAssignableFrom(QuestionListViewModel::class.java)) {
             QuestionListViewModel(context, repository) as T
         } else {

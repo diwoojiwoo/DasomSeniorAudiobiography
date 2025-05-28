@@ -110,6 +110,7 @@ class DiaryFragment : Fragment() {
 
             SpeechStatus.SPEECH -> {
             }
+            else -> {}
         }
     }
 

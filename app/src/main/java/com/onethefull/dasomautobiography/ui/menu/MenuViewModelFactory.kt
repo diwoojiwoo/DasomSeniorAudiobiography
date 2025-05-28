@@ -12,7 +12,7 @@ class MenuViewModelFactory (
     private val context: Activity,
     private val repository: MenuRepository,
 ) : ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return if (modelClass.isAssignableFrom(MenuViewModel::class.java)) {
             MenuViewModel(context, repository) as T
         } else {

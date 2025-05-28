@@ -25,8 +25,8 @@ class MenuViewModel(
     private val context: Activity,
     private val repository: MenuRepository
 ) : BaseViewModel(), GCTextToSpeech.Callback {
-    private val _items = MutableLiveData<List<MenuItem>>()
-    val items: LiveData<List<MenuItem>> get() = _items
+    private val _items = MutableLiveData<List<MenuItem2>>()
+    val items: LiveData<List<MenuItem2>> get() = _items
 
     init {
         connect()
@@ -50,7 +50,7 @@ class MenuViewModel(
         uiScope.launch {
             val check204 = repository.check204() ?: false
             if (check204) {
-                repository.getCategoryList(
+                repository.getCategoryListV2(
                     DasomProviderHelper.getCustomerCode(context),
                     DasomProviderHelper.getDeviceCode(context),
                     Build.SERIAL,

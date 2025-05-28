@@ -381,7 +381,7 @@ class SpeechViewModel(
                         MediaType.parse("text/plain"),
                         "Y"
                     ),
-                    wavUtils?.getMultipartWaveFile()
+                    wavUtils.getMultipartWaveFile()
                 ).let { response ->
                     when (response.statusCode) {
                         -99 -> {

@@ -3,7 +3,9 @@ package com.onethefull.dasomautobiography.data.api
 import com.onethefull.dasomautobiography.data.model.audiobiography.DeleteLogResponse
 import com.onethefull.dasomautobiography.data.model.audiobiography.GetAutobiographyLogDtlResponse
 import com.onethefull.dasomautobiography.data.model.audiobiography.GetAutobiographyMenuResponse
+import com.onethefull.dasomautobiography.data.model.audiobiography.GetAutobiographyMenuResponseV2
 import com.onethefull.dasomautobiography.data.model.audiobiography.GetCategoryListResponse
+import com.onethefull.dasomautobiography.data.model.audiobiography.GetCategoryListResponseV2
 import com.onethefull.dasomautobiography.data.model.audiobiography.InsertLogResponse
 import com.onethefull.dasomautobiography.data.model.diary.GetDiarySentenceResponse
 import okhttp3.MultipartBody
@@ -21,12 +23,25 @@ interface ApiHelper {
         serialNum: String,
     ): GetCategoryListResponse
 
+    suspend fun getCategoryListV2(
+        customerCode: String,
+        deviceCode: String,
+        serialNum: String,
+    ): GetCategoryListResponseV2
+
     suspend fun getQuestionList(
         customerCode: String,
         deviceCode: String,
         serialNum: String,
         type: String
     ): GetAutobiographyMenuResponse
+
+    suspend fun getQuestionListV2(
+        customerCode: String,
+        deviceCode: String,
+        serialNum: String,
+        type: String
+    ): GetAutobiographyMenuResponseV2
 
     suspend fun getDiarySentence(
         customerCode: String,

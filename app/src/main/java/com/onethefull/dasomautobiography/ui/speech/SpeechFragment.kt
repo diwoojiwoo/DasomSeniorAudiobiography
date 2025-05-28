@@ -171,6 +171,7 @@ class SpeechFragment : Fragment() {
                 binding.btnAnswer.visibility = View.GONE
                 binding.flAnotherQuestion.visibility = View.GONE
             }
+            else -> {}
         }
     }
 

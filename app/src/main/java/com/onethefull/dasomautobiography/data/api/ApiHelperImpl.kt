@@ -8,8 +8,12 @@ import com.onethefull.dasomautobiography.BuildConfig
 import com.onethefull.dasomautobiography.data.model.audiobiography.DeleteLogResponse
 import com.onethefull.dasomautobiography.data.model.audiobiography.GetAutobiographyLogDtlResponse
 import com.onethefull.dasomautobiography.data.model.audiobiography.GetAutobiographyMenuResponse
+import com.onethefull.dasomautobiography.data.model.audiobiography.GetAutobiographyMenuResponseV2
 import com.onethefull.dasomautobiography.data.model.audiobiography.GetCategoryListResponse
+import com.onethefull.dasomautobiography.data.model.audiobiography.GetCategoryListResponseV2
 import com.onethefull.dasomautobiography.data.model.audiobiography.InsertLogResponse
+import com.onethefull.wonderfulrobotmodule.ext.dasomLangValue
+import com.onethefull.wonderfulrobotmodule.ext.dasomLanguageCodeValue
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.net.HttpURLConnection
@@ -37,6 +41,20 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
         deviceCode: String,
         serialNum: String
     ): GetCategoryListResponse = apiService.getCategoryList(
+        lang = App.instance.getLocale()?.dasomLangValue() ?: "ko",
+        languageCode = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
+        customerCode,
+        deviceCode,
+        serialNum
+    )
+
+    override suspend fun getCategoryListV2(
+        customerCode: String,
+        deviceCode: String,
+        serialNum: String
+    ): GetCategoryListResponseV2 = apiService.getCategoryListV2(
+        lang = App.instance.getLocale()?.dasomLangValue() ?: "ko",
+        languageCode = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
         customerCode,
         deviceCode,
         serialNum
@@ -48,6 +66,22 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
         serialNum: String,
         type: String
     ): GetAutobiographyMenuResponse = apiService.getQuestionList(
+        lang = App.instance.getLocale()?.dasomLangValue() ?: "ko",
+        languageCode = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
+        customerCode,
+        deviceCode,
+        serialNum,
+        type
+    )
+
+    override suspend fun getQuestionListV2(
+        customerCode: String,
+        deviceCode: String,
+        serialNum: String,
+        type: String
+    ): GetAutobiographyMenuResponseV2 = apiService.getQuestionListV2(
+        lang = App.instance.getLocale()?.dasomLangValue() ?: "ko",
+        languageCode = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
         customerCode,
         deviceCode,
         serialNum,
@@ -63,6 +97,8 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
         answerYN: RequestBody,
         file: MultipartBody.Part
     ): InsertLogResponse = apiService.insertLog(
+        lang = App.instance.getLocale()?.dasomLangValue() ?: "ko",
+        languageCode = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
         customerCode,
         deviceCode,
         serialNum,
@@ -78,6 +114,8 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
         serialNum: String,
         autobiographyId: String
     ): DeleteLogResponse = apiService.deleteLog(
+        lang = App.instance.getLocale()?.dasomLangValue() ?: "ko",
+        languageCode = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
         customerCode,
         deviceCode,
         ParamGeneratorUtils.getDeleteLogParam(serialNum, autobiographyId)
@@ -89,6 +127,8 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
         serialNum: String,
         logId: String
     ): GetAutobiographyLogDtlResponse = apiService.getLogDtl(
+        lang = App.instance.getLocale()?.dasomLangValue() ?: "ko",
+        languageCode = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
         customerCode,
         deviceCode,
         serialNum,
@@ -102,7 +142,8 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
         date: String,
         type: String
     ): GetDiarySentenceResponse = apiService.getDiarySentence(
-        languageCode = getLocale(),
+        lang = App.instance.getLocale()?.dasomLangValue() ?: "ko",
+        languageCode = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
         serviceCode = getServiceCode(),
         voiceCode = getVoiceCode(),
         customerCode,
@@ -110,19 +151,6 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
         type,
         ParamGeneratorUtils.getDiarySentenceParam(serialNum, date)
     )
-
-    private fun getLocale(): String {
-        App.instance.defaultLanguage?.let {
-            return when (it.language) {
-                Locale.KOREA.language -> "ko-KR"
-                Locale.US.language -> "en-US"
-//                Locale.JAPAN.language -> "ja-JP"
-//                Locale.CHINA.language -> "zh-CN"
-                else -> getHardcodingLocale()
-            }
-        }
-        return getHardcodingLocale()
-    }
 
     fun getServiceCode(): String {
         App.instance.defaultLanguage?.let {

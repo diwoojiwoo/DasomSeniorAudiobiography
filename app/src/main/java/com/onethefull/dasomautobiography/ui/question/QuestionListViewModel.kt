@@ -4,19 +4,15 @@ import android.app.Activity
 import android.os.Build
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.onethefull.dasomautobiography.MainActivity
 import com.onethefull.dasomautobiography.R
 import com.onethefull.dasomautobiography.base.BaseViewModel
 import com.onethefull.dasomautobiography.contents.toast.Toasty
-import com.onethefull.dasomautobiography.data.model.audiobiography.Item
+import com.onethefull.dasomautobiography.data.model.audiobiography.Entry
 import com.onethefull.dasomautobiography.provider.DasomProviderHelper
-import com.onethefull.dasomautobiography.repository.MenuRepository
 import com.onethefull.dasomautobiography.repository.QuestionListRepository
-import com.onethefull.dasomautobiography.utils.WMediaPlayer
 import com.onethefull.dasomautobiography.utils.bus.RxBus
 import com.onethefull.dasomautobiography.utils.bus.RxEvent
 import com.onethefull.dasomautobiography.utils.logger.DWLog
-import com.onethefull.dasomautobiography.utils.speech.GCTextToSpeech
 import kotlinx.coroutines.launch
 
 /**
@@ -28,8 +24,8 @@ class QuestionListViewModel(
     private val repository: QuestionListRepository
 ) : BaseViewModel() {
     // RecyclerView의 데이터 리스트를 저장할 LiveData
-    private val _itemList = MutableLiveData<List<Item>>()
-    val itemList: LiveData<List<Item>> get() = _itemList
+    private val _itemList = MutableLiveData<List<Entry>>()
+    val itemList: LiveData<List<Entry>> get() = _itemList
 
     init {
         connect()
@@ -48,7 +44,7 @@ class QuestionListViewModel(
         uiScope.launch {
             val check204 = repository.check204() ?: false
             if(check204) {
-                repository.getQuestionList(
+                repository.getQuestionListV2(
                     DasomProviderHelper.getCustomerCode(context),
                     DasomProviderHelper.getDeviceCode(context),
                     Build.SERIAL,
@@ -64,8 +60,9 @@ class QuestionListViewModel(
                             Toasty.error(context, context.getString(R.string.message_not_registration_elderly)).show()
                             RxBus.publish(RxEvent.destroyApp)
                         }
+
                         0 -> {
-                            _itemList.value = response.list
+                            _itemList.value = response.list ?: emptyList()
                         }
                     }
 

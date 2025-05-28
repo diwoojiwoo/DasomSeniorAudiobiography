@@ -9,6 +9,7 @@ import com.onethefull.dasomautobiography.data.api.RetrofitBuilder
 import com.onethefull.dasomautobiography.data.model.NotExistData
 import com.onethefull.dasomautobiography.data.model.audiobiography.GetAutobiographyMenuResponse
 import com.onethefull.dasomautobiography.data.model.audiobiography.GetCategoryListResponse
+import com.onethefull.dasomautobiography.data.model.audiobiography.GetCategoryListResponseV2
 import com.onethefull.dasomautobiography.data.model.diary.GetDiarySentenceResponse
 import com.onethefull.dasomautobiography.ui.diary.DiaryStatus
 
@@ -29,6 +30,18 @@ class MenuRepository(
         serialNum: String
     ): GetCategoryListResponse {
         return apiHelper.getCategoryList(
+            customerCode,
+            deviceCode,
+            serialNum
+        )
+    }
+
+    suspend fun getCategoryListV2(
+        customerCode: String,
+        deviceCode: String,
+        serialNum: String
+    ): GetCategoryListResponseV2 {
+        return apiHelper.getCategoryListV2(
             customerCode,
             deviceCode,
             serialNum

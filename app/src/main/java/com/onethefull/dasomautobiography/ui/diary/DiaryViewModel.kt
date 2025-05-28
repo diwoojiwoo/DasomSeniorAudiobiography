@@ -190,6 +190,7 @@ class DiaryViewModel(
             DiaryStatus.START, DiaryStatus.NOT_EXIST_1, DiaryStatus.NOT_EXIST_2, DiaryStatus.NOT_EXIST_3 -> {
                 RxBus.publish(RxEvent.destroyApp)
             }
+            else -> {}
         }
 
     }
