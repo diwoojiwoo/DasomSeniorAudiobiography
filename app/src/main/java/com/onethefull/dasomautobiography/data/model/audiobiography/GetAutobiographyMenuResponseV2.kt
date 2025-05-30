@@ -46,7 +46,7 @@ data class GetAutobiographyMenuResponseV2(
 
 @Parcelize
 data class Entry(
-    @SerializedName("autobiographyId") @Expose var id: Int,
+    @SerializedName("autobiographyId") @Expose var autobiographyId: Int,
     @SerializedName("audioUrl") @Expose var audioUrl: String,
     @SerializedName("transText") @Expose var transText: String,
     @SerializedName("imgUrl") @Expose var imgUrl: String,

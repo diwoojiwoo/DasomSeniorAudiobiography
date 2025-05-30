@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">多솜自传</string>
+    <string name="app_name">自传</string>
     <string name="message_network_error">请检查网络状态。</string>
     <string name="message_not_exist_elderly_info">请输入老人的性别和出生日期。</string>
     <string name="message_not_registration_elderly">请注册老人信息。</string>

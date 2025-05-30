@@ -17,11 +17,12 @@ import com.onethefull.dasomautobiography.utils.InjectorUtils
 import com.onethefull.dasomautobiography.utils.bus.RxBus
 import com.onethefull.dasomautobiography.utils.bus.RxEvent
 import com.onethefull.dasomautobiography.R
+import com.onethefull.dasomautobiography.data.model.audiobiography.Entry
 
 class QuestionListFragment : Fragment(), ListAdapter.OnItemClickListener {
     private lateinit var binding: FragmentQuestionlistBinding
     private lateinit var adapter: ListAdapter
-    private lateinit var mItem: Item
+    private lateinit var mItem: Entry
 
     val viewModel: QuestionListViewModel by viewModels {
         InjectorUtils.provideQuestionListViewModelFactory(requireContext())
@@ -45,10 +46,10 @@ class QuestionListFragment : Fragment(), ListAdapter.OnItemClickListener {
         return binding.root
     }
 
-    override fun onItemClick(item: Item) {
-        item.typeName = mItem.typeName
-        (activity as MainActivity).viewModel.selectItem(item)  // 데이터 저장
-        if (item.answerYn == "N") {
+    override fun onItemClick(entry: Entry) {
+        entry.typeName = mItem.typeName
+        (activity as MainActivity).viewModel.selectItem(entry)  // 데이터 저장
+        if (entry.answerYn == "N") {
             (activity as MainActivity).navigateToSpeechFragment()  // 답변이 없는 경우 음성입력 화면으로 이동
         } else {
             findNavController().navigate(QuestionListFragmentDirections.actionQuestionlistFragmentToDetailFragment()) // 답변이 있는 경우 질문상세화면으로 이도
@@ -59,7 +60,7 @@ class QuestionListFragment : Fragment(), ListAdapter.OnItemClickListener {
         super.onViewCreated(view, savedInstanceState)
 
         val args: QuestionListFragmentArgs by navArgs()
-        mItem = args.item
+        mItem = args.entry
 
         binding.toolbarTitle.text = mItem.typeName
 

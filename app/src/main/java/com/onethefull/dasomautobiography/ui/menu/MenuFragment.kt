@@ -13,7 +13,7 @@ import com.onethefull.dasomautobiography.R
 import com.onethefull.dasomautobiography.base.OnethefullBase
 import com.onethefull.dasomautobiography.databinding.FragmentMenuBinding
 import com.onethefull.dasomautobiography.utils.InjectorUtils
-import com.onethefull.dasomautobiography.utils.MenuItemToItemMapper
+import com.onethefull.dasomautobiography.utils.MenuItemToEntryMapper
 import com.onethefull.dasomautobiography.utils.bus.RxBus
 import com.onethefull.dasomautobiography.utils.bus.RxEvent
 import com.onethefull.dasomautobiography.utils.logger.DWLog
@@ -53,8 +53,8 @@ class MenuFragment : Fragment() {
         // 그리드뷰 아이템 클릭 이벤트
         binding.gvMenu.setOnItemClickListener { _, _, position, _ ->
             val clickedMenuItem = menuAdapter.getItem(position)
-            val item = MenuItemToItemMapper().map(clickedMenuItem)
-            val action =  MenuFragmentDirections.actionMenuFragmentToQuestionlistFragment(item)
+            val entry = MenuItemToEntryMapper().map(clickedMenuItem)
+            val action =  MenuFragmentDirections.actionMenuFragmentToQuestionlistFragment(entry)
             findNavController().navigate(action)
         }
 

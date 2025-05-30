@@ -59,13 +59,13 @@ class QuestionDetailRepository(
         customerCode: String,
         deviceCode: String,
         serialNum: String,
-        logId : String
+        autobiographyId : String
     ) : GetAutobiographyLogDtlResponse {
         return apiHelper.getLogDtl(
             customerCode,
             deviceCode,
             serialNum,
-            logId
+            autobiographyId
         )
     }
 

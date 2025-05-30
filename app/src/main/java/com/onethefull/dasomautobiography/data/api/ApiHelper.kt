@@ -72,6 +72,6 @@ interface ApiHelper {
         customerCode: String,
         deviceCode: String,
         serialNum: String,
-        logId : String
+        autobiographyId : String
     ) : GetAutobiographyLogDtlResponse
 }

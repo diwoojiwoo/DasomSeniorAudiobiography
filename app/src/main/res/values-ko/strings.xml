@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">다솜 자서전</string>
+    <string name="app_name">자서전</string>
     <string name="message_network_error">"네트워크 상태를 확인하세요."</string>
     <string name="message_not_exist_elderly_info">"어르신 성별, 생년월일을 입력해주세요."</string>
     <string name="message_not_registration_elderly">어르신을 등록해주세요.</string>

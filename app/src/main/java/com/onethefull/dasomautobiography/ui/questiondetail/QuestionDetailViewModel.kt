@@ -11,6 +11,7 @@ import com.onethefull.dasomautobiography.R
 import com.onethefull.dasomautobiography.base.BaseViewModel
 import com.onethefull.dasomautobiography.contents.toast.Toasty
 import com.onethefull.dasomautobiography.data.model.audiobiography.DeleteLogResponse
+import com.onethefull.dasomautobiography.data.model.audiobiography.Entry
 import com.onethefull.dasomautobiography.data.model.audiobiography.GetAutobiographyLogDtlResponse
 import com.onethefull.dasomautobiography.data.model.audiobiography.Item
 import com.onethefull.dasomautobiography.provider.DasomProviderHelper
@@ -61,8 +62,8 @@ class QuestionDetailViewModel(
     private val _isRunning = MutableLiveData(false) // 타이머 실행 여부
     val isRunning: LiveData<Boolean> = _isRunning
 
-    private val _currentItem = MutableLiveData<Item>() // MainViewModel에서 공유받은 데이터
-    val currentItem: LiveData<Item> = _currentItem
+    private val _currentItem = MutableLiveData<Entry>() // MainViewModel에서 공유받은 데이터
+    val currentItem: LiveData<Entry> = _currentItem
 
     private var job: Job? = null // Coroutine Job
 
@@ -371,7 +372,7 @@ class QuestionDetailViewModel(
     private val _networkErrorEvent = MutableLiveData<Boolean>()
     val networkErrorEvent: LiveData<Boolean> get() = _networkErrorEvent
 
-    fun getLogDtl(logId : String) {
+    fun getLogDtl(autobiographyId : String) {
         uiScope.launch {
             val check204 = repository.check204() ?: false
             if (check204) {
@@ -379,7 +380,7 @@ class QuestionDetailViewModel(
                     DasomProviderHelper.getCustomerCode(context),
                     DasomProviderHelper.getDeviceCode(context),
                     Build.SERIAL,
-                    logId
+                    autobiographyId
                 ).let { response ->
                     when (response.statusCode) {
                         1001 -> {
@@ -455,7 +456,7 @@ class QuestionDetailViewModel(
 //                    _currentItem.value?.id.toString(),
                     RequestBody.create(
                         MediaType.parse("text/plain"),
-                        _currentItem.value?.id.toString()
+                        _currentItem.value?.autobiographyId.toString()
                     ),
 //                    _currentItem.value?.type.toString(),
                     RequestBody.create(
@@ -503,7 +504,7 @@ class QuestionDetailViewModel(
                     DasomProviderHelper.getCustomerCode(context),
                     DasomProviderHelper.getDeviceCode(context),
                     Build.SERIAL,
-                    _currentItem.value?.id.toString()
+                    _currentItem.value?.autobiographyId.toString()
                 )
 
                 when (response.status_code) {

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">DasomAutobiography</string>
-
+    <string name="app_name">Autobiography</string>
     <string name="message_network_error">"Please check your network connection."</string>
-    <string name="message_not_exist_elderly_info">"어르신 성별, 생년월일을 입력해주세요."</string>
-    <string name="message_not_registration_elderly">어르신을 등록해주세요.</string>
+    <string name="message_not_exist_elderly_info">"Please enter the senior's gender and date of birth."</string>
+    <string name="message_not_registration_elderly">"Please register the senior."</string>
 </resources>

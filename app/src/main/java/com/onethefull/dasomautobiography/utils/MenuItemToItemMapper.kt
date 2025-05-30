@@ -1,16 +1,17 @@
 package com.onethefull.dasomautobiography.utils
 
+import com.onethefull.dasomautobiography.data.model.audiobiography.Entry
 import com.onethefull.dasomautobiography.data.model.audiobiography.Item
 import com.onethefull.dasomautobiography.ui.menu.MenuItem
+import com.onethefull.dasomautobiography.ui.menu.MenuItem2
 
 /**
  * Created by sjw on 2025. 3. 14.
  */
-class MenuItemToItemMapper {
-    fun map(menuItem: MenuItem): Item {
-        return Item(
-            id =0, // 기본값
-            logId = 0, // 기본값
+class MenuItemToEntryMapper {
+    fun map(menuItem: MenuItem2): Entry {
+        return Entry(
+            autobiographyId =0, // 기본값
             audioUrl = "", // 기본값
             transText = "", // 기본값
             imgUrl = menuItem.imgUrl,

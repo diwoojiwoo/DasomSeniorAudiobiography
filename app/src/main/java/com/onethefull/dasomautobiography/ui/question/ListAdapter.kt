@@ -6,13 +6,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.onethefull.dasomautobiography.R
+import com.onethefull.dasomautobiography.data.model.audiobiography.Entry
 import com.onethefull.dasomautobiography.data.model.audiobiography.Item
 
 /**
  * Created by sjw on 2025. 2. 10.
  */
 class ListAdapter(
-    private var itemList: List<Item>,
+    private var itemList: List<Entry>,
     private val listener : OnItemClickListener
 ) : RecyclerView.Adapter<ListAdapter.ViewHolder>() {
 
@@ -21,17 +22,17 @@ class ListAdapter(
         private val tvQuestion: TextView = itemView.findViewById(R.id.tv_question)
         private val tvAnswerYN: TextView = itemView.findViewById(R.id.tv_answer_yn)
 
-        fun bind(item: Item) {
+        fun bind(entry: Entry) {
             tvNumber.text = (position + 1).toString() // 1부터 시작
-            tvQuestion.text = item.viewQuestion
+            tvQuestion.text = entry.viewQuestion
 
-            if (item.answerYn == "Y")
+            if (entry.answerYn == "Y")
                 tvAnswerYN.setBackgroundResource(R.drawable.icon_complete)
             else
                 tvAnswerYN.setBackgroundResource(R.drawable.icon_incomplete)
 
             itemView.setOnClickListener {
-                listener.onItemClick(item)  // 클릭 이벤트 전달
+                listener.onItemClick(entry)  // 클릭 이벤트 전달
             }
         }
     }
@@ -47,12 +48,12 @@ class ListAdapter(
 
     override fun getItemCount(): Int = itemList.size
 
-    fun updateItems(newItems: List<Item>) {
+    fun updateItems(newItems: List<Entry>) {
         itemList = newItems
         notifyDataSetChanged()
     }
 
     interface OnItemClickListener {
-        fun onItemClick(item: Item)
+        fun onItemClick(entry: Entry)
     }
 }

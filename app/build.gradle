@@ -87,7 +87,7 @@ android {
             jniLibs.srcDirs = ['src/main/jniLibs']
         }
         kebbi {
-            manifest.srcFile 'src/cloi/AndroidManifest.xml'
+            manifest.srcFile 'src/kebbi/AndroidManifest.xml'
             assets.srcDirs = ['assets']
         }
     }

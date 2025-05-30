@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.findNavController
 import com.onethefull.dasomautobiography.base.BaseViewModel
 import com.onethefull.dasomautobiography.data.model.audiobiography.AutobiographyMap
+import com.onethefull.dasomautobiography.data.model.audiobiography.Entry
 import com.onethefull.dasomautobiography.data.model.audiobiography.GetAutobiographyLogDtlResponse
 import com.onethefull.dasomautobiography.data.model.audiobiography.Item
 import com.onethefull.dasomautobiography.utils.bus.RxBus
@@ -140,11 +141,11 @@ class MainViewModel : BaseViewModel() {
     /**
      * fragment 간 값 공유
      */
-    private val _selectedItem = MutableLiveData<Item>()
-    val selectedItem: LiveData<Item> get() = _selectedItem
+    private val _selectedItem = MutableLiveData<Entry>()
+    val selectedItem: LiveData<Entry> get() = _selectedItem
 
-    fun selectItem(item: Item) {
-        _selectedItem.value = item
+    fun selectItem(entry: Entry) {
+        _selectedItem.value = entry
     }
 
 

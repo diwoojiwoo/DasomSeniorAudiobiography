@@ -61,11 +61,11 @@ class QuestionDetailFragment : Fragment() {
 
         sharedViewModel.selectedItem.observe(viewLifecycleOwner) { item ->
             if (item != null) {
-                DWLog.d("Received item [name]:: ${itemName},  [title]:: ${item.type}  ${item.sort}, ${item.id} [question]::${item.viewQuestion}")
+                DWLog.d("Received item [name]:: ${itemName}, [title]:: ${item.type}  ${item.sort}, ${item.autobiographyId} [question]::${item.viewQuestion}")
                 binding.toolbarTitle.text = item.typeName
                 binding.tvNumber.text = item.sort
                 binding.tvQuestion.text = item.viewQuestion
-                viewModel.getLogDtl(item.logId.toString())
+                viewModel.getLogDtl(item.autobiographyId.toString())
             } else {
                 RxBus.publish(RxEvent.destroyApp)
             }

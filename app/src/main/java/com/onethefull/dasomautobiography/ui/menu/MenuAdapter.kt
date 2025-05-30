@@ -15,18 +15,18 @@ import com.onethefull.dasomautobiography.utils.logger.DWLog
 /**
  * Created by sjw on 2025. 2. 10.
  */
-class MenuAdapter(private val context: Context, private var items: List<MenuItem>) : BaseAdapter() {
+class MenuAdapter(private val context: Context, private var items: List<MenuItem2>) : BaseAdapter() {
 
-    fun updateItems(newItems: List<MenuItem>) {
+    fun updateItems(newItems: List<MenuItem2>) {
         items = newItems
         notifyDataSetChanged()
     }
 
     override fun getCount(): Int = items.size
 
-    override fun getItem(position: Int): MenuItem = items[position]
+    override fun getItem(position: Int): MenuItem2 = items[position]
 
-    override fun getItemId(position: Int): Long = items[position].id.toLong()
+    override fun getItemId(position: Int): Long = position.toLong()
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.item_menu, parent, false)
