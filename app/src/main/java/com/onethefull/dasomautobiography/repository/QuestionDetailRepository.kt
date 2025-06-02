@@ -7,6 +7,7 @@ import com.onethefull.dasomautobiography.data.api.ApiHelperImpl
 import com.onethefull.dasomautobiography.data.api.RetrofitBuilder
 import com.onethefull.dasomautobiography.data.model.audiobiography.DeleteLogResponse
 import com.onethefull.dasomautobiography.data.model.audiobiography.GetAutobiographyLogDtlResponse
+import com.onethefull.dasomautobiography.data.model.audiobiography.GetAutobiographyLogDtlResponseV2
 import com.onethefull.dasomautobiography.data.model.audiobiography.InsertLogResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -45,13 +46,15 @@ class QuestionDetailRepository(
         customerCode: String,
         deviceCode: String,
         serialNum: String,
-        autobiographyId : String
+        autobiographyId : String,
+        logId : String
     ) :DeleteLogResponse {
         return apiHelper.deleteLog(
             customerCode,
             deviceCode,
             serialNum,
-            autobiographyId
+            autobiographyId,
+            logId
         )
     }
 
@@ -69,6 +72,19 @@ class QuestionDetailRepository(
         )
     }
 
+    suspend fun getLogDtlV2(
+        customerCode: String,
+        deviceCode: String,
+        serialNum: String,
+        autobiographyId : String
+    ) : GetAutobiographyLogDtlResponseV2 {
+        return apiHelper.getLogDtlV2(
+            customerCode,
+            deviceCode,
+            serialNum,
+            autobiographyId
+        )
+    }
     companion object {
         @SuppressLint("StaticFieldLeak")
         @Volatile

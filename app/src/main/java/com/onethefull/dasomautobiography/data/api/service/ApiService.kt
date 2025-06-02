@@ -104,6 +104,23 @@ interface ApiService {
         @Part file: MultipartBody.Part,
     ): InsertLogResponse
 
+    /**
+     * 자서전 로그 저장
+     * */
+    @Multipart
+    @POST("{CUSTOMER_CODE}/{DEVICE_CODE}/autobiography/insertLog_v2")
+    suspend fun insertLogV2(
+        @Header("lang") lang: String,
+        @Header("languageCode") languageCode: String,
+        @Path("CUSTOMER_CODE") customerCode: String,
+        @Path("DEVICE_CODE") deviceCode: String,
+        @Part("serialNum") serialNum: RequestBody,
+        @Part("autobiographyId") autobiographyId: RequestBody,
+        @Part("type") type: RequestBody,
+        @Part("answerYn") answerYn: RequestBody,
+        @Part file: MultipartBody.Part,
+    ): InsertLogResponse
+
 
     /**
      * 자서전 로그 삭제
@@ -111,6 +128,20 @@ interface ApiService {
     @Headers("Content-Type: application/json")
     @POST("{CUSTOMER_CODE}/{DEVICE_CODE}/autobiography/deleteLog")
     suspend fun deleteLog(
+        @Header("lang") lang: String,
+        @Header("languageCode") languageCode: String,
+        @Path("CUSTOMER_CODE") customerCode: String,
+        @Path("DEVICE_CODE") deviceCode: String,
+        @Body body: Map<String, String>
+    ): DeleteLogResponse
+
+
+    /**
+     * 자서전 로그 삭제
+     * */
+    @Headers("Content-Type: application/json")
+    @POST("{CUSTOMER_CODE}/{DEVICE_CODE}/autobiography/deleteLog_v2")
+    suspend fun deleteLogV2(
         @Header("lang") lang: String,
         @Header("languageCode") languageCode: String,
         @Path("CUSTOMER_CODE") customerCode: String,

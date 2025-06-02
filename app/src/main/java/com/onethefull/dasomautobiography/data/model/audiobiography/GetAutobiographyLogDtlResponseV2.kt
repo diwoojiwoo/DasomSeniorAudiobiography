@@ -46,8 +46,8 @@ data class GetAutobiographyLogDtlResponseV2(
 data class TotalMap(
     @SerializedName("imgUrl") @Expose var imgUrl: String,
     @SerializedName("autobiographyId") @Expose var id: Int,
-    @SerializedName("guardianComment") @Expose var guardianComment: String, // 5월 23일 추가
-    @SerializedName("autobiographyList") @Nullable var mapList: List<Map>?,
+    @SerializedName("guardianComment") @Nullable var guardianComment: String?,
+    @SerializedName("autobiographyLogList") @Nullable var list: List<Map>?,
     @SerializedName("question") @Expose var question: String,
     @SerializedName("typeName") @Expose var typeName: String,
     @SerializedName("type") @Expose var type: String,
@@ -57,6 +57,7 @@ data class TotalMap(
 data class Map (
     @SerializedName("autobiographyId") @Expose var id: Int,
     @SerializedName("autobiographyLogId") @Expose var autobiographyLogId: Int,
+    @SerializedName("transText") @Expose var transText: String,
     @SerializedName("answerYn") @Expose var answerYn: String,
     @SerializedName("deleteYn") @Expose var deleteYn: String,
     @SerializedName("answerAudioUrl") @Expose var answerAudioUrl : String,

@@ -20,8 +20,8 @@ android {
     defaultConfig {
         applicationId "com.onethefull.dasomautobiography"
         minSdkVersion 19
-        versionCode 8
-        versionName "8.0.multi.lang"
+        versionCode 9
+        versionName "9.0.v2"
 
         multiDexEnabled true
         buildConfigField("String", "CHARACTER_TYPE", '"NewDasom"') // Dasom,Secretary

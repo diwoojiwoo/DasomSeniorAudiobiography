@@ -8,8 +8,6 @@ import androidx.navigation.findNavController
 import com.onethefull.dasomautobiography.base.BaseViewModel
 import com.onethefull.dasomautobiography.data.model.audiobiography.AutobiographyMap
 import com.onethefull.dasomautobiography.data.model.audiobiography.Entry
-import com.onethefull.dasomautobiography.data.model.audiobiography.GetAutobiographyLogDtlResponse
-import com.onethefull.dasomautobiography.data.model.audiobiography.Item
 import com.onethefull.dasomautobiography.utils.bus.RxBus
 import com.onethefull.dasomautobiography.utils.bus.RxEvent
 import com.onethefull.dasomautobiography.utils.logger.DWLog

@@ -30,7 +30,7 @@ class App : MultiDexApplication() {
         super.onCreate()
         instance = this
         initSceneHelper()
-        updateLocale()
+//        updateLocale()
     }
 
     fun updateLocale() {

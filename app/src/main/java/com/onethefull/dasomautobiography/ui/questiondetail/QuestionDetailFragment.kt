@@ -2,7 +2,6 @@ package com.onethefull.dasomautobiography.ui.questiondetail
 
 import android.graphics.Color
 import android.os.Bundle
-import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,6 +35,7 @@ class QuestionDetailFragment : Fragment() {
 
     private val sharedViewModel: MainViewModel by activityViewModels()
 
+    private var currentAnswerIndex = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         DWLog.d("onCreate")
@@ -63,8 +63,7 @@ class QuestionDetailFragment : Fragment() {
             if (item != null) {
                 DWLog.d("Received item [name]:: ${itemName}, [title]:: ${item.type}  ${item.sort}, ${item.autobiographyId} [question]::${item.viewQuestion}")
                 binding.toolbarTitle.text = item.typeName
-                binding.tvNumber.text = item.sort
-                binding.tvQuestion.text = item.viewQuestion
+                binding.tvQuestion.text = "질문 : " + item.viewQuestion
                 viewModel.getLogDtl(item.autobiographyId.toString())
             } else {
                 RxBus.publish(RxEvent.destroyApp)
@@ -92,6 +91,12 @@ class QuestionDetailFragment : Fragment() {
                         setDialogListener(object : ResponseEditDialog.DialogListener {
                             override fun checkAnswer() {
                                 dismiss()
+                                binding.customToolbar.visibility = View.VISIBLE
+                                binding.layoutQuestionDetail.visibility = View.VISIBLE
+                                binding.layoutAnswerDetail.visibility = View.VISIBLE
+                                binding.layoutSelectDetail.visibility = View.VISIBLE
+                                updateAnswerDisplay()
+                                binding.layoutRecording.visibility = View.GONE
                             }
 
                             override fun moveHome() {
@@ -117,11 +122,8 @@ class QuestionDetailFragment : Fragment() {
                 }
 
                 0 -> {
-                    event.autobiographyMap?.let { map ->
-                        if (viewModel.transText.value != "") {
-                            binding.tvAnswer.text = "답변 : ${map.transText}"
-                        }
-                    }
+                    currentAnswerIndex = 0
+                    updateAnswerDisplay()
                 }
 
                 else -> {
@@ -131,17 +133,48 @@ class QuestionDetailFragment : Fragment() {
             }
         }
 
+        viewModel.insertLogEvent.observe(viewLifecycleOwner) { event ->
+            when (event.status_code) {
+                -99, -3, -104 -> {
+                    Toasty.error(activity as MainActivity, event.status.toString()).show()
+                    binding.customToolbar.visibility = View.VISIBLE
+                    binding.layoutQuestionDetail.visibility = View.VISIBLE
+                    binding.layoutAnswerDetail.visibility = View.VISIBLE
+                    binding.layoutSelectDetail.visibility = View.VISIBLE
+                    updateAnswerDisplay()
+                    binding.layoutRecording.visibility = View.GONE
+                }
+            }
+        }
+
+        binding.btnLeft.setOnClickListener {
+            if (currentAnswerIndex > 0) {
+                currentAnswerIndex--
+                updateAnswerDisplay()
+            }
+        }
+
+        binding.btnRight.setOnClickListener {
+            val answers = viewModel.logDtlEvent.value?.autobiographyMap?.list ?: emptyList()
+            if (currentAnswerIndex < answers.size - 1) {
+                currentAnswerIndex++
+                updateAnswerDisplay()
+            }
+        }
+
         /**
          * 문제 듣기 버튼 클릭 리스너
          * */
-        binding.btnListen.setOnClickListener {
+        binding.tvListenQuestion.setOnClickListener {
             viewModel.startSpeech(sharedViewModel.selectedItem.value?.viewQuestion.toString())
+//            binding.tvListenQuestion.background = ContextCompat.getDrawable(requireContext(), R.drawable.icon_listen_active)
+//            binding.layoutQuestionDetail.background = ContextCompat.getDrawable(requireContext(), R.drawable.new_answer_detail_background_active)
         }
 
         /**
          * 답변 듣기 버튼 클릭 리스너
          * */
-        binding.btnAnswerListen.setOnClickListener {
+        binding.tvListenAnswer.setOnClickListener {
             val audioUrl = viewModel.answerAudioUrl.value
             if (!audioUrl.isNullOrBlank()) {
                 viewModel.startUrlSpeech(audioUrl)
@@ -156,12 +189,15 @@ class QuestionDetailFragment : Fragment() {
          * */
         binding.btnDelete.setOnClickListener {
             activity?.let { activity ->
+                binding.btnRight.visibility = View.GONE
+                binding.btnLeft.visibility = View.GONE
+                val logId = viewModel.logId.value
                 PopupDialog(activity).apply {
                     window?.requestFeature(Window.FEATURE_NO_TITLE)
-                    setText("답변을 삭제하시겠어요?", "저장된 답변이 삭제됩니다. \n새롭게 답변해주세요.")
+                    setText("저장된 답변을 삭제합니다.", "답변을 다시 등록해주세요.")
                     setDialogListener(object : PopupDialog.DialogListener {
                         override fun delete() {
-                            viewModel.deleteLog()
+                            viewModel.deleteLog(logId.toString())
                         }
                     })
                     show()
@@ -170,28 +206,16 @@ class QuestionDetailFragment : Fragment() {
         }
 
         /**
-         * "다시 답변" 버튼 클릭 리스너
+         * "추가 답변" 버튼 클릭 리스너
          */
         binding.btnRetry.setOnClickListener {
-            activity?.let { activity ->
-                PopupDialog(activity).apply {
-                    window?.requestFeature(Window.FEATURE_NO_TITLE)
-                    setText("질문에 다시 답변하시겠어요?", "저장된 답변이 삭제됩니다. \n다시 답변해주세요.")
-                    setDialogListener(object : PopupDialog.DialogListener {
-                        override fun delete() {
-                            dismiss()
-                            binding.customToolbar.visibility = View.GONE
-                            binding.layoutQuestionDetail.visibility = View.GONE
-                            binding.layoutAnswerDetail.visibility = View.GONE
-                            binding.layoutSelectDetail.visibility = View.GONE
-                            binding.layoutRecording.visibility = View.VISIBLE
-
-                            initView()
-                        }
-                    })
-                    show()
-                }
-            }
+            binding.customToolbar.visibility = View.GONE
+            binding.layoutQuestionDetail.visibility = View.GONE
+            binding.layoutAnswerDetail.visibility = View.GONE
+            binding.layoutSelectDetail.visibility = View.GONE
+            binding.btnRight.visibility = View.GONE
+            binding.btnLeft.visibility = View.GONE
+            binding.layoutRecording.visibility = View.VISIBLE
         }
 
         /**
@@ -314,6 +338,25 @@ class QuestionDetailFragment : Fragment() {
         binding.cbRecording.isChecked = false
         binding.tvRecording.text = "답변 하기"
         binding.tvRecording.setTextColor(Color.parseColor("#333333"))
+    }
+
+    private fun updateAnswerDisplay() {
+        val event = viewModel.logDtlEvent.value ?: return
+        val answers = event.autobiographyMap?.list ?: emptyList()
+
+        if (answers.isNotEmpty() && viewModel.transText.value != "") {
+            val currentAnswer = answers[currentAnswerIndex]
+            binding.tvAnswer.text = "답변 : ${currentAnswer.transText}"
+            viewModel.setAnswerAudioUrl(currentAnswer.answerAudioUrl ?: "")
+            viewModel.setLogId((currentAnswer.autobiographyLogId ?: -1).toString())
+            if (answers.size == 1) {
+                binding.btnLeft.visibility = View.GONE
+                binding.btnRight.visibility = View.GONE
+            } else {
+                binding.btnLeft.visibility = if (currentAnswerIndex > 0) View.VISIBLE else View.GONE
+                binding.btnRight.visibility = if (currentAnswerIndex < answers.size - 1) View.VISIBLE else View.GONE
+            }
+        }
     }
 
     override fun onPause() {

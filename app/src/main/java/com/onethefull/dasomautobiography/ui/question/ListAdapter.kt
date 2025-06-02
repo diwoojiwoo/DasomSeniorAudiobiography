@@ -14,7 +14,7 @@ import com.onethefull.dasomautobiography.data.model.audiobiography.Item
  */
 class ListAdapter(
     private var itemList: List<Entry>,
-    private val listener : OnItemClickListener
+    private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<ListAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -26,10 +26,15 @@ class ListAdapter(
             tvNumber.text = (position + 1).toString() // 1부터 시작
             tvQuestion.text = entry.viewQuestion
 
-            if (entry.answerYn == "Y")
-                tvAnswerYN.setBackgroundResource(R.drawable.icon_complete)
-            else
-                tvAnswerYN.setBackgroundResource(R.drawable.icon_incomplete)
+            if (entry.answerYn == "Y") {
+                tvAnswerYN.text = "답변 완료"
+                tvAnswerYN.setBackgroundResource(R.drawable.btn_register_answer)
+                tvNumber.setBackgroundResource(R.drawable.circular_background_orange)
+            } else {
+                tvAnswerYN.text = "미답변"
+                tvAnswerYN.setBackgroundResource(R.drawable.btn_unregister_answer)
+                tvNumber.setBackgroundResource(R.drawable.circular_background)
+            }
 
             itemView.setOnClickListener {
                 listener.onItemClick(entry)  // 클릭 이벤트 전달

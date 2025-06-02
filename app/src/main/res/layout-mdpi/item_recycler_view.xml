@@ -33,7 +33,7 @@
     <!-- 중앙 텍스트 -->
     <TextView
         android:id="@+id/tv_question"
-        android:layout_width="700dp"
+        android:layout_width="630dp"
         android:layout_height="wrap_content"
         android:text="성함 뜻과 본적을 말씀해주세요."
         android:textColor="#333333"
@@ -42,7 +42,7 @@
         android:maxLines="2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/tv_answer_yn"
-        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintStart_toEndOf="@id/tv_number"
         app:layout_constraintTop_toTopOf="parent"
         android:autoSizeTextType="uniform"
@@ -54,11 +54,17 @@
     <!-- 오른쪽 이미지 -->
     <TextView
         android:id="@+id/tv_answer_yn"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:gravity ="center"
+        android:textColor="@android:color/white"
+        android:fontFamily="@font/notosans_kr_r"
+        android:textSize="32sp"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:layout_marginEnd="12dp"
-        android:background="@drawable/icon_complete"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

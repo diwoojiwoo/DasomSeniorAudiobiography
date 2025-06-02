@@ -22,10 +22,11 @@ object ParamGeneratorUtils {
         return params
     }
 
-    fun getDeleteLogParam(serialNum: String, autobiographyId: String): HashMap<String, String> {
+    fun getDeleteLogParam(serialNum: String, autobiographyId: String, logId : String): HashMap<String, String> {
         val params = HashMap<String, String>()
         params["serialNum"] = serialNum
         params["autobiographyId"] = autobiographyId
+        params["logId"] = logId
         return params
     }
 }

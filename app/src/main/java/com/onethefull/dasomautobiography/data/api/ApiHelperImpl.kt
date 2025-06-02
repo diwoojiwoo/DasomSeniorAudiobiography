@@ -7,6 +7,7 @@ import com.onethefull.dasomautobiography.utils.ParamGeneratorUtils
 import com.onethefull.dasomautobiography.BuildConfig
 import com.onethefull.dasomautobiography.data.model.audiobiography.DeleteLogResponse
 import com.onethefull.dasomautobiography.data.model.audiobiography.GetAutobiographyLogDtlResponse
+import com.onethefull.dasomautobiography.data.model.audiobiography.GetAutobiographyLogDtlResponseV2
 import com.onethefull.dasomautobiography.data.model.audiobiography.GetAutobiographyMenuResponse
 import com.onethefull.dasomautobiography.data.model.audiobiography.GetAutobiographyMenuResponseV2
 import com.onethefull.dasomautobiography.data.model.audiobiography.GetCategoryListResponse
@@ -96,7 +97,7 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
         type: RequestBody,
         answerYN: RequestBody,
         file: MultipartBody.Part
-    ): InsertLogResponse = apiService.insertLog(
+    ): InsertLogResponse = apiService.insertLogV2(
         lang = App.instance.getLocale()?.dasomLangValue() ?: "ko",
         languageCode = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
         customerCode,
@@ -112,13 +113,14 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
         customerCode: String,
         deviceCode: String,
         serialNum: String,
-        autobiographyId: String
-    ): DeleteLogResponse = apiService.deleteLog(
+        autobiographyId: String,
+        logId: String,
+    ): DeleteLogResponse = apiService.deleteLogV2(
         lang = App.instance.getLocale()?.dasomLangValue() ?: "ko",
         languageCode = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
         customerCode,
         deviceCode,
-        ParamGeneratorUtils.getDeleteLogParam(serialNum, autobiographyId)
+        ParamGeneratorUtils.getDeleteLogParam(serialNum, autobiographyId, logId)
     )
 
     override suspend fun getLogDtl(
@@ -133,6 +135,20 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
         deviceCode,
         serialNum,
         logId
+    )
+
+    override suspend fun getLogDtlV2(
+        customerCode: String,
+        deviceCode: String,
+        serialNum: String,
+        autobiographyId: String
+    ): GetAutobiographyLogDtlResponseV2 = apiService.getLogDtlV2(
+        lang = App.instance.getLocale()?.dasomLangValue() ?: "ko",
+        languageCode = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
+        customerCode,
+        deviceCode,
+        serialNum,
+        autobiographyId
     )
 
     override suspend fun getDiarySentence(

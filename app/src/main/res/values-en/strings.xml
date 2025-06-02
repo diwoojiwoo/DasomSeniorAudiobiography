@@ -4,4 +4,5 @@
     <string name="message_network_error">"Please check your network connection."</string>
     <string name="message_not_exist_elderly_info">"Please enter the senior's gender and date of birth."</string>
     <string name="message_not_registration_elderly">"Please register the senior."</string>
+    <string name="message_max_answer_3">A maximum of 3 answers are allowed.</string>
 </resources>

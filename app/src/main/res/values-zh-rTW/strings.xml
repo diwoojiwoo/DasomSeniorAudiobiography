@@ -4,4 +4,5 @@
     <string name="message_network_error">請檢查網路狀態。</string>
     <string name="message_not_exist_elderly_info">請輸入長者的性別與出生年月日。</string>
     <string name="message_not_registration_elderly">請註冊長者資訊。</string>
+    <string name="message_max_answer_3">最多可填寫3個回答。</string>
 </resources>
