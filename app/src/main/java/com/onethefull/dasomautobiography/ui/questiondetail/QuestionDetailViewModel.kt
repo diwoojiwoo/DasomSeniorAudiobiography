@@ -6,6 +6,7 @@ import android.os.Build
 import android.webkit.URLUtil
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.onethefull.dasomautobiography.MainViewModel
 import com.onethefull.dasomautobiography.R
 import com.onethefull.dasomautobiography.base.BaseViewModel
@@ -305,6 +306,12 @@ class QuestionDetailViewModel(
         _isRunning.value = false
     }
 
+    fun resetTimer() {
+        job?.cancel()
+        _isRunning.value = false
+        _timeLeft.value = 60
+    }
+
     fun triggerDialog() {
         _showDialog.value = true
     }
@@ -322,7 +329,7 @@ class QuestionDetailViewModel(
                 DWLog.d("WAV 파일 재생 시작: ${wavDirPath}${wavFileName}${wavExt}")
 
                 setOnCompletionListener {
-                    _isPlaying.value = false
+                    _isPlaying.postValue(false)
                     releaseMediaPlayer()
                 }
             } catch (e: IOException) {
@@ -463,11 +470,8 @@ class QuestionDetailViewModel(
     /**
      * 자서전 로그 저장
      * */
-
-
     private val _insertLogEvent = MutableLiveData<Status>()
     val insertLogEvent: LiveData<Status> get() = _insertLogEvent
-
     fun insertLog() {
         uiScope.launch {
             val check204 = repository.check204() ?: false

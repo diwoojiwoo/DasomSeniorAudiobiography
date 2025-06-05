@@ -75,11 +75,11 @@
             android:padding="30dp"
             android:gravity="center">
 
-            <TextView
+            <CheckBox
                 android:id="@+id/tv_listen_question"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
-                android:background="@drawable/icon_listen"
+                android:background="@drawable/btn_listen_checkbox"
                 android:fontFamily="@font/notosans_kr_b"
                 android:lineSpacingExtra="19sp"
                 android:scaleType="centerCrop"
@@ -87,6 +87,7 @@
                 android:textSize="40sp"
                 android:textStyle="normal"
                 android:gravity ="center"
+                android:button="@null"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -122,11 +123,11 @@
             android:background="@drawable/new_answer_detail_background"
             app:layout_constraintTop_toBottomOf="@+id/layout_question_detail">
 
-            <TextView
+            <CheckBox
                 android:id="@+id/tv_listen_answer"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
-                android:background="@drawable/icon_listen"
+                android:background="@drawable/btn_listen_checkbox"
                 android:fontFamily="@font/notosans_kr_b"
                 android:lineSpacingExtra="19sp"
                 android:scaleType="centerCrop"
@@ -135,6 +136,7 @@
                 android:textSize="40sp"
                 android:textStyle="normal"
                 android:gravity ="center"
+                android:button="@null"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -211,26 +213,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:background="@drawable/add_anwser_background">
 
-                <ImageView
-                    android:id="@+id/iv_retry"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center|end"
-                    android:layout_marginEnd="293dp"
-                    android:background="@drawable/icon_mic"
-                    android:visibility="gone"/>
-
                 <TextView
                     android:id="@+id/tv_retry"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center|end"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
                     android:fontFamily="@font/notosans_kr_b"
                     android:textStyle="bold"
                     android:textSize="40sp"
                     android:textColor="#ffffff"
-                    android:text="추가 답변"
-                    android:layout_marginEnd="150dp"/>
+                    android:text="추가 답변"/>
             </FrameLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -311,13 +303,14 @@
                     android:background="@android:drawable/ic_menu_close_clear_cancel"/>
 
                 <!--    듣기 이미지  -->
-                <ImageButton
+                <CheckBox
                     android:id="@+id/btn_play"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginTop="201dp"
                     android:layout_marginStart="108dp"
+                    android:button="@null"
                     android:enabled="false"
                     android:background="@drawable/selector_dialog_play_btn" />
 
@@ -404,7 +397,7 @@
         android:layout_gravity="start|top"
         android:layout_marginStart="16dp"
         android:layout_marginTop="242dp"
-        android:background="@drawable/rounded_orange_background"
+        android:background="@drawable/btn_left_pressed"
         android:contentDescription="왼쪽 플로팅 버튼"
         android:visibility="gone"/>
 
@@ -416,7 +409,7 @@
         android:layout_gravity="end|top"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="242dp"
-        android:background="@drawable/rounded_orange_background"
+        android:background="@drawable/btn_right_pressed"
         android:contentDescription="오른쪽 플로팅 버튼"
         android:visibility="gone"/>
 

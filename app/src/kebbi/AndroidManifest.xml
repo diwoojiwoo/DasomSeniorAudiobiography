@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DasomSeniorAudiobiography">
         <activity
-            android:name="com.onethefull.dasomautobiography.MainActivity">
+            android:name="com.onethefull.dasomautobiography.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,12 +19,6 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".receiver.AutobiographyReceiver">
-            <intent-filter>
-                <action android:name="ACTION_AUTOBIOGRAPHY_STT_TEXT"/>
-            </intent-filter>
-        </receiver>
-        
         <service
             android:name="com.onethefull.wonderfulrobotmodule.DefaultService"
             android:exported="true" />

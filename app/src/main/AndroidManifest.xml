@@ -19,12 +19,6 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".receiver.AutobiographyReceiver">
-            <intent-filter>
-                <action android:name="ACTION_AUTOBIOGRAPHY_STT_TEXT"/>
-            </intent-filter>
-        </receiver>
-
         <service
             android:name="com.onethefull.wonderfulrobotmodule.DefaultService"
             android:exported="true" />

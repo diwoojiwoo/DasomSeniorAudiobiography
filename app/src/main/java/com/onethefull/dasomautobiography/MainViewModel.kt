@@ -4,6 +4,7 @@ import android.os.Handler
 import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.findNavController
 import com.onethefull.dasomautobiography.base.BaseViewModel
 import com.onethefull.dasomautobiography.data.model.audiobiography.AutobiographyMap
@@ -144,17 +145,6 @@ class MainViewModel : BaseViewModel() {
 
     fun selectItem(entry: Entry) {
         _selectedItem.value = entry
-    }
-
-
-    /**
-     * 로그 아이디를 통해 자서전 로그 상세 값 저장
-     */
-    private val _logDtlApiResponse = MutableLiveData<AutobiographyMap>()
-    val logDtlApiResponse : LiveData<AutobiographyMap> get() = _logDtlApiResponse
-
-    fun setLogDtlApiResponse(map: AutobiographyMap) {
-        _logDtlApiResponse.value = map
     }
 
     companion object {
