@@ -63,6 +63,16 @@
 
         </FrameLayout>
 
+        <FrameLayout
+            android:id="@+id/btn_stop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_destory"
+            android:layout_marginEnd="24dp"
+            android:layout_marginTop="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <!--   다른질문하기 버튼    -->
         <FrameLayout
             android:id="@+id/fl_another_question"
@@ -163,7 +173,7 @@
             android:id="@+id/tv_question"
             android:layout_width="976dp"
             android:layout_height="176dp"
-            android:layout_marginTop="400dp"
+            android:layout_marginBottom="24dp"
             android:autoSizeMaxTextSize="48sp"
             android:autoSizeMinTextSize="12sp"
             android:autoSizeStepGranularity="1sp"
@@ -178,7 +188,7 @@
             android:textColor="#333333"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             tools:targetApi="o" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

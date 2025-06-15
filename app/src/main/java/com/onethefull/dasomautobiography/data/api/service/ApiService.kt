@@ -154,7 +154,7 @@ interface ApiService {
      * */
     @Headers("Content-Type: application/json")
     @GET("{CUSTOMER_CODE}/{DEVICE_CODE}/autobiography/list/{serialNum}")
-    suspend fun getContent(
+    suspend fun getList(
         @Header("lang") lang: String,
         @Header("languageCode") languageCode: String,
         @Path("CUSTOMER_CODE") customerCode: String,
@@ -192,4 +192,17 @@ interface ApiService {
         @Path("serialNum") serialNum: String,
         @Path("logId") logId: String,
     ): GetAutobiographyLogDtlResponseV2
+
+    /**
+     * 자서전 질문 호출
+     * */
+    @Headers("Content-Type: application/json")
+    @GET("{CUSTOMER_CODE}/{DEVICE_CODE}/autobiography/getContent/{serialNum}")
+    suspend fun getContent(
+        @Header("lang") lang: String,
+        @Header("languageCode") languageCode: String,
+        @Path("CUSTOMER_CODE") customerCode: String,
+        @Path("DEVICE_CODE") deviceCode: String,
+        @Path("serialNum") type: String,
+    ) : GetAutobiographyContentResponse
 }

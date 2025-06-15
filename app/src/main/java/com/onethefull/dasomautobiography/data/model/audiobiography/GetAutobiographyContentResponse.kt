@@ -39,6 +39,8 @@ data class GetAutobiographyContentResponse(
     @SerializedName("status") @Expose var status: String,
     @SerializedName("message") @Nullable var message: String?,
     @SerializedName("autobiography") @Nullable var autobiography: Autobiography?,
+    @SerializedName("introMent") @Nullable var introMent: String?,
+    @SerializedName("closeMent") @Nullable var closeMent: String?,
 )
 
 data class Autobiography(

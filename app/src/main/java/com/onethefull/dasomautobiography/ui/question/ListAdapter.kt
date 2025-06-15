@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.onethefull.dasomautobiography.R
 import com.onethefull.dasomautobiography.data.model.audiobiography.Entry
 import com.onethefull.dasomautobiography.data.model.audiobiography.Item
+import com.onethefull.dasomautobiography.utils.Constant
 
 /**
  * Created by sjw on 2025. 2. 10.
@@ -26,12 +27,12 @@ class ListAdapter(
             tvNumber.text = (position + 1).toString() // 1부터 시작
             tvQuestion.text = entry.viewQuestion
 
-            if (entry.answerYn == "Y") {
-                tvAnswerYN.text = "답변 완료"
+            if (entry.answerYn == Constant.YES) {
+                tvAnswerYN.text = itemView.context.getString(R.string.status_answered)
                 tvAnswerYN.setBackgroundResource(R.drawable.btn_register_answer)
                 tvNumber.setBackgroundResource(R.drawable.circular_background_orange)
             } else {
-                tvAnswerYN.text = "미답변"
+                tvAnswerYN.text = itemView.context.getString(R.string.status_unanswered)
                 tvAnswerYN.setBackgroundResource(R.drawable.btn_unregister_answer)
                 tvNumber.setBackgroundResource(R.drawable.circular_background)
             }

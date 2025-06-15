@@ -48,7 +48,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun start() {
-        navController.navigate(R.id.splash_fragment, Bundle().apply {})
+//        navController.navigate(R.id.splash_fragment, Bundle().apply {})
     }
 
     fun navigateToSpeechFragment() {

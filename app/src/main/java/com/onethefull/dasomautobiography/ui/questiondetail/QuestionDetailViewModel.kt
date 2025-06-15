@@ -20,6 +20,7 @@ import com.onethefull.dasomautobiography.data.model.audiobiography.GetAutobiogra
 import com.onethefull.dasomautobiography.data.model.audiobiography.TotalMap
 import com.onethefull.dasomautobiography.provider.DasomProviderHelper
 import com.onethefull.dasomautobiography.repository.QuestionDetailRepository
+import com.onethefull.dasomautobiography.utils.Constant
 import com.onethefull.dasomautobiography.utils.ParamGeneratorUtils
 import com.onethefull.dasomautobiography.utils.WMediaPlayer
 import com.onethefull.dasomautobiography.utils.bus.RxBus
@@ -70,9 +71,6 @@ class QuestionDetailViewModel(
     val currentItem: LiveData<Entry> = _currentItem
 
     private var job: Job? = null // Coroutine Job
-
-    private val _showDialog = MutableLiveData<Boolean>()
-    val showDialog: LiveData<Boolean> get() = _showDialog
 
     private val _deleteEvent = MutableLiveData<Unit>()
     val deleteEvent: LiveData<Unit> get() = _deleteEvent
@@ -312,10 +310,6 @@ class QuestionDetailViewModel(
         _timeLeft.value = 60
     }
 
-    fun triggerDialog() {
-        _showDialog.value = true
-    }
-
     fun playWavFile() {
         stopWavFile() // 기존 재생 중이면 정지
 
@@ -497,7 +491,7 @@ class QuestionDetailViewModel(
 //                    "Y",
                     RequestBody.create(
                         MediaType.parse("text/plain"),
-                        "Y"
+                        Constant.YES
                     ),
                     wavUtils.getMultipartWaveFile()
                 ).let { response ->
@@ -511,11 +505,15 @@ class QuestionDetailViewModel(
                         }
 
                         0 -> {
-                            triggerDialog()
+                            _insertLogEvent.postValue(Status(response.statusCode, ""))
                         }
 
                         -104 -> {
                             _insertLogEvent.postValue(Status(response.statusCode, response.message))
+                        }
+
+                        else -> {
+                            _insertLogEvent.postValue(Status(response.statusCode, ""))
                         }
                     }
                 }
@@ -549,6 +547,10 @@ class QuestionDetailViewModel(
 
                     0 -> {
                         _deleteEvent.postValue(Unit)
+                    }
+
+                    else -> {
+                        RxBus.publish(RxEvent.destroyApp)
                     }
                 }
             } else {

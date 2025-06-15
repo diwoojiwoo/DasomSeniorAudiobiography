@@ -18,6 +18,7 @@ import com.onethefull.dasomautobiography.utils.bus.RxBus
 import com.onethefull.dasomautobiography.utils.bus.RxEvent
 import com.onethefull.dasomautobiography.R
 import com.onethefull.dasomautobiography.data.model.audiobiography.Entry
+import com.onethefull.dasomautobiography.utils.Constant
 
 class QuestionListFragment : Fragment(), ListAdapter.OnItemClickListener {
     private lateinit var binding: FragmentQuestionlistBinding
@@ -49,10 +50,10 @@ class QuestionListFragment : Fragment(), ListAdapter.OnItemClickListener {
     override fun onItemClick(entry: Entry) {
         entry.typeName = mItem.typeName
         (activity as MainActivity).viewModel.selectItem(entry)  // 데이터 저장
-        if (entry.answerYn == "N") {
-            (activity as MainActivity).navigateToSpeechFragment()  // 답변이 없는 경우 음성입력 화면으로 이동
+        if (entry.answerYn == Constant.NO) {
+            (activity as MainActivity).navigateToSpeechFragment()  // 답변이 없는 경우 SpeechFragment 화면으로 이동
         } else {
-            findNavController().navigate(QuestionListFragmentDirections.actionQuestionlistFragmentToDetailFragment()) // 답변이 있는 경우 질문상세화면으로 이도
+            findNavController().navigate(QuestionListFragmentDirections.actionQuestionlistFragmentToDetailFragment()) // 답변이 있는 경우 QuestionDetailFragment 이동
         }
     }
 
@@ -72,10 +73,9 @@ class QuestionListFragment : Fragment(), ListAdapter.OnItemClickListener {
             RxBus.publish(RxEvent.destroyApp)
         }
 
-        // LiveData 관찰
         viewModel.itemList.observe(viewLifecycleOwner) { items ->
             binding.progressBar.visibility = View.GONE
-            adapter.updateItems(items) // 데이터 변경 시 어댑터 업데이트
+            adapter.updateItems(items)
         }
 
         // 데이터 로딩

@@ -6,95 +6,91 @@
 
     <LinearLayout
         android:id="@+id/play"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="168dp"
+        android:layout_height="168dp"
         android:layout_marginStart="140dp"
-        android:layout_marginTop="61dp"
+        android:layout_marginTop="120dp"
         android:clickable="true"
         android:focusable="true"
         android:orientation="vertical"
+        android:background="@drawable/btn_rec_play_selector"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:layout_width="168dp"
-            android:layout_height="168dp"
-            android:src="@drawable/btn_rec_play_selector" />
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="97dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/notosans_kr_r"
+            android:fontFamily="@font/notosans_kr_b"
             android:gravity="center"
-            android:lineSpacingExtra="19sp"
+            android:lineHeight="47sp"
             android:text="듣기"
-            android:textColor="#ffffff"
-            android:textSize="40sp"
+            android:textColor="#333333"
+            android:textSize="32sp"
             android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/restart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="61dp"
+        android:layout_width="192dp"
+        android:layout_height="192dp"
+        android:layout_marginTop="108dp"
         android:clickable="true"
         android:focusable="true"
-        android:gravity="center"
         android:orientation="vertical"
+        android:background="@drawable/btn_rec_start_selector"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:layout_width="168dp"
-            android:layout_height="168dp"
-            android:src="@drawable/btn_rec_start_selector" />
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="109dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/notosans_kr_r"
+            android:fontFamily="@font/notosans_kr_b"
             android:gravity="center"
-            android:lineSpacingExtra="19sp"
-            android:text="다시 답변하기"
+            android:lineHeight="47sp"
+            android:text="답변 하기"
             android:textColor="#ffffff"
-            android:textSize="40sp"
+            android:textSize="32sp"
             android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="168dp"
+        android:layout_height="168dp"
         android:layout_marginEnd="140dp"
-        android:layout_marginTop="61dp"
+        android:layout_marginTop="120dp"
         android:clickable="true"
         android:focusable="true"
         android:orientation="vertical"
+        android:background="@drawable/btn_rec_save_selector"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:layout_width="168dp"
-            android:layout_height="168dp"
-            android:src="@drawable/btn_rec_save_selector" />
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="97dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="16dp"
             android:fontFamily="@font/notosans_kr_r"
             android:gravity="center"
-            android:lineSpacingExtra="19sp"
+            android:lineHeight="47sp"
             android:text="저장"
-            android:textColor="#ffffff"
-            android:textSize="40sp"
+            android:textColor="#333333"
+            android:textSize="32sp"
             android:textStyle="bold" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

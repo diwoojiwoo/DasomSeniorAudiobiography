@@ -27,30 +27,35 @@ class MenuFragment : Fragment() {
         InjectorUtils.provideMenuViewModelFactory(requireContext())
     }
 
+    val desiredOrder = listOf("init", "parents", "childhood", "school", "youthhood")
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        DWLog.d("MenuFragment onCreateView")
         binding = FragmentMenuBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        DWLog.d("MenuFragment onViewCreated")
         binding.progressBar.visibility = View.VISIBLE   // ProgressBar 시작 (로딩 중)
 
         menuAdapter = MenuAdapter(requireContext(), listOf()) // Adapter 초기화 (빈 리스트)
         binding.gvMenu.adapter = menuAdapter
 
-        // ViewModel에서 데이터 가져오기
         viewModel.items.observe(viewLifecycleOwner) { newItems ->
-            // 데이터가 로드되면 ProgressBar 숨기기
             binding.progressBar.visibility = View.GONE
-            menuAdapter.updateItems(newItems)
+            val sortedItems = newItems.sortedBy { item ->
+                val index = desiredOrder.indexOf(item.type)
+                if (index == -1) Int.MAX_VALUE else index
+            }
+            menuAdapter.updateItems(sortedItems)
         }
         viewModel.getCategoryList()
 
-        // 그리드뷰 아이템 클릭 이벤트
         binding.gvMenu.setOnItemClickListener { _, _, position, _ ->
             val clickedMenuItem = menuAdapter.getItem(position)
             val entry = MenuItemToEntryMapper().map(clickedMenuItem)

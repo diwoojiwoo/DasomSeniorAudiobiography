@@ -5,4 +5,22 @@
     <string name="message_not_exist_elderly_info">ご高齢者の性別と生年月日を入力してください。</string>
     <string name="message_not_registration_elderly">ご高齢者を登録してください。</string>
     <string name="message_max_answer_3">回答は最大3件まで可能です。</string>
+    <string name="status_answered">"回答完了"</string>
+    <string name="status_unanswered">"未回答"</string>
+    <string name="message_registering_answer">"回答を登録中です。"</string>
+    <string name="prefix_title_question">"質問 : "</string>
+    <string name="prefix_title_answer">"回答 : "</string>
+    <string name="title_left_time">"残り時間 " </string>
+    <string name="title_end_answer">"回答を終了"</string>
+    <string name="title_start_answer">"答える"</string>
+    <string name="title_stop_answer">"「停止」"</string>
+    <string name="title_additional_answer">"追加の回答"</string>
+    <string name="title_listen_answer">"聞く"</string>
+    <string name="message_success_to_answer">"自叙伝の内容が保存されました！"</string>
+    <string name="message_check_answer">"回答を確認する"</string>
+    <string name="message_back_to_home">"ホームに戻る"</string>
+
+    <string name="message_title_remove_answer">"保存された回答を削除します。"</string>
+    <string name="message_content_remove_answer">"もう一度回答を登録してください。"</string>
+
 </resources>

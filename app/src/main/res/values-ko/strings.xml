@@ -5,4 +5,21 @@
     <string name="message_not_exist_elderly_info">"어르신 성별, 생년월일을 입력해주세요."</string>
     <string name="message_not_registration_elderly">어르신을 등록해주세요.</string>
     <string name="message_max_answer_3">답변은 최대 3개까지 가능합니다.</string>
+    <string name="status_answered">"답변 완료"</string>
+    <string name="status_unanswered">"미답변"</string>
+    <string name="message_registering_answer">"답변을 등록 중입니다."</string>
+    <string name="prefix_title_question">"질문 : "</string>
+    <string name="prefix_title_answer">"답변 : "</string>
+    <string name="title_left_time">"남은 시간 " </string>
+    <string name="title_end_answer">"답변 종료"</string>
+    <string name="title_start_answer">"답변 하기"</string>
+    <string name="title_stop_answer">"중지"</string>
+    <string name="title_additional_answer">"추가답변"</string>
+    <string name="title_listen_answer">"듣기"</string>
+    <string name="message_success_to_answer">"자서전 내용이 저장되었습니다!"</string>
+    <string name="message_check_answer"> "답변 확인하기"</string>
+    <string name="message_back_to_home">"처음으로 돌아가기"</string>
+
+    <string name="message_title_remove_answer">"저장된 답변을 삭제합니다."</string>
+    <string name="message_content_remove_answer">"답변을 다시 등록해주세요."</string>
 </resources>

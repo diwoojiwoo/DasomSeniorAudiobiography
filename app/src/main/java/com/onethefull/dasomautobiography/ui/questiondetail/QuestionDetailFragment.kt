@@ -88,44 +88,23 @@ class QuestionDetailFragment : Fragment() {
                 binding.tvListenAnswer.background = ContextCompat.getDrawable(activity as MainActivity, R.drawable.icon_convert)
 
                 binding.layoutAnswerDetail.background = ContextCompat.getDrawable(activity as MainActivity, R.drawable.new_answer_convert_background)
-                binding.tvAnswer.text = "답변을 등록 중입니다."
+                binding.tvAnswer.text = requireContext().getString(R.string.message_registering_answer)
                 binding.tvAnswer.setTextColor(Color.WHITE)
                 binding.toolbarTitle.text = item.typeName
-                binding.tvQuestion.text = "질문 : " + item.viewQuestion
+                binding.tvQuestion.text = requireContext().getString(R.string.prefix_title_question) + item.viewQuestion
                 viewModel.getLogDtl(item.autobiographyId.toString())
             } else {
                 RxBus.publish(RxEvent.destroyApp)
             }
         }
 
-
         viewModel.deleteEvent.observe(viewLifecycleOwner) {
-            (activity as MainActivity).back()
-        }
-
-        viewModel.showDialog.observe(viewLifecycleOwner) { shouldShow ->
-            if (shouldShow) {
-                activity?.let { activity ->
-                    ResponseEditDialog(activity).apply {
-                        window?.requestFeature(Window.FEATURE_NO_TITLE)
-                        setDialogListener(object : ResponseEditDialog.DialogListener {
-                            override fun checkAnswer() {
-                                dismiss()
-                                binding.customToolbar.visibility = View.VISIBLE
-                                binding.layoutQuestionDetail.visibility = View.VISIBLE
-                                binding.layoutAnswerDetail.visibility = View.VISIBLE
-                                binding.layoutSelectDetail.visibility = View.VISIBLE
-                                updateAnswerDisplay()
-                                binding.layoutRecording.visibility = View.GONE
-                            }
-
-                            override fun moveHome() {
-                                findNavController().navigate(QuestionDetailFragmentDirections.actionDetailFragmentToMenuFragment())
-                            }
-                        })
-                        show()
-                    }
-                }
+            val list = viewModel.logDtlEvent.value?.autobiographyMap?.list
+            if (list.isNullOrEmpty()) {
+                (activity as MainActivity).back()
+            } else {
+                currentAnswerIndex = 0
+                updateAnswerDisplay()
             }
         }
 
@@ -158,6 +137,7 @@ class QuestionDetailFragment : Fragment() {
         }
 
         viewModel.insertLogEvent.observe(viewLifecycleOwner) { event ->
+            binding.btnSave.isEnabled = true
             when (event.status_code) {
                 -99, -3, -104 -> {
                     Toasty.error(activity as MainActivity, event.status.toString()).show()
@@ -167,6 +147,34 @@ class QuestionDetailFragment : Fragment() {
                     binding.layoutSelectDetail.visibility = View.VISIBLE
                     updateAnswerDisplay()
                     binding.layoutRecording.visibility = View.GONE
+                }
+
+                0 -> {
+                    activity?.let { activity ->
+                        ResponseEditDialog(activity).apply {
+                            window?.requestFeature(Window.FEATURE_NO_TITLE)
+                            setDialogListener(object : ResponseEditDialog.DialogListener {
+                                override fun checkAnswer() {
+                                    dismiss()
+                                    binding.customToolbar.visibility = View.VISIBLE
+                                    binding.layoutQuestionDetail.visibility = View.VISIBLE
+                                    binding.layoutAnswerDetail.visibility = View.VISIBLE
+                                    binding.layoutSelectDetail.visibility = View.VISIBLE
+                                    updateAnswerDisplay()
+                                    binding.layoutRecording.visibility = View.GONE
+                                }
+
+                                override fun moveHome() {
+                                    findNavController().navigate(QuestionDetailFragmentDirections.actionDetailFragmentToMenuFragment())
+                                }
+                            })
+                            show()
+                        }
+                    }
+                }
+
+                else -> {
+                    RxBus.publish(RxEvent.destroyApp)
                 }
             }
         }
@@ -234,7 +242,7 @@ class QuestionDetailFragment : Fragment() {
                 val logId = viewModel.logId.value
                 PopupDialog(activity).apply {
                     window?.requestFeature(Window.FEATURE_NO_TITLE)
-                    setText("저장된 답변을 삭제합니다.", "답변을 다시 등록해주세요.")
+                    setText(requireContext().getString(R.string.message_title_remove_answer), requireContext().getString(R.string.message_content_remove_answer))
                     setDialogListener(object : PopupDialog.DialogListener {
                         override fun delete() {
                             viewModel.deleteLog(logId.toString())
@@ -276,7 +284,7 @@ class QuestionDetailFragment : Fragment() {
         viewModel.timeLeft.observe(viewLifecycleOwner) { time ->
             if (time < 60) {
                 binding.tvLeftTime.setTextColor(Color.parseColor("#ff6363"))
-                binding.tvLeftTime.text = String.format("남은 시간 00:%02d", time)
+                binding.tvLeftTime.text = String.format(requireContext().getString(R.string.title_left_time) + "00:%02d", time)
             }
         }
 
@@ -293,7 +301,7 @@ class QuestionDetailFragment : Fragment() {
                 binding.tvSave.setTextColor(Color.DKGRAY)
 
                 // 녹음 텍스트
-                binding.tvRecording.text = "답변 종료"
+                binding.tvRecording.text = requireContext().getString(R.string.title_end_answer)
                 binding.tvRecording.setTextColor(Color.parseColor("#ff6363"))
 
                 viewModel.startTimer() // 타이머 시작
@@ -308,7 +316,7 @@ class QuestionDetailFragment : Fragment() {
                 binding.btnSave.isEnabled = true
                 binding.tvSave.setTextColor(Color.GRAY)
 
-                binding.tvRecording.text = "답변 하기"
+                binding.tvRecording.text = requireContext().getString(R.string.title_start_answer)
                 binding.tvRecording.setTextColor(Color.BLACK)
 
                 viewModel.resetTimer()
@@ -322,10 +330,10 @@ class QuestionDetailFragment : Fragment() {
 
                 binding.btnPlay.isEnabled = true
                 binding.tvPlay.setTextColor(Color.BLACK)
-                binding.tvPlay.text = "중지"
+                binding.tvPlay.text = requireContext().getString(R.string.title_stop_answer)
 
                 binding.cbRecording.isEnabled = false
-                binding.tvRecording.text = "답변 하기"
+                binding.tvRecording.text = requireContext().getString(R.string.title_start_answer)
                 binding.tvRecording.setTextColor(Color.GRAY)
 
                 binding.btnSave.isEnabled = false
@@ -346,7 +354,9 @@ class QuestionDetailFragment : Fragment() {
             }
         }
 
-        binding.btnSave.setOnSingleClickListener {
+        // 저장하기 버튼
+        binding.btnSave.setOnClickListener {
+            binding.btnSave.isEnabled = false
             viewModel.insertLog()
         }
 
@@ -374,7 +384,7 @@ class QuestionDetailFragment : Fragment() {
 
         // 녹음 텍스트
         binding.cbRecording.isChecked = false
-        binding.tvRecording.text = "답변 하기"
+        binding.tvRecording.text = requireContext().getString(R.string.title_start_answer)
         binding.tvRecording.setTextColor(Color.parseColor("#333333"))
     }
 
@@ -384,7 +394,7 @@ class QuestionDetailFragment : Fragment() {
 
         if (answers.isNotEmpty() && viewModel.transText.value != "") {
             val currentAnswer = answers[currentAnswerIndex]
-            binding.tvAnswer.text = "답변 : ${currentAnswer.transText}"
+            binding.tvAnswer.text = requireContext().getString(R.string.prefix_title_answer) + currentAnswer.transText
             viewModel.setAnswerAudioUrl(currentAnswer.answerAudioUrl ?: "")
             viewModel.setLogId((currentAnswer.autobiographyLogId ?: -1).toString())
             if (answers.size == 1) {
@@ -395,18 +405,26 @@ class QuestionDetailFragment : Fragment() {
                 binding.btnRight.visibility = if (currentAnswerIndex < answers.size - 1) View.VISIBLE else View.GONE
             }
 
-            // 추가답변 버튼 텍스트 설정
-            if (answers.size > 1) {
+            // 추가답변 버튼 텍스트 및 상태 설정
+            if (answers.size >= 3) {
+                binding.tvRetry.text = requireContext().getString(R.string.title_additional_answer) + " (${currentAnswerIndex + 1}/${answers.size})"
+                binding.tvRetry.isEnabled = false
+                binding.tvRetry.alpha = 0.5f // 비활성화된 듯한 UI 표현
+            } else if (answers.size > 1) {
                 val current = currentAnswerIndex + 1
                 val total = answers.size
-                binding.tvRetry.text = "추가답변 ($current/$total)"
+                binding.tvRetry.text = requireContext().getString(R.string.title_additional_answer) + " ($current/$total)"
+                binding.tvRetry.isEnabled = true
+                binding.tvRetry.alpha = 1f
             } else {
-                binding.tvRetry.text = "추가답변"
+                binding.tvRetry.text = requireContext().getString(R.string.title_additional_answer)
+                binding.tvRetry.isEnabled = true
+                binding.tvRetry.alpha = 1f
             }
 
         } else {
             // 답변이 없을 때 기본 텍스트
-            binding.tvRetry.text = "추가답변"
+            binding.tvRetry.text = requireContext().getString(R.string.title_additional_answer)
         }
     }
 
@@ -415,7 +433,7 @@ class QuestionDetailFragment : Fragment() {
         binding.btnPlay.isEnabled = true
         binding.btnPlay.isChecked = false
         binding.tvPlay.setTextColor(Color.BLACK)
-        binding.tvPlay.text = "듣기"
+        binding.tvPlay.text = requireContext().getString(R.string.title_listen_answer)
 
         // 저장
         binding.btnSave.isEnabled = true
@@ -423,7 +441,7 @@ class QuestionDetailFragment : Fragment() {
 
         // 녹음
         binding.cbRecording.isEnabled = true
-        binding.tvRecording.text = "답변 하기"
+        binding.tvRecording.text = requireContext().getString(R.string.title_start_answer)
         binding.tvRecording.setTextColor(Color.parseColor("#333333"))
 
         viewModel.resetTimer()

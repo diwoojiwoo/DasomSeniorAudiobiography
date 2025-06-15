@@ -1,6 +1,7 @@
 package com.onethefull.dasomautobiography.data.api
 
 import com.onethefull.dasomautobiography.data.model.audiobiography.DeleteLogResponse
+import com.onethefull.dasomautobiography.data.model.audiobiography.GetAutobiographyContentResponse
 import com.onethefull.dasomautobiography.data.model.audiobiography.GetAutobiographyLogDtlResponse
 import com.onethefull.dasomautobiography.data.model.audiobiography.GetAutobiographyLogDtlResponseV2
 import com.onethefull.dasomautobiography.data.model.audiobiography.GetAutobiographyMenuResponse
@@ -83,4 +84,10 @@ interface ApiHelper {
         serialNum: String,
         autobiographyId : String
     ) : GetAutobiographyLogDtlResponseV2
+
+    suspend fun getContent(
+        customerCode: String,
+        deviceCode: String,
+        serialNum: String,
+    ): GetAutobiographyContentResponse
 }

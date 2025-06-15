@@ -2,11 +2,13 @@ package com.onethefull.dasomautobiography.utils
 
 import android.content.Context
 import com.onethefull.dasomautobiography.MainActivity
+import com.onethefull.dasomautobiography.SplashViewModelFactory
 import com.onethefull.dasomautobiography.repository.QuestionListRepository
 import com.onethefull.dasomautobiography.repository.DiaryRepository
 import com.onethefull.dasomautobiography.repository.MenuRepository
 import com.onethefull.dasomautobiography.repository.QuestionDetailRepository
 import com.onethefull.dasomautobiography.repository.SpeechRepository
+import com.onethefull.dasomautobiography.repository.SplashRepository
 import com.onethefull.dasomautobiography.ui.diary.DiaryViewModelFactory
 import com.onethefull.dasomautobiography.ui.menu.MenuViewModelFactory
 import com.onethefull.dasomautobiography.ui.question.QuestionListViewModel
@@ -68,4 +70,16 @@ object InjectorUtils {
     ) : QuestionDetailViewModelFactory {
         return QuestionDetailViewModelFactory(context as MainActivity, getQuestionDetailRepository(context))
     }
- }
+
+
+    private fun getSplashRepository(context: Context) : SplashRepository {
+        return SplashRepository.getInstance(context.applicationContext)
+    }
+
+    fun provideSplashViewModelFactory(
+        context : Context
+    ) : SplashViewModelFactory  {
+        return SplashViewModelFactory(context as MainActivity, getSplashRepository(context))
+    }
+
+}

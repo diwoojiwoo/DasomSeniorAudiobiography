@@ -13,9 +13,11 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.onethefull.dasomautobiography.MainActivity
 import com.onethefull.dasomautobiography.MainViewModel
 import com.onethefull.dasomautobiography.R
 import com.onethefull.dasomautobiography.contents.dialog.ResultDialog
+import com.onethefull.dasomautobiography.contents.toast.Toasty
 import com.onethefull.dasomautobiography.databinding.FragmentSpeechBinding
 import com.onethefull.dasomautobiography.utils.InjectorUtils
 import com.onethefull.dasomautobiography.utils.bus.RxBus
@@ -86,32 +88,11 @@ class SpeechFragment : Fragment() {
         // 1초마다 TextView 자동 업데이트
         viewModel.timeLeft.observe(viewLifecycleOwner) { time ->
             binding.tvLeftTime.setTextColor(Color.parseColor("#FAFF5E"))
-            binding.tvLeftTime.text = String.format("남은 시간 00:%02d", time)
+            binding.tvLeftTime.text = String.format(requireContext().getString(R.string.title_left_time) + "00:%02d", time)
         }
 
-        viewModel.showDialog.observe(viewLifecycleOwner) { shouldShow ->
-            if (shouldShow) {
-                activity?.let { activity ->
-                    ResultDialog(activity).apply {
-                        window?.requestFeature(Window.FEATURE_NO_TITLE)
-                        setText("자서전 내용이 저장되었습니다!", "답변 확인하기", "처음으로 돌아가기")
-                        setDialogListener(object : ResultDialog.DialogListener {
-                            override fun checkAnswer() { // 답변 확인하기
-                                DWLog.d("답변 확인하기 버튼 클릭 ==> 답변 확인 UI")
-                                findNavController().navigate(SpeechFragmentDirections.actionSpeechFragmentToQuestiondetailFragment())
-                            }
-
-                            override fun moveHome() {
-                                findNavController().navigate(SpeechFragmentDirections.actionSpeechToMenuFragment())
-                            }
-                        })
-                        setDismissListener(object : ResultDialog.DialogDismissListener {
-                            override fun onDismiss() {}
-                        })
-                        show()
-                    }
-                }
-            }
+        binding.btnStop.setOnClickListener {
+            RxBus.publish(RxEvent.destroyApp)
         }
 
         binding.btnAnswer.setOnClickListener {
@@ -123,7 +104,7 @@ class SpeechFragment : Fragment() {
 
             binding.tvLeftTime.visibility = View.VISIBLE
             binding.tvLeftTime.setTextColor(Color.parseColor("#FFFFFF"))
-            binding.tvLeftTime.text = "남은 시간 01:00"
+            binding.tvLeftTime.text = requireContext().getString(R.string.title_left_time) + "01:00"
         }
 
         binding.includeRecordStart.start.setOnClickListener { // "답변 시작" 버튼 클릭
@@ -147,9 +128,48 @@ class SpeechFragment : Fragment() {
         }
 
         binding.includeRecordRestart.save.setOnClickListener { // 저장하기 버튼 클릭
+            binding.includeRecordRestart.save.isEnabled = false
             viewModel.insertLog()
         }
+
+        viewModel.insertLogEvent.observe(viewLifecycleOwner) { event ->
+            binding.includeRecordRestart.save.isEnabled = true
+            when (event.status_code) {
+                -99, -3 -> {
+                    Toasty.error(activity as MainActivity, event.status.toString()).show()
+                    findNavController().navigate(SpeechFragmentDirections.actionSpeechToMenuFragment())
+                }
+
+                0 -> {
+                    activity?.let { activity ->
+                        ResultDialog(activity).apply {
+                            window?.requestFeature(Window.FEATURE_NO_TITLE)
+                            setText(requireContext().getString(R.string.message_success_to_answer), requireContext().getString(R.string.message_check_answer), requireContext().getString(R.string.message_back_to_home))
+                            setDialogListener(object : ResultDialog.DialogListener {
+                                override fun checkAnswer() { // 답변 확인하기
+                                    DWLog.d("답변 확인하기 버튼 클릭 ==> 답변 확인 UI")
+                                    findNavController().navigate(SpeechFragmentDirections.actionSpeechFragmentToQuestiondetailFragment())
+                                }
+
+                                override fun moveHome() {
+                                    findNavController().navigate(SpeechFragmentDirections.actionSpeechToMenuFragment())
+                                }
+                            })
+                            setDismissListener(object : ResultDialog.DialogDismissListener {
+                                override fun onDismiss() {}
+                            })
+                            show()
+                        }
+                    }
+                }
+
+                else -> {
+                    RxBus.publish(RxEvent.destroyApp)
+                }
+            }
+        }
     }
+
 
     private fun setUpSpeech() {
         viewModel.speechStatus.observe(viewLifecycleOwner) {
@@ -171,6 +191,7 @@ class SpeechFragment : Fragment() {
                 binding.btnAnswer.visibility = View.GONE
                 binding.flAnotherQuestion.visibility = View.GONE
             }
+
             else -> {}
         }
     }

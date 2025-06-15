@@ -5,5 +5,22 @@
     <string name="message_not_exist_elderly_info">请输入老人的性别和出生日期。</string>
     <string name="message_not_registration_elderly">请注册老人信息。</string>
     <string name="message_max_answer_3">最多可填写3个回答。</string>
+    <string name="status_answered">"已回答"</string>
+    <string name="status_unanswered">"未回答"</string>
+    <string name="message_registering_answer">"我们正在记录您的答案。"</string>
+    <string name="prefix_title_question">"问题 : "</string>
+    <string name="prefix_title_answer">"回答 : "</string>
+    <string name="title_left_time">"剩余时间 " </string>
+    <string name="title_end_answer">"回复结束"</string>
+    <string name="title_start_answer">"停止"</string>
+    <string name="title_stop_answer">"停止"</string>
+    <string name="title_additional_answer">"补充回答"</string>
+    <string name="title_listen_answer">"听力"</string>
+    <string name="message_success_to_answer">"自传内容已保存！"</string>
+    <string name="message_check_answer">"查看答案"</string>
+    <string name="message_back_to_home">"返回首页"</string>
+
+    <string name="message_title_remove_answer">"已保存的答案将被删除。"</string>
+    <string name="message_content_remove_answer">"请重新提交您的答案。"</string>
 
 </resources>

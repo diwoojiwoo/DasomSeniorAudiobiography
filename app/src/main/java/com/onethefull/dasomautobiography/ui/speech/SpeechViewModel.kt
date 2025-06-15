@@ -11,10 +11,12 @@ import com.onethefull.dasomautobiography.MainViewModel
 import com.onethefull.dasomautobiography.R
 import com.onethefull.dasomautobiography.base.BaseViewModel
 import com.onethefull.dasomautobiography.contents.toast.Toasty
+import com.onethefull.dasomautobiography.data.model.Status
 import com.onethefull.dasomautobiography.data.model.audiobiography.Entry
 import com.onethefull.dasomautobiography.data.model.audiobiography.Item
 import com.onethefull.dasomautobiography.provider.DasomProviderHelper
 import com.onethefull.dasomautobiography.repository.SpeechRepository
+import com.onethefull.dasomautobiography.utils.Constant
 import com.onethefull.dasomautobiography.utils.ParamGeneratorUtils
 import com.onethefull.dasomautobiography.utils.Product
 import com.onethefull.dasomautobiography.utils.WMediaPlayer
@@ -70,9 +72,6 @@ class SpeechViewModel(
     val currentItem: LiveData<Entry> = _currentItem
 
     private var job: Job? = null // Coroutine Job
-
-    private val _showDialog = MutableLiveData<Boolean>()
-    val showDialog: LiveData<Boolean> get() = _showDialog
 
     private var mediaPlayer: MediaPlayer? = null
     private val _isPlaying = MutableLiveData<Boolean>(false)
@@ -292,10 +291,6 @@ class SpeechViewModel(
         _isRunning.value = false
     }
 
-    private fun triggerDialog() {
-        _showDialog.value = true
-    }
-
     fun playWavFile() {
         stopWavFile() // 기존 재생 중이면 정지
 
@@ -355,6 +350,11 @@ class SpeechViewModel(
         stopWavFile() // ViewModel 종료 시 정리
     }
 
+    /**
+     * 자서전 로그 저장
+     * */
+    private val _insertLogEvent = MutableLiveData<Status>()
+    val insertLogEvent: LiveData<Status> get() = _insertLogEvent
     fun insertLog() {
         uiScope.launch {
             val check204 = repository.check204() ?: false
@@ -380,23 +380,25 @@ class SpeechViewModel(
 //                    "Y",
                     RequestBody.create(
                         MediaType.parse("text/plain"),
-                        "Y"
+                        Constant.YES
                     ),
                     wavUtils.getMultipartWaveFile()
                 ).let { response ->
                     when (response.statusCode) {
                         -99 -> {
-                            Toasty.error(context, response.message.toString()).show()
-                            RxBus.publish(RxEvent.destroyApp)
+                            _insertLogEvent.postValue(Status(response.statusCode, response.message))
                         }
 
                         -3 -> {
-                            Toasty.error(context, context.getString(R.string.message_not_registration_elderly)).show()
-                            RxBus.publish(RxEvent.destroyApp)
+                            _insertLogEvent.postValue(Status(response.statusCode, context.getString(R.string.message_not_registration_elderly)))
                         }
 
                         0 -> {
-                            triggerDialog()
+                            _insertLogEvent.postValue(Status(response.statusCode, ""))
+                        }
+
+                        else -> {
+                            _insertLogEvent.postValue(Status(response.statusCode, ""))
                         }
                     }
                 }

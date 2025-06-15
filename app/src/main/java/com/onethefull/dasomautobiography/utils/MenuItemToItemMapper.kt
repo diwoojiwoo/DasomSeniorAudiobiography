@@ -16,7 +16,7 @@ class MenuItemToEntryMapper {
             transText = "", // 기본값
             imgUrl = menuItem.imgUrl,
             question = "", // 기본값
-            answerYn = if (menuItem.answerCnt > 0) "Y" else "N",
+            answerYn = if (menuItem.answerCnt > 0) Constant.YES else Constant.NO,
             sort = "0", // 기본값
             type = menuItem.type,
             typeName = menuItem.typeName,

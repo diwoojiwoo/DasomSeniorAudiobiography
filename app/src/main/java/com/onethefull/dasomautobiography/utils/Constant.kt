@@ -6,6 +6,8 @@ package com.onethefull.dasomautobiography.utils
 object Constant {
     const val ACTION_STT_TEXT = "ACTION_AUTOBIOGRAPHY_STT_TEXT"
     const val PARAM_LOG_ID = "autobiographyLogId"
+    const val YES = "Y"
+    const val NO = "N"
 }
 
 object Product {
