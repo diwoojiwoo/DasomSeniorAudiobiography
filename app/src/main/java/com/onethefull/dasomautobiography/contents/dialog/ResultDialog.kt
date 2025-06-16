@@ -2,6 +2,8 @@ package com.onethefull.dasomautobiography.contents.dialog
 
 import android.content.Context
 import android.content.DialogInterface
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -39,8 +41,9 @@ class ResultDialog(context: Context) : BaseDialog<DialogResultBinding>(context),
         _binding = setViewBinding(layoutInflater)
         window?.apply {
             setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+            addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+            setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         }
-
         binding.tvTitle.text = title
         binding.btnCheckAnswer.text = message1
         binding.btnGoHome.text = message2

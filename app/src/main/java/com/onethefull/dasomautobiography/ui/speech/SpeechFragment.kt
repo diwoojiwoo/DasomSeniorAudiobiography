@@ -2,6 +2,7 @@ package com.onethefull.dasomautobiography.ui.speech
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.onethefull.dasomautobiography.App
 import com.onethefull.dasomautobiography.MainActivity
 import com.onethefull.dasomautobiography.MainViewModel
 import com.onethefull.dasomautobiography.R
@@ -24,6 +26,7 @@ import com.onethefull.dasomautobiography.utils.bus.RxBus
 import com.onethefull.dasomautobiography.utils.bus.RxEvent
 import com.onethefull.dasomautobiography.utils.logger.DWLog
 import com.onethefull.dasomautobiography.utils.speech.SpeechStatus
+import com.onethefull.wonderfulrobotmodule.ext.dasomLanguageCodeValue
 
 
 class SpeechFragment : Fragment() {
@@ -48,6 +51,22 @@ class SpeechFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val language = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko"
+        when (language) {
+            "ko-KR" ->  {
+                binding.tvTitleSpeech.setTextSize(TypedValue.COMPLEX_UNIT_SP, 44f)
+                binding.tvQuestionTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32f)
+                binding.includeRecordRestart.tvRestartAnswer.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32f)
+                binding.includeRecordStop.tvRecordingStop.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32f)
+            }
+            else -> {
+                binding.tvTitleSpeech.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22f)
+                binding.tvQuestionTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 28f)
+                binding.includeRecordRestart.tvRestartAnswer.setTextSize(TypedValue.COMPLEX_UNIT_SP, 28f)
+                binding.includeRecordStop.tvRecordingStop.setTextSize(TypedValue.COMPLEX_UNIT_SP, 28f)
+            }
+        }
 
         binding.ivBgBlack.visibility = View.GONE
         binding.btnAnswer.visibility = View.GONE
@@ -120,7 +139,7 @@ class SpeechFragment : Fragment() {
 
         binding.includeRecordRestart.restart.setOnClickListener { // "다시 답변하기" 버튼 클릭
             viewModel.startRecording()
-            viewModel.startTimer() // 다시 타이머 시작
+            viewModel.startTimer()
         }
 
         binding.includeRecordRestart.play.setOnClickListener { // 재생하기 버튼 클릭
@@ -129,6 +148,8 @@ class SpeechFragment : Fragment() {
 
         binding.includeRecordRestart.save.setOnClickListener { // 저장하기 버튼 클릭
             binding.includeRecordRestart.save.isEnabled = false
+            viewModel.stopRecording()
+            viewModel.stopWavFile()
             viewModel.insertLog()
         }
 
@@ -182,8 +203,16 @@ class SpeechFragment : Fragment() {
         when (status) {
             SpeechStatus.WAITING -> {
                 binding.ivBgBlack.visibility = View.VISIBLE
-                binding.btnAnswer.visibility = View.VISIBLE
+                binding.btnAnswer.visibility = View.GONE
                 binding.flAnotherQuestion.visibility = View.GONE
+
+                binding.flTitle.visibility = View.GONE // 상단 "자서전 만들기" 타이틀 제거
+                binding.flAnotherQuestion.visibility = View.GONE // "다른 질문 보기" 마이크 버튼 제거
+                binding.includeRecordStart.root.visibility = View.VISIBLE // "답변 시작" 활성화 화면 보이기
+                binding.includeRecordStop.root.visibility = View.GONE // "답변 종료" 화면 숨김
+                binding.tvLeftTime.visibility = View.VISIBLE
+                binding.tvLeftTime.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+                binding.tvLeftTime.text = requireContext().getString(R.string.title_left_time) + "01:00"
             }
 
             SpeechStatus.SPEECH -> {

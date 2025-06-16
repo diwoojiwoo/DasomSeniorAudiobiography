@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">自傳</string>
+    <string name="title_make_autobiography">建立我的自傳</string>
     <string name="message_network_error">請檢查網路狀態。</string>
     <string name="message_not_exist_elderly_info">請輸入長者的性別與出生年月日。</string>
     <string name="message_not_registration_elderly">請註冊長者資訊。</string>
@@ -22,5 +23,20 @@
 
     <string name="message_title_remove_answer">"已儲存的答案將被刪除。"</string>
     <string name="message_content_remove_answer">"請重新提交您的答案。"</string>
+
+    <string name="recording_start">開始回答</string>
+    <string name="recording_end">回覆結束</string>
+    <string name="recording_save">儲存</string>
+    <string name="recording_listen">播放</string>
+    <string name="answer_remove">刪除</string>
+    <string name="dialog_popup_cancel">取消</string>
+    <string name="dialog_popup_confirm">確認</string>
+    <string name="dialog_response_edit_answer">回答已修改完成。</string>
+    <string name="dialog_response_check_answer">查看回答</string>
+    <string name="dialog_response_go_main">回到主畫面</string>
+    <string name="btn_another_question">查看其他問題</string>
+    <string name="text_additional_answer">追加回答</string>
+    <string name="recording_start_do">開始回答</string>
+
 
 </resources>

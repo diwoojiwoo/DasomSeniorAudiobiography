@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Autobiography</string>
+    <string name="title_make_autobiography">Make an Autobiography</string>
     <string name="message_network_error">"Please check your network connection."</string>
     <string name="message_not_exist_elderly_info">"Please enter the senior's gender and date of birth."</string>
     <string name="message_not_registration_elderly">"Please register the senior."</string>
@@ -22,5 +23,19 @@
 
     <string name="message_title_remove_answer">"The saved answer will be deleted."</string>
     <string name="message_content_remove_answer">"Please submit your answer again."</string>
+
+    <string name="recording_start">Start Answer</string>
+    <string name="recording_end">End Answer</string>
+    <string name="recording_save">Save</string>
+    <string name="recording_listen">Listen</string>
+    <string name="answer_remove">Delete</string>
+    <string name="dialog_popup_cancel">Cancel</string>
+    <string name="dialog_popup_confirm">Confirm</string>
+    <string name="dialog_response_edit_answer">Your answer has been updated.</string>
+    <string name="dialog_response_check_answer">Check Answer</string>
+    <string name="dialog_response_go_main">Go to Main</string>
+    <string name="btn_another_question">View Another Question</string>
+    <string name="text_additional_answer">Add Another Answer</string>
+    <string name="recording_start_do">Answer</string>
 
 </resources>

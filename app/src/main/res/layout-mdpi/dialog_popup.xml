@@ -54,7 +54,7 @@
             android:fontFamily="@font/notosans_kr_r"
             android:gravity="center"
             android:lineSpacingExtra="19sp"
-            android:text="취소"
+            android:text="@string/dialog_popup_cancel"
             android:textColor="#ffffff"
             android:textSize="40sp"
             android:textStyle="bold" />
@@ -70,7 +70,7 @@
             android:fontFamily="@font/notosans_kr_r"
             android:gravity="center"
             android:lineSpacingExtra="19sp"
-            android:text="확인"
+            android:text="@string/dialog_popup_confirm"
             android:textColor="#ffffff"
             android:textSize="40sp"
             android:textStyle="bold" />

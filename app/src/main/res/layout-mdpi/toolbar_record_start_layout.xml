@@ -27,7 +27,7 @@
             android:fontFamily="@font/notosans_kr_b"
             android:gravity="bottom|center_horizontal"
             android:lineHeight="47sp"
-            android:text="듣기"
+            android:text="@string/recording_listen"
             android:textColor="#333333"
             android:textSize="32sp"
             android:textStyle="bold" />
@@ -57,7 +57,7 @@
             android:layout_gravity="center"
             android:fontFamily="@font/notosans_kr_b"
             android:lineHeight="47sp"
-            android:text="답변 시작"
+            android:text="@string/recording_start"
             android:textColor="#ffffff"
             android:textSize="32sp"
             android:textStyle="bold" />
@@ -86,7 +86,7 @@
             android:gravity="bottom|center_horizontal"
             android:fontFamily="@font/notosans_kr_b"
             android:lineHeight="47sp"
-            android:text="저장"
+            android:text="@string/recording_save"
             android:textColor="#333333"
             android:textSize="32sp"
             android:textStyle="bold" />

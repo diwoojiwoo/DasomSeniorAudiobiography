@@ -161,71 +161,6 @@
                 tools:targetApi="o" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!-- 선택 버튼 영역 -->
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_select_detail"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="8dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginTop="47dp"
-            android:gravity="center">
-
-            <FrameLayout
-                android:id="@+id/btn_delete"
-                android:layout_width="456dp"
-                android:layout_height="108dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:background="@drawable/remove_anwser_background">
-
-                <ImageView
-                    android:id="@+id/iv_delete"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center|start"
-                    android:layout_marginStart="122dp"
-                    android:background="@drawable/icon_delete"
-                    android:visibility="gone"/>
-
-                <TextView
-                    android:id="@+id/tv_delete"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center|start"
-                    android:fontFamily="@font/notosans_kr_b"
-                    android:textStyle="bold"
-                    android:textSize="40sp"
-                    android:textColor="#707070"
-                    android:text="삭제"
-                    android:layout_marginStart="191dp"/>
-            </FrameLayout>
-
-            <FrameLayout
-                android:id="@+id/btn_retry"
-                android:layout_width="456dp"
-                android:layout_height="108dp"
-                android:layout_marginEnd="30dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:background="@drawable/add_anwser_background">
-
-                <TextView
-                    android:id="@+id/tv_retry"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:fontFamily="@font/notosans_kr_b"
-                    android:textStyle="bold"
-                    android:textSize="40sp"
-                    android:textColor="#ffffff"
-                    android:text="추가 답변"/>
-            </FrameLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
         <!-- 녹음 레이아웃 -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_recording"
@@ -235,7 +170,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone">
 
             <FrameLayout
                 android:id="@+id/fl_layout"
@@ -259,7 +195,6 @@
                     android:gravity="top|start"
                     android:layout_marginStart="40dp"
                     android:layout_marginTop="45dp"
-                    android:text="남은 시간 00:60"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent" />
 
@@ -271,7 +206,7 @@
                     android:fontFamily="@font/notosans_kr_r"
                     android:gravity="center"
                     android:lineHeight="59sp"
-                    android:text="추가 답변"
+                    android:text="@string/text_additional_answer"
                     android:textAlignment="center"
                     android:textColor="#333333"
                     android:textSize="40sp"
@@ -286,7 +221,6 @@
                     android:fontFamily="@font/notosans_kr_r"
                     android:gravity="center"
                     android:lineHeight="59sp"
-                    android:text="Q. 가족 구성원을 소개해 주세요."
                     android:textAlignment="center"
                     android:textColor="#333333"
                     android:textSize="40sp"
@@ -325,7 +259,7 @@
                     android:layout_gravity="start"
                     android:layout_marginTop="385dp"
                     android:layout_marginStart="163dp"
-                    android:text="듣기"
+                    android:text="@string/recording_listen"
                     android:textColor="@android:color/darker_gray"
                     android:lineSpacingExtra="15sp"
                     android:gravity="center_horizontal" />
@@ -353,7 +287,7 @@
                     android:layout_gravity="start"
                     android:layout_marginTop="385dp"
                     android:layout_marginStart="377dp"
-                    android:text="답변 하기"
+                    android:text="@string/recording_start_do"
                     android:textColor="#333333"
                     android:lineSpacingExtra="15sp"
                     android:gravity="center_horizontal" />
@@ -380,13 +314,76 @@
                     android:layout_gravity="end"
                     android:layout_marginTop="385dp"
                     android:layout_marginEnd="163dp"
-                    android:text="저장"
+                    android:text="@string/recording_save"
                     android:textColor="@android:color/darker_gray"
                     android:lineSpacingExtra="15sp"
                     android:gravity="center_horizontal" />
             </FrameLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
+    <!-- 삭제 / 추가 버튼: 하단 고정 -->
+    <LinearLayout
+        android:id="@+id/layout_select_detail"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="24dp"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:gravity="center"
+        android:background="@android:color/transparent">
+
+        <FrameLayout
+            android:id="@+id/btn_delete"
+            android:layout_width="0dp"
+            android:layout_height="108dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/remove_anwser_background">
+
+            <ImageView
+                android:id="@+id/iv_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|start"
+                android:layout_marginStart="122dp"
+                android:background="@drawable/icon_delete"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/tv_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|start"
+                android:layout_marginStart="191dp"
+                android:fontFamily="@font/notosans_kr_b"
+                android:textStyle="bold"
+                android:textSize="40sp"
+                android:textColor="#707070"
+                android:text="@string/answer_remove"/>
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/btn_retry"
+            android:layout_width="0dp"
+            android:layout_height="108dp"
+            android:layout_weight="1"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/add_anwser_background">
+
+            <TextView
+                android:id="@+id/tv_retry"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:fontFamily="@font/notosans_kr_b"
+                android:textStyle="bold"
+                android:textSize="40sp"
+                android:textColor="#ffffff"
+                android:text="@string/text_additional_answer"/>
+        </FrameLayout>
     </LinearLayout>
 
     <!-- 왼쪽 플로팅 버튼 -->

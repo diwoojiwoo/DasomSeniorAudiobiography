@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">자서전</string>
+    <string name="title_make_autobiography">자서전 만들기</string>
     <string name="message_network_error">"네트워크 상태를 확인하세요."</string>
     <string name="message_not_exist_elderly_info">"어르신 성별, 생년월일을 입력해주세요."</string>
     <string name="message_not_registration_elderly">어르신을 등록해주세요.</string>
@@ -22,4 +23,19 @@
 
     <string name="message_title_remove_answer">"저장된 답변을 삭제합니다."</string>
     <string name="message_content_remove_answer">"답변을 다시 등록해주세요."</string>
+
+    <string name="recording_start">답변 시작</string>
+    <string name="recording_end">답변 종료</string>
+    <string name="recording_save">저장 </string>
+    <string name="recording_listen">듣기</string>
+    <string name="answer_remove">삭제</string>
+    <string name="dialog_popup_cancel">취소</string>
+    <string name="dialog_popup_confirm">확인</string>
+    <string name="dialog_response_edit_answer">답변 수정이 완료 되었습니다.</string>
+    <string name="dialog_response_check_answer">답변 확인하기</string>
+    <string name="dialog_response_go_main">메인화면으로</string>
+    <string name="btn_another_question">다른 질문 보기</string>
+
+    <string name="text_additional_answer">추가 답변</string>
+    <string name="recording_start_do">답변하기</string>
 </resources>

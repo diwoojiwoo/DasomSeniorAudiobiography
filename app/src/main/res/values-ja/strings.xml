@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">自叙伝</string>
+    <string name="title_make_autobiography">自伝を作る</string>
     <string name="message_network_error">ネットワーク状態を確認してください。</string>
     <string name="message_not_exist_elderly_info">ご高齢者の性別と生年月日を入力してください。</string>
     <string name="message_not_registration_elderly">ご高齢者を登録してください。</string>
@@ -22,5 +23,20 @@
 
     <string name="message_title_remove_answer">"保存された回答を削除します。"</string>
     <string name="message_content_remove_answer">"もう一度回答を登録してください。"</string>
+
+    <string name="recording_start">回答を開始</string>
+    <string name="recording_end">回答を終了</string>
+    <string name="recording_save">保存</string>
+    <string name="recording_listen">再生</string>
+    <string name="answer_remove">削除</string>
+    <string name="dialog_popup_cancel">キャンセル</string>
+    <string name="dialog_popup_confirm">確認</string>
+    <string name="dialog_response_edit_answer">回答の修正が完了しました。</string>
+    <string name="dialog_response_check_answer">回答を確認する</string>
+    <string name="dialog_response_go_main">メイン画面へ</string>
+    <string name="btn_another_question">別の質問を見る</string>
+    <string name="text_additional_answer">追加の回答</string>
+    <string name="recording_start_do">回答する</string>
+
 
 </resources>

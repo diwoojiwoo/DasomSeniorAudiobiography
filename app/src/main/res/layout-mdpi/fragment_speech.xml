@@ -50,16 +50,17 @@
                 android:layout_marginStart="32dp"/>
 
             <TextView
+                android:id="@+id/tv_title_speech"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="자서전 만들기"
-                android:fontFamily="@font/pretendard_bold"
+                android:text="@string/title_make_autobiography"
+                android:fontFamily="@font/notosans_kr_b"
                 android:textStyle="bold"
                 android:textSize="44sp"
                 android:textColor="#ffffff"
                 android:lineSpacingExtra="12sp"
                 android:layout_gravity="center_vertical|end"
-                android:layout_marginRight="40dp"/>
+                android:layout_marginEnd="40dp"/>
 
         </FrameLayout>
 
@@ -67,7 +68,7 @@
             android:id="@+id/btn_stop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/btn_destory"
+            android:background="@drawable/btn_destroy"
             android:layout_marginEnd="24dp"
             android:layout_marginTop="32dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -88,7 +89,7 @@
                 android:background="@drawable/btn_another_question_bg"
                 android:layout_marginTop="268dp"
                 android:layout_marginEnd="24dp"
-                android:text="\t다른 질문 보기\t\t\t"
+                android:text="@string/btn_another_question"
                 android:fontFamily="@font/pretendard_bold"
                 android:textStyle="bold"
                 android:textSize="32sp"

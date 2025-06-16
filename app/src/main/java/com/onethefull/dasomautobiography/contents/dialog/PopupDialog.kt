@@ -2,6 +2,7 @@ package com.onethefull.dasomautobiography.contents.dialog
 
 import android.content.Context
 import android.content.DialogInterface
+import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
@@ -37,9 +38,8 @@ class PopupDialog(context: Context) : BaseDialog<DialogPopupBinding>(context), D
         _binding = setViewBinding(layoutInflater)
         window?.apply {
             setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-            setBackgroundDrawable(ColorDrawable(0x80000000.toInt()))
             addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
-            setDimAmount(0.5f)
+            setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         }
 
         binding.tvTitle.text = title

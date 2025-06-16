@@ -58,12 +58,12 @@ class MenuViewModel(
                     when (response.statusCode) {
                         1001 -> {
                             Toasty.error(context, context.getString(R.string.message_not_exist_elderly_info)).show()
-                            RxBus.publish(RxEvent.destroyApp)
+                            RxBus.publish(RxEvent.destroyShortAppUpdate)
                         }
 
                         -3 -> {
                             Toasty.error(context, context.getString(R.string.message_not_registration_elderly)).show()
-                            RxBus.publish(RxEvent.destroyApp)
+                            RxBus.publish(RxEvent.destroyShortAppUpdate)
                         }
 
                         0 -> {

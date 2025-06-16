@@ -1,14 +1,17 @@
 package com.onethefull.dasomautobiography.ui.question
 
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.onethefull.dasomautobiography.App
 import com.onethefull.dasomautobiography.R
 import com.onethefull.dasomautobiography.data.model.audiobiography.Entry
 import com.onethefull.dasomautobiography.data.model.audiobiography.Item
 import com.onethefull.dasomautobiography.utils.Constant
+import com.onethefull.wonderfulrobotmodule.ext.dasomLanguageCodeValue
 
 /**
  * Created by sjw on 2025. 2. 10.
@@ -26,6 +29,26 @@ class ListAdapter(
         fun bind(entry: Entry) {
             tvNumber.text = (position + 1).toString() // 1부터 시작
             tvQuestion.text = entry.viewQuestion
+
+            val language = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko"
+            when (language) {
+                "ko-KR" ->  {
+                    val dpWidth = 630
+                    val scale = itemView.resources.displayMetrics.density
+                    val pxWidth = (dpWidth * scale).toInt()
+                    tvQuestion.layoutParams?.width = pxWidth
+                    tvQuestion.requestLayout()
+                    tvQuestion.setTextSize(TypedValue.COMPLEX_UNIT_SP, 40f)
+                }
+                else -> {
+                    val dpWidth = 550
+                    val scale = itemView.resources.displayMetrics.density
+                    val pxWidth = (dpWidth * scale).toInt()
+                    tvQuestion.layoutParams?.width = pxWidth
+                    tvQuestion.requestLayout()
+                    tvQuestion.setTextSize(TypedValue.COMPLEX_UNIT_SP, 35f)
+                }
+            }
 
             if (entry.answerYn == Constant.YES) {
                 tvAnswerYN.text = itemView.context.getString(R.string.status_answered)

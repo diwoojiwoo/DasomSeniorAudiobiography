@@ -28,7 +28,7 @@
             android:fontFamily="@font/notosans_kr_b"
             android:gravity="center"
             android:lineHeight="47sp"
-            android:text="듣기"
+            android:text="@string/recording_listen"
             android:textColor="#333333"
             android:textSize="32sp"
             android:textStyle="bold" />
@@ -52,13 +52,14 @@
             android:layout_height="109dp"/>
 
         <TextView
+            android:id="@+id/tv_restart_answer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fontFamily="@font/notosans_kr_b"
             android:gravity="center"
             android:lineHeight="47sp"
-            android:text="답변 하기"
+            android:text="@string/recording_start"
             android:textColor="#ffffff"
             android:textSize="32sp"
             android:textStyle="bold" />
@@ -88,7 +89,7 @@
             android:fontFamily="@font/notosans_kr_r"
             android:gravity="center"
             android:lineHeight="47sp"
-            android:text="저장"
+            android:text="@string/recording_save"
             android:textColor="#333333"
             android:textSize="32sp"
             android:textStyle="bold" />
