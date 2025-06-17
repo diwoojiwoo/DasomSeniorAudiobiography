@@ -56,6 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fontFamily="@font/notosans_kr_b"
+            android:gravity="center"
             android:lineHeight="47sp"
             android:text="@string/recording_start"
             android:textColor="#ffffff"

@@ -47,6 +47,7 @@ class PopupDialog(context: Context) : BaseDialog<DialogPopupBinding>(context), D
 
         binding.btnCancel.setOnClickListener {
             dismiss()
+            dialogListener?.cancel()
         }
 
         binding.btnConfirm.setOnClickListener {
@@ -67,6 +68,7 @@ class PopupDialog(context: Context) : BaseDialog<DialogPopupBinding>(context), D
     }
 
     interface DialogListener {
+        fun cancel()
         fun delete()
     }
 }

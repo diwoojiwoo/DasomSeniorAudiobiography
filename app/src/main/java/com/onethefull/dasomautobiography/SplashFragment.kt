@@ -37,7 +37,6 @@ class SplashFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         DWLog.d("SplashFragment onViewCreated")
         val nextAction = arguments?.getString(OnethefullBase.PARAM_NEXT_SCENE_ACTION, "")
-
         viewModel.getContent()
         viewModel.isSpeechFinished.observe(viewLifecycleOwner) { event ->
             if(event) {

@@ -72,8 +72,8 @@ class QuestionDetailViewModel(
 
     private var job: Job? = null // Coroutine Job
 
-    private val _deleteEvent = MutableLiveData<Unit>()
-    val deleteEvent: LiveData<Unit> get() = _deleteEvent
+    private val _deleteEvent = MutableLiveData<Int>()
+    val deleteEvent: LiveData<Int> get() = _deleteEvent
 
     // 녹음 파일 재생 하기
     private var mediaPlayer: MediaPlayer? = null
@@ -496,7 +496,7 @@ class QuestionDetailViewModel(
                     wavUtils.getMultipartWaveFile()
                 ).let { response ->
                     when (response.statusCode) {
-                        -99 -> {
+                        -99, -104-> {
                             _insertLogEvent.postValue(Status(response.statusCode, response.message))
                         }
 
@@ -508,12 +508,8 @@ class QuestionDetailViewModel(
                             _insertLogEvent.postValue(Status(response.statusCode, ""))
                         }
 
-                        -104 -> {
-                            _insertLogEvent.postValue(Status(response.statusCode, response.message))
-                        }
-
                         else -> {
-                            _insertLogEvent.postValue(Status(response.statusCode, ""))
+                            _insertLogEvent.postValue(Status(response.statusCode, "Error"))
                         }
                     }
                 }
@@ -529,34 +525,20 @@ class QuestionDetailViewModel(
      * */
     fun deleteLog(logId: String) {
         uiScope.launch {
-            val check204 = repository.check204() ?: false
-            if (check204) {
-                val response: DeleteLogResponse = repository.deleteLog(
-                    DasomProviderHelper.getCustomerCode(context),
-                    DasomProviderHelper.getDeviceCode(context),
-                    Build.SERIAL,
-                    _currentItem.value?.autobiographyId.toString(),
-                    logId,
-                )
-
-                when (response.status_code) {
-                    -3 -> {
-                        Toasty.error(context, context.getString(R.string.message_not_registration_elderly)).show()
-                        RxBus.publish(RxEvent.destroyApp)
-                    }
-
-                    0 -> {
-                        _deleteEvent.postValue(Unit)
-                    }
-
-                    else -> {
-                        RxBus.publish(RxEvent.destroyApp)
-                    }
-                }
-            } else {
-                Toasty.error(context, context.getString(R.string.message_network_error)).show()
+            if (!isServiceAvailable()) {
+                _deleteEvent.postValue(STATUS_NETWORK_ERROR)
                 RxBus.publish(RxEvent.destroyApp)
+                return@launch
             }
+
+            val response = repository.deleteLog(
+                DasomProviderHelper.getCustomerCode(context),
+                DasomProviderHelper.getDeviceCode(context),
+                Build.SERIAL,
+                _currentItem.value?.autobiographyId.toString(),
+                logId,
+            )
+            _deleteEvent.postValue(response.status_code)
         }
     }
 
@@ -578,9 +560,25 @@ class QuestionDetailViewModel(
         _answerAudioUrl.value = url
     }
 
+    fun removeLogById(logId: Int) {
+        val logDtl = _logDtlEvent.value
+        val list = logDtl?.autobiographyMap?.list
+
+        if (list is MutableList) {
+            list.removeAll { it.autobiographyLogId == logId }
+            _logDtlEvent.value = _logDtlEvent.value
+        }
+    }
+    private suspend fun isServiceAvailable(): Boolean {
+        return repository.check204() ?: false
+    }
+
     companion object {
         private const val wavFileName = "recorded_bio_reply"
         private const val wavDirPath = "/sdcard/audio/temp/"
         private const val wavExt = ".wav"
+
+        private const val STATUS_NETWORK_ERROR = -1
+
     }
 }

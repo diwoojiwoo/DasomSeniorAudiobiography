@@ -170,7 +170,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
             android:visibility="gone">
 
             <FrameLayout
@@ -199,6 +199,7 @@
                     app:layout_constraintBottom_toBottomOf="parent" />
 
                 <TextView
+                    android:id="@+id/tv_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top|center_horizontal"
@@ -213,9 +214,9 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tv_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_content"
+                    android:layout_width="740dp"
+                    android:layout_height="100dp"
                     android:layout_gravity="top|center_horizontal"
                     android:layout_marginTop="113dp"
                     android:fontFamily="@font/notosans_kr_r"
@@ -224,7 +225,13 @@
                     android:textAlignment="center"
                     android:textColor="#333333"
                     android:textSize="40sp"
-                    android:textStyle="normal"/>
+                    android:textStyle="normal"
+                    android:maxLines="3"
+                    android:autoSizeTextType="uniform"
+                    android:autoSizeMaxTextSize="40sp"
+                    android:autoSizeMinTextSize="20sp"
+                    android:autoSizeStepGranularity="2sp"
+                    tools:targetApi="o"/>
 
 
                 <ImageView
@@ -410,4 +417,11 @@
         android:contentDescription="오른쪽 플로팅 버튼"
         android:visibility="gone"/>
 
+    <!-- ProgressBar -->
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:visibility="gone"/> <!-- 기본적으로 숨김 상태 -->
 </FrameLayout>

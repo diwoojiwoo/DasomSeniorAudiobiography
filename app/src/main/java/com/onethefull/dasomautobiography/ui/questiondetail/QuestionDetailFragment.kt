@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Color
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.onethefull.dasomautobiography.App
 import com.onethefull.dasomautobiography.MainActivity
 import com.onethefull.dasomautobiography.MainViewModel
 import com.onethefull.dasomautobiography.R
@@ -29,6 +31,7 @@ import com.onethefull.dasomautobiography.utils.bus.RxEvent
 import com.onethefull.dasomautobiography.utils.logger.DWLog
 import com.onethefull.dasomautobiography.utils.setOnSingleClickListener
 import com.onethefull.dasomautobiography.utils.speech.SpeechStatus
+import com.onethefull.wonderfulrobotmodule.ext.dasomLanguageCodeValue
 
 /**
  * Created by sjw on 2025. 3. 7.
@@ -82,6 +85,18 @@ class QuestionDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val language = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko"
+        when (language) {
+            "ko-KR" ->  {
+                binding.tvLeftTime.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32f)
+                binding.tvContent.setTextSize(TypedValue.COMPLEX_UNIT_SP, 40f)
+            }
+            else -> {
+                binding.tvLeftTime.setTextSize(TypedValue.COMPLEX_UNIT_SP, 28f)
+                binding.tvContent.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
+            }
+        }
+
         sharedViewModel.selectedItem.observe(viewLifecycleOwner) { item ->
             if (item != null) {
                 DWLog.d("Received item [name]:: ${itemName}, [title]:: ${item.type}  ${item.sort}, ${item.autobiographyId} [question]::${item.viewQuestion}")
@@ -98,30 +113,38 @@ class QuestionDetailFragment : Fragment() {
             }
         }
 
-        viewModel.deleteEvent.observe(viewLifecycleOwner) {
-            val list = viewModel.logDtlEvent.value?.autobiographyMap?.list
-            if (list.isNullOrEmpty()) {
-                (activity as MainActivity).back()
-            } else {
-                currentAnswerIndex = 0
-                updateAnswerDisplay()
+        viewModel.deleteEvent.observe(viewLifecycleOwner) { event ->
+            binding.progressBar.visibility = View.GONE
+            when (event) {
+                0 -> {
+                    val list = viewModel.logDtlEvent.value?.autobiographyMap?.list
+                    if (list.isNullOrEmpty()) {
+                        (activity as MainActivity).back()
+                    } else {
+                        currentAnswerIndex = 0
+                        updateAnswerDisplay()
+                    }
+                }
+                -3 -> {
+                    Toasty.error(requireContext(), requireContext().getString(R.string.message_not_registration_elderly)).show()
+                    RxBus.publish(RxEvent.destroyShortAppUpdate)
+                }
+                else -> {
+                    RxBus.publish(RxEvent.destroyApp)
+                }
             }
         }
 
         viewModel.logDtlEvent.observe(viewLifecycleOwner) { event ->
-            binding.layoutAnswerDetail.background = ContextCompat.getDrawable(activity as MainActivity, R.drawable.new_answer_detail_background)
-            binding.tvListenAnswer.background = ContextCompat.getDrawable(activity as MainActivity, R.drawable.btn_listen_checkbox)
-            binding.tvAnswer.setTextColor(Color.BLACK)
-
             when (event.statusCode) {
                 1001 -> {
                     Toasty.error(activity as MainActivity, event.message.toString()).show()
-                    RxBus.publish(RxEvent.destroyApp)
+                    RxBus.publish(RxEvent.destroyShortAppUpdate)
                 }
 
                 -3 -> {
                     Toasty.error(activity as MainActivity, event.message.toString()).show()
-                    RxBus.publish(RxEvent.destroyApp)
+                    RxBus.publish(RxEvent.destroyShortAppUpdate)
                 }
 
                 0 -> {
@@ -131,7 +154,7 @@ class QuestionDetailFragment : Fragment() {
 
                 else -> {
                     Toasty.error(activity as MainActivity, event.message ?: "알 수 없는 오류").show()
-                    RxBus.publish(RxEvent.destroyApp)
+                    RxBus.publish(RxEvent.destroyShortAppUpdate)
                 }
             }
         }
@@ -237,15 +260,20 @@ class QuestionDetailFragment : Fragment() {
          * */
         binding.btnDelete.setOnClickListener {
             activity?.let { activity ->
-                binding.btnRight.visibility = View.GONE
-                binding.btnLeft.visibility = View.GONE
-                val logId = viewModel.logId.value
+                val targetLogId = viewModel.logId.value?.toIntOrNull()
+                binding.progressBar.visibility = View.VISIBLE
                 PopupDialog(activity).apply {
                     window?.requestFeature(Window.FEATURE_NO_TITLE)
                     setText(requireContext().getString(R.string.message_title_remove_answer), requireContext().getString(R.string.message_content_remove_answer))
                     setDialogListener(object : PopupDialog.DialogListener {
                         override fun delete() {
-                            viewModel.deleteLog(logId.toString())
+                            viewModel.deleteLog(targetLogId.toString())
+                            if (targetLogId != null) {
+                                viewModel.removeLogById(targetLogId)
+                            }
+                        }
+                        override fun cancel() {
+                            binding.progressBar.visibility = View.GONE
                         }
                     })
                     show()
@@ -256,13 +284,11 @@ class QuestionDetailFragment : Fragment() {
         /**
          * "추가 답변" 버튼 클릭 리스너
          */
-        binding.btnRetry.setOnClickListener {
+        binding.tvRetry.setOnClickListener {
             binding.customToolbar.visibility = View.GONE
             binding.layoutQuestionDetail.visibility = View.GONE
             binding.layoutAnswerDetail.visibility = View.GONE
             binding.layoutSelectDetail.visibility = View.GONE
-            binding.btnRight.visibility = View.GONE
-            binding.btnLeft.visibility = View.GONE
             binding.layoutRecording.visibility = View.VISIBLE
         }
 
@@ -278,8 +304,7 @@ class QuestionDetailFragment : Fragment() {
         }
 
         // 다시 답변 다이얼로그 화면
-        binding.tvTitle.text = sharedViewModel.selectedItem.value?.viewQuestion // 질문 재세팅
-
+        binding.tvContent.text = sharedViewModel.selectedItem.value?.viewQuestion // 질문 재세팅
 
         viewModel.timeLeft.observe(viewLifecycleOwner) { time ->
             if (time < 60) {
@@ -393,6 +418,10 @@ class QuestionDetailFragment : Fragment() {
         val answers = event.autobiographyMap?.list ?: emptyList()
 
         if (answers.isNotEmpty() && viewModel.transText.value != "") {
+            binding.layoutAnswerDetail.background = ContextCompat.getDrawable(activity as MainActivity, R.drawable.new_answer_detail_background)
+            binding.tvListenAnswer.background = ContextCompat.getDrawable(activity as MainActivity, R.drawable.btn_listen_checkbox)
+            binding.tvAnswer.setTextColor(Color.BLACK)
+
             val currentAnswer = answers[currentAnswerIndex]
             binding.tvAnswer.text = requireContext().getString(R.string.prefix_title_answer) + currentAnswer.transText
             viewModel.setAnswerAudioUrl(currentAnswer.answerAudioUrl ?: "")
@@ -409,16 +438,19 @@ class QuestionDetailFragment : Fragment() {
             if (answers.size >= 3) {
                 binding.tvRetry.text = requireContext().getString(R.string.title_additional_answer) + " (${currentAnswerIndex + 1}/${answers.size})"
                 binding.tvRetry.isEnabled = false
+                binding.tvRetry.isClickable = false
                 binding.tvRetry.alpha = 0.5f // 비활성화된 듯한 UI 표현
             } else if (answers.size > 1) {
                 val current = currentAnswerIndex + 1
                 val total = answers.size
                 binding.tvRetry.text = requireContext().getString(R.string.title_additional_answer) + " ($current/$total)"
                 binding.tvRetry.isEnabled = true
+                binding.tvRetry.isClickable = true
                 binding.tvRetry.alpha = 1f
             } else {
                 binding.tvRetry.text = requireContext().getString(R.string.title_additional_answer)
                 binding.tvRetry.isEnabled = true
+                binding.tvRetry.isClickable = true
                 binding.tvRetry.alpha = 1f
             }
 

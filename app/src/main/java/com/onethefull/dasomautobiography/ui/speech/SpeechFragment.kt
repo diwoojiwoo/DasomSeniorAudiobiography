@@ -57,12 +57,14 @@ class SpeechFragment : Fragment() {
             "ko-KR" ->  {
                 binding.tvTitleSpeech.setTextSize(TypedValue.COMPLEX_UNIT_SP, 44f)
                 binding.tvQuestionTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32f)
+                binding.includeRecordStart.tvRecordingStart.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32f)
                 binding.includeRecordRestart.tvRestartAnswer.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32f)
                 binding.includeRecordStop.tvRecordingStop.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32f)
             }
             else -> {
                 binding.tvTitleSpeech.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22f)
                 binding.tvQuestionTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 28f)
+                binding.includeRecordStart.tvRecordingStart.setTextSize(TypedValue.COMPLEX_UNIT_SP, 28f)
                 binding.includeRecordRestart.tvRestartAnswer.setTextSize(TypedValue.COMPLEX_UNIT_SP, 28f)
                 binding.includeRecordStop.tvRecordingStop.setTextSize(TypedValue.COMPLEX_UNIT_SP, 28f)
             }
