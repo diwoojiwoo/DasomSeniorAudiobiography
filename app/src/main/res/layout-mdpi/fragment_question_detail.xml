@@ -170,7 +170,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             android:visibility="gone">
 
             <FrameLayout
@@ -286,18 +286,18 @@
                 <!--   답변하기 텍스트-->
                 <TextView
                     android:id="@+id/tv_recording"
-                    android:layout_width="wrap_content"
+                    android:layout_width="178dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/notosans_kr_r"
                     android:textStyle="bold"
                     android:textSize="32sp"
                     android:layout_gravity="start"
                     android:layout_marginTop="385dp"
-                    android:layout_marginStart="377dp"
+                    android:layout_marginStart="356dp"
                     android:text="@string/recording_start_do"
                     android:textColor="#333333"
                     android:lineSpacingExtra="15sp"
-                    android:gravity="center_horizontal" />
+                    android:gravity="center" />
 
                 <!--    저장하기  이미지  -->
                 <ImageButton

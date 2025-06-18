@@ -48,11 +48,14 @@ class QuestionDetailFragment : Fragment() {
 
     private var currentAnswerIndex = 0
 
+    var isFromBroadcast = false
+
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent?.action == Constant.ACTION_STT_TEXT) {
                 val logId = intent.getStringExtra(Constant.PARAM_LOG_ID) ?: return
                 DWLog.d("BroadcastReceiver onReceive [logId] :: $logId")
+                isFromBroadcast = true
                 viewModel.getLogDtl(sharedViewModel.selectedItem.value?.autobiographyId.toString())
 //                viewModel.getLogDtl(logId)
             }
@@ -87,10 +90,11 @@ class QuestionDetailFragment : Fragment() {
 
         val language = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko"
         when (language) {
-            "ko-KR" ->  {
+            "ko-KR" -> {
                 binding.tvLeftTime.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32f)
                 binding.tvContent.setTextSize(TypedValue.COMPLEX_UNIT_SP, 40f)
             }
+
             else -> {
                 binding.tvLeftTime.setTextSize(TypedValue.COMPLEX_UNIT_SP, 28f)
                 binding.tvContent.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
@@ -125,10 +129,12 @@ class QuestionDetailFragment : Fragment() {
                         updateAnswerDisplay()
                     }
                 }
+
                 -3 -> {
                     Toasty.error(requireContext(), requireContext().getString(R.string.message_not_registration_elderly)).show()
                     RxBus.publish(RxEvent.destroyShortAppUpdate)
                 }
+
                 else -> {
                     RxBus.publish(RxEvent.destroyApp)
                 }
@@ -148,7 +154,13 @@ class QuestionDetailFragment : Fragment() {
                 }
 
                 0 -> {
-                    currentAnswerIndex = 0
+                    val answers = event.autobiographyMap?.list ?: emptyList()
+                    currentAnswerIndex = if (isFromBroadcast) {
+                        isFromBroadcast = false
+                        answers.lastIndex
+                    } else {
+                        0
+                    }
                     updateAnswerDisplay()
                 }
 
@@ -272,6 +284,7 @@ class QuestionDetailFragment : Fragment() {
                                 viewModel.removeLogById(targetLogId)
                             }
                         }
+
                         override fun cancel() {
                             binding.progressBar.visibility = View.GONE
                         }
@@ -290,6 +303,9 @@ class QuestionDetailFragment : Fragment() {
             binding.layoutAnswerDetail.visibility = View.GONE
             binding.layoutSelectDetail.visibility = View.GONE
             binding.layoutRecording.visibility = View.VISIBLE
+
+            binding.btnLeft.visibility = View.GONE
+            binding.btnRight.visibility = View.GONE
         }
 
         /**
@@ -390,6 +406,7 @@ class QuestionDetailFragment : Fragment() {
             binding.layoutQuestionDetail.visibility = View.VISIBLE
             binding.layoutAnswerDetail.visibility = View.VISIBLE
             binding.layoutSelectDetail.visibility = View.VISIBLE
+            updateAnswerDisplay()
             binding.layoutRecording.visibility = View.GONE
 
             viewModel.stopWavFile()

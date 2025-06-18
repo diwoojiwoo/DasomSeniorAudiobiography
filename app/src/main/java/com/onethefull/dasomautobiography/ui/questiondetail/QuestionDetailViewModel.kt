@@ -397,7 +397,6 @@ class QuestionDetailViewModel(
                                     autobiographyMap = null
                                 )
                             )
-                            RxBus.publish(RxEvent.destroyApp)
                         }
 
                         -3 -> {
@@ -411,7 +410,6 @@ class QuestionDetailViewModel(
                                     autobiographyMap = null
                                 )
                             )
-                            RxBus.publish(RxEvent.destroyApp)
                         }
 
                         0 -> {
@@ -450,7 +448,6 @@ class QuestionDetailViewModel(
                                     autobiographyMap = null
                                 )
                             )
-                            RxBus.publish(RxEvent.destroyApp)
                         }
                     }
                 }

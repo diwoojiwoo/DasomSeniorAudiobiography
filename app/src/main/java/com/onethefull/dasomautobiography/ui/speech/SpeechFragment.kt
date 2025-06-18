@@ -54,19 +54,20 @@ class SpeechFragment : Fragment() {
 
         val language = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko"
         when (language) {
-            "ko-KR" ->  {
-                binding.tvTitleSpeech.setTextSize(TypedValue.COMPLEX_UNIT_SP, 44f)
-                binding.tvQuestionTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32f)
-                binding.includeRecordStart.tvRecordingStart.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32f)
-                binding.includeRecordRestart.tvRestartAnswer.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32f)
-                binding.includeRecordStop.tvRecordingStop.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32f)
-            }
-            else -> {
+            "en-US" -> {
                 binding.tvTitleSpeech.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22f)
                 binding.tvQuestionTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 28f)
                 binding.includeRecordStart.tvRecordingStart.setTextSize(TypedValue.COMPLEX_UNIT_SP, 28f)
                 binding.includeRecordRestart.tvRestartAnswer.setTextSize(TypedValue.COMPLEX_UNIT_SP, 28f)
                 binding.includeRecordStop.tvRecordingStop.setTextSize(TypedValue.COMPLEX_UNIT_SP, 28f)
+            }
+
+            else -> {
+                binding.tvTitleSpeech.setTextSize(TypedValue.COMPLEX_UNIT_SP, 44f)
+                binding.tvQuestionTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32f)
+                binding.includeRecordStart.tvRecordingStart.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32f)
+                binding.includeRecordRestart.tvRestartAnswer.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32f)
+                binding.includeRecordStop.tvRecordingStop.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32f)
             }
         }
 
