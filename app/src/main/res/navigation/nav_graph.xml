@@ -94,6 +94,10 @@
         <action
             android:id="@+id/action_speech_to_menu_fragment"
             app:destination="@id/menu_fragment"/>
-
     </fragment>
+
+    <action
+        android:id="@+id/action_global_speechFragment"
+        app:destination="@id/speech_fragment"
+        app:launchSingleTop="true" />
 </navigation>

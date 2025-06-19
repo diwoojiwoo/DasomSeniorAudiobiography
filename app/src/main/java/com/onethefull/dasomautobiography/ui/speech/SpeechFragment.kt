@@ -21,6 +21,7 @@ import com.onethefull.dasomautobiography.R
 import com.onethefull.dasomautobiography.contents.dialog.ResultDialog
 import com.onethefull.dasomautobiography.contents.toast.Toasty
 import com.onethefull.dasomautobiography.databinding.FragmentSpeechBinding
+import com.onethefull.dasomautobiography.utils.Constant
 import com.onethefull.dasomautobiography.utils.InjectorUtils
 import com.onethefull.dasomautobiography.utils.bus.RxBus
 import com.onethefull.dasomautobiography.utils.bus.RxEvent
@@ -52,6 +53,21 @@ class SpeechFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val moveReason = arguments?.getString(Constant.KEY_MOVE_REASON)
+        when (moveReason) {
+            Constant.MOVE_REASON_STT -> {
+                // STT로 이동
+                DWLog.d("음성명령으로 실행, getContent API 호출해서 질문,화면 세팅")
+            }
+            Constant.MOVE_REASON_NO_ANSWER -> {
+                // 답변 없음으로 이동
+                DWLog.d("QuestionList에서 선택한 질문 실행")
+            }
+            else -> {
+                // 기본 진입 처리
+            }
+        }
+
         val language = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko"
         when (language) {
             "en-US" -> {
@@ -77,23 +93,6 @@ class SpeechFragment : Fragment() {
         binding.includeRecordStop.root.visibility = View.GONE
 
         setUpSpeech()
-        sharedViewModel.selectedItem.observe(viewLifecycleOwner) { item ->
-            if (item != null) {
-                DWLog.d("Received item [title]:: ${item.typeName}  ${item.sort}, [question]::${item.viewQuestion}")
-                binding.tvQuestionTitle.text = "${item.typeName}  ${item.sort}"
-                binding.tvQuestion.text = item.viewQuestion
-                Glide.with(requireContext())
-                    .load(item.imgUrl)
-                    .placeholder(ContextCompat.getDrawable(requireContext(), android.R.drawable.ic_popup_sync))
-                    .error(ContextCompat.getDrawable(requireContext(), R.color.background_color))
-                    .into(binding.ivBg)
-                viewModel.speech(item.viewQuestion)
-            } else {
-                DWLog.e("Received null item")
-                RxBus.publish(RxEvent.destroyApp)
-            }
-        }
-
         viewModel.isRecording.observe(viewLifecycleOwner) { isRecording ->
             DWLog.e("isRecording ??? $isRecording")
             if (isRecording) { // 답변 중 화면

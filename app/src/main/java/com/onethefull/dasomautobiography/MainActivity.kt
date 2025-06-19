@@ -6,8 +6,10 @@ import androidx.databinding.DataBindingUtil.setContentView
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.onethefull.dasomautobiography.base.BaseActivity
 import com.onethefull.dasomautobiography.databinding.ActivityMainBinding
+import com.onethefull.dasomautobiography.utils.Constant
 import com.onethefull.dasomautobiography.utils.logger.DWLog
 import com.onethefull.dasomautobiography.utils.speech.GCTextToSpeech
 
@@ -51,8 +53,13 @@ class MainActivity : BaseActivity() {
 //        navController.navigate(R.id.splash_fragment, Bundle().apply {})
     }
 
-    fun navigateToSpeechFragment() {
-        navController.navigate(R.id.action_questionlist_fragment_to_speech_fragment)
+    fun navigateToSpeechFragment(reason: String? = null) {
+        val bundle = Bundle().apply {
+            reason?.let { putString(Constant.KEY_MOVE_REASON, it) }
+        }
+        supportFragmentManager.findFragmentById(R.id.nav_graph)
+            ?.findNavController()
+            ?.navigate(R.id.action_global_speechFragment, bundle)
     }
 
     fun back() {

@@ -8,6 +8,9 @@ object Constant {
     const val PARAM_LOG_ID = "autobiographyLogId"
     const val YES = "Y"
     const val NO = "N"
+    const val KEY_MOVE_REASON = "moveReason"
+    const val MOVE_REASON_STT = "stt"
+    const val MOVE_REASON_NO_ANSWER = "no_answer"
 }
 
 object Product {

@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.onethefull.dasomautobiography.base.OnethefullBase
+import com.onethefull.dasomautobiography.utils.Constant
 import com.onethefull.dasomautobiography.utils.InjectorUtils
 import com.onethefull.dasomautobiography.utils.logger.DWLog
 import kotlinx.coroutines.delay
@@ -41,11 +42,15 @@ class SplashFragment : Fragment() {
         viewModel.isSpeechFinished.observe(viewLifecycleOwner) { event ->
             if(event) {
                 viewLifecycleOwner.lifecycleScope.launch {
-//                    if (nextAction != "")
-//                        findNavController().navigate(R.id.action_splashFragment_to_speechFragment)
+//                    if (nextAction != "") {
+//                        (activity as MainActivity).navigateToSpeechFragment(Constant.MOVE_REASON_STT)
+//                    }
 //                    else
 //                        findNavController().navigate(R.id.action_splashFragment_to_menuFragment)
-                    findNavController().navigate(R.id.action_splashFragment_to_menuFragment)
+
+
+                    // test
+                    (activity as MainActivity).navigateToSpeechFragment(Constant.MOVE_REASON_STT)
                 }
             }
         }

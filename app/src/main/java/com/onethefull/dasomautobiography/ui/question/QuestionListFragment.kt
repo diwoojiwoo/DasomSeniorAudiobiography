@@ -51,7 +51,7 @@ class QuestionListFragment : Fragment(), ListAdapter.OnItemClickListener {
         entry.typeName = mItem.typeName
         (activity as MainActivity).viewModel.selectItem(entry)  // 데이터 저장
         if (entry.answerYn == Constant.NO) {
-            (activity as MainActivity).navigateToSpeechFragment()  // 답변이 없는 경우 SpeechFragment 화면으로 이동
+            (activity as MainActivity).navigateToSpeechFragment(Constant.MOVE_REASON_NO_ANSWER)  // 답변이 없는 경우 SpeechFragment 화면으로 이동
         } else {
             findNavController().navigate(QuestionListFragmentDirections.actionQuestionlistFragmentToDetailFragment()) // 답변이 있는 경우 QuestionDetailFragment 이동
         }

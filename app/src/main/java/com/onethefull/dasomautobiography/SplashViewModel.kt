@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.onethefull.dasomautobiography.base.BaseViewModel
 import com.onethefull.dasomautobiography.contents.toast.Toasty
+import com.onethefull.dasomautobiography.data.model.audiobiography.Entry
 import com.onethefull.dasomautobiography.provider.DasomProviderHelper
 import com.onethefull.dasomautobiography.repository.SplashRepository
 import com.onethefull.dasomautobiography.utils.bus.RxBus
@@ -41,6 +42,7 @@ class SplashViewModel(
     }
 
     fun getContent() {
+        // 응답없을경우 _isSpeechFinished.value = true 해서 앱 종료 시키기 추가
         uiScope.launch {
             val check204 = repository.check204() ?: false
             if (check204) {
@@ -51,8 +53,27 @@ class SplashViewModel(
                 ).let { response ->
                     when (response.statusCode) {
                         0 -> {
+                            response.autobiography?.let { item ->
+                                (context as MainActivity).viewModel.selectItem(
+                                    Entry(
+                                        autobiographyId = item.id,
+                                        audioUrl = "",
+                                        transText = "",
+                                        imgUrl = item.imgUrl,
+                                        question = item.question,
+                                        answerYn = "",
+                                        sort = "",
+                                        type = item.type,
+                                        typeName = item.type,
+                                        viewQuestion = item.viewQuestion,
+                                    )
+                                )
+                            } ?: run {
+                                DWLog.d("????????????? 에러메세지 띄우고 앱종료")
+                            }
                             GCTextToSpeech.getInstance()?.speech(response.introMent.toString())
                         }
+
                         else -> {
                             _isSpeechFinished.value = true
                         }
