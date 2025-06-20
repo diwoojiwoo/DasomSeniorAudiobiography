@@ -1,9 +1,6 @@
 package com.onethefull.dasomautobiography
 
-import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,11 +36,16 @@ class SplashFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         DWLog.d("SplashFragment onViewCreated")
-        val nextAction = arguments?.getString(OnethefullBase.PARAM_NEXT_SCENE_ACTION, "")
-        if (nextAction != "") {
+        val nextAction = arguments?.getString(OnethefullBase.PARAM_NEXT_SCENE_ACTION)
+        DWLog.d("nextAction = $nextAction")
+
+        if (!nextAction.isNullOrEmpty()) {
             viewModel.getContent()
         } else {
-            findNavController().navigate(R.id.action_splashFragment_to_menuFragment)
+            viewLifecycleOwner.lifecycleScope.launch {
+                delay(1500)
+                findNavController().navigate(R.id.action_splashFragment_to_menuFragment)
+            }
         }
 
         // 중복 이동 방지 플래그
