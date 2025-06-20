@@ -57,7 +57,7 @@ class MainActivity : BaseActivity() {
         val bundle = Bundle().apply {
             reason?.let { putString(Constant.KEY_MOVE_REASON, it) }
         }
-        supportFragmentManager.findFragmentById(R.id.nav_graph)
+        supportFragmentManager.findFragmentById(R.id.nav_host)
             ?.findNavController()
             ?.navigate(R.id.action_global_speechFragment, bundle)
     }

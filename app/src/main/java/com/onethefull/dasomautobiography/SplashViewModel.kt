@@ -42,7 +42,6 @@ class SplashViewModel(
     }
 
     fun getContent() {
-        // 응답없을경우 _isSpeechFinished.value = true 해서 앱 종료 시키기 추가
         uiScope.launch {
             val check204 = repository.check204() ?: false
             if (check204) {
@@ -64,18 +63,19 @@ class SplashViewModel(
                                         answerYn = "",
                                         sort = "",
                                         type = item.type,
-                                        typeName = item.type,
+                                        typeName = item.typeName,
                                         viewQuestion = item.viewQuestion,
                                     )
                                 )
                             } ?: run {
-                                DWLog.d("????????????? 에러메세지 띄우고 앱종료")
+                                Toasty.error(context, context.getString(R.string.message_network_error)).show()
+                                RxBus.publish(RxEvent.destroyApp)
                             }
                             GCTextToSpeech.getInstance()?.speech(response.introMent.toString())
                         }
-
                         else -> {
-                            _isSpeechFinished.value = true
+                            Toasty.error(context, context.getString(R.string.message_network_error)).show()
+                            RxBus.publish(RxEvent.destroyApp)
                         }
                     }
                 }

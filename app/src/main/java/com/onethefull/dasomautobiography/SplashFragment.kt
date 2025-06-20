@@ -1,5 +1,6 @@
 package com.onethefull.dasomautobiography
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -11,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.onethefull.dasomautobiography.base.OnethefullBase
+import com.onethefull.dasomautobiography.databinding.FragmentSplashBinding
 import com.onethefull.dasomautobiography.utils.Constant
 import com.onethefull.dasomautobiography.utils.InjectorUtils
 import com.onethefull.dasomautobiography.utils.logger.DWLog
@@ -21,8 +23,8 @@ import kotlinx.coroutines.launch
  * Created by sjw on 2025. 2. 12.
  */
 class SplashFragment : Fragment() {
-
-    val viewModel : SplashViewModel by viewModels {
+    private lateinit var binding : FragmentSplashBinding
+    val viewModel: SplashViewModel by viewModels {
         InjectorUtils.provideSplashViewModelFactory(requireContext())
     }
 
@@ -30,27 +32,28 @@ class SplashFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        DWLog.d("SplashFragment onCreateView")
-        return inflater.inflate(R.layout.fragment_splash, container, false)
+        binding = FragmentSplashBinding.inflate(inflater, container, false).apply {}
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         DWLog.d("SplashFragment onViewCreated")
         val nextAction = arguments?.getString(OnethefullBase.PARAM_NEXT_SCENE_ACTION, "")
-        viewModel.getContent()
+        if (nextAction != "") {
+            viewModel.getContent()
+        } else {
+            findNavController().navigate(R.id.action_splashFragment_to_menuFragment)
+        }
+
+        // 중복 이동 방지 플래그
+        var hasNavigated = false
+
         viewModel.isSpeechFinished.observe(viewLifecycleOwner) { event ->
-            if(event) {
+            if (event && !hasNavigated) {
+                hasNavigated = true
                 viewLifecycleOwner.lifecycleScope.launch {
-//                    if (nextAction != "") {
-//                        (activity as MainActivity).navigateToSpeechFragment(Constant.MOVE_REASON_STT)
-//                    }
-//                    else
-//                        findNavController().navigate(R.id.action_splashFragment_to_menuFragment)
-
-
-                    // test
-                    (activity as MainActivity).navigateToSpeechFragment(Constant.MOVE_REASON_STT)
+                    (activity as? MainActivity)?.navigateToSpeechFragment(Constant.MOVE_REASON_STT)
                 }
             }
         }

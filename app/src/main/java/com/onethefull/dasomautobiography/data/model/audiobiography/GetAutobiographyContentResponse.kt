@@ -48,5 +48,6 @@ data class Autobiography(
     @SerializedName("question") @Expose var question: String,
     @SerializedName("type") @Expose var type: String,
     @SerializedName("viewQuestion") @Expose var viewQuestion: String,
-    @SerializedName("imgUrl") @Expose var imgUrl: String
+    @SerializedName("imgUrl") @Expose var imgUrl: String,
+    @SerializedName("typeName") @Expose var typeName: String,
 )

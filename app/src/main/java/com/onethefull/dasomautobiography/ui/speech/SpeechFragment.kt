@@ -53,21 +53,6 @@ class SpeechFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val moveReason = arguments?.getString(Constant.KEY_MOVE_REASON)
-        when (moveReason) {
-            Constant.MOVE_REASON_STT -> {
-                // STT로 이동
-                DWLog.d("음성명령으로 실행, getContent API 호출해서 질문,화면 세팅")
-            }
-            Constant.MOVE_REASON_NO_ANSWER -> {
-                // 답변 없음으로 이동
-                DWLog.d("QuestionList에서 선택한 질문 실행")
-            }
-            else -> {
-                // 기본 진입 처리
-            }
-        }
-
         val language = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko"
         when (language) {
             "en-US" -> {
@@ -93,6 +78,17 @@ class SpeechFragment : Fragment() {
         binding.includeRecordStop.root.visibility = View.GONE
 
         setUpSpeech()
+        viewModel.currentItem.observe(viewLifecycleOwner) { item ->
+            binding.tvQuestionTitle.text = item.typeName
+            binding.tvQuestion.text = item.viewQuestion
+            Glide.with(requireContext())
+                .load(item.imgUrl)
+                .placeholder(ContextCompat.getDrawable(requireContext(), R.color.transparent))
+                .error(ContextCompat.getDrawable(requireContext(), R.drawable.item))
+                .into(binding.ivBg)
+            viewModel.speech(item.question)
+        }
+
         viewModel.isRecording.observe(viewLifecycleOwner) { isRecording ->
             DWLog.e("isRecording ??? $isRecording")
             if (isRecording) { // 답변 중 화면
@@ -110,6 +106,43 @@ class SpeechFragment : Fragment() {
         viewModel.timeLeft.observe(viewLifecycleOwner) { time ->
             binding.tvLeftTime.setTextColor(Color.parseColor("#FAFF5E"))
             binding.tvLeftTime.text = String.format(requireContext().getString(R.string.title_left_time) + "00:%02d", time)
+        }
+
+        viewModel.insertLogEvent.observe(viewLifecycleOwner) { event ->
+            binding.includeRecordRestart.save.isEnabled = true
+            when (event.status_code) {
+                -99, -3 -> {
+                    Toasty.error(activity as MainActivity, event.status.toString()).show()
+                    findNavController().navigate(SpeechFragmentDirections.actionSpeechToMenuFragment())
+                }
+
+                0 -> {
+                    activity?.let { activity ->
+                        ResultDialog(activity).apply {
+                            window?.requestFeature(Window.FEATURE_NO_TITLE)
+                            setText(requireContext().getString(R.string.message_success_to_answer), requireContext().getString(R.string.message_check_answer), requireContext().getString(R.string.message_back_to_home))
+                            setDialogListener(object : ResultDialog.DialogListener {
+                                override fun checkAnswer() { // 답변 확인하기
+                                    DWLog.d("답변 확인하기 버튼 클릭 ==> 답변 확인 UI")
+                                    findNavController().navigate(SpeechFragmentDirections.actionSpeechFragmentToQuestiondetailFragment())
+                                }
+
+                                override fun moveHome() {
+                                    findNavController().navigate(SpeechFragmentDirections.actionSpeechToMenuFragment())
+                                }
+                            })
+                            setDismissListener(object : ResultDialog.DialogDismissListener {
+                                override fun onDismiss() {}
+                            })
+                            show()
+                        }
+                    }
+                }
+
+                else -> {
+                    RxBus.publish(RxEvent.destroyApp)
+                }
+            }
         }
 
         binding.btnStop.setOnClickListener {
@@ -154,45 +187,7 @@ class SpeechFragment : Fragment() {
             viewModel.stopWavFile()
             viewModel.insertLog()
         }
-
-        viewModel.insertLogEvent.observe(viewLifecycleOwner) { event ->
-            binding.includeRecordRestart.save.isEnabled = true
-            when (event.status_code) {
-                -99, -3 -> {
-                    Toasty.error(activity as MainActivity, event.status.toString()).show()
-                    findNavController().navigate(SpeechFragmentDirections.actionSpeechToMenuFragment())
-                }
-
-                0 -> {
-                    activity?.let { activity ->
-                        ResultDialog(activity).apply {
-                            window?.requestFeature(Window.FEATURE_NO_TITLE)
-                            setText(requireContext().getString(R.string.message_success_to_answer), requireContext().getString(R.string.message_check_answer), requireContext().getString(R.string.message_back_to_home))
-                            setDialogListener(object : ResultDialog.DialogListener {
-                                override fun checkAnswer() { // 답변 확인하기
-                                    DWLog.d("답변 확인하기 버튼 클릭 ==> 답변 확인 UI")
-                                    findNavController().navigate(SpeechFragmentDirections.actionSpeechFragmentToQuestiondetailFragment())
-                                }
-
-                                override fun moveHome() {
-                                    findNavController().navigate(SpeechFragmentDirections.actionSpeechToMenuFragment())
-                                }
-                            })
-                            setDismissListener(object : ResultDialog.DialogDismissListener {
-                                override fun onDismiss() {}
-                            })
-                            show()
-                        }
-                    }
-                }
-
-                else -> {
-                    RxBus.publish(RxEvent.destroyApp)
-                }
-            }
-        }
     }
-
 
     private fun setUpSpeech() {
         viewModel.speechStatus.observe(viewLifecycleOwner) {
