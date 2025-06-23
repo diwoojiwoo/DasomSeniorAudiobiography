@@ -181,6 +181,15 @@ class SpeechFragment : Fragment() {
             viewModel.playWavFile()
         }
 
+        viewModel.isPlaying.observe(viewLifecycleOwner) { isPlaying ->
+            if (isPlaying) {
+                binding.includeRecordRestart.play.setBackgroundResource(R.drawable.btn_rec_play_stop_selector)
+            } else {
+                binding.includeRecordRestart.play.setBackgroundResource(R.drawable.btn_rec_play_selector)
+            }
+        }
+
+
         binding.includeRecordRestart.save.setOnClickListener { // 저장하기 버튼 클릭
             binding.includeRecordRestart.save.isEnabled = false
             viewModel.stopRecording()
