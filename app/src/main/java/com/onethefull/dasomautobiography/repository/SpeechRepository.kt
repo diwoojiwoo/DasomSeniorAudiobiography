@@ -6,13 +6,10 @@ import com.onethefull.dasomautobiography.R
 import com.onethefull.dasomautobiography.data.api.ApiHelper
 import com.onethefull.dasomautobiography.data.api.ApiHelperImpl
 import com.onethefull.dasomautobiography.data.api.RetrofitBuilder
-import com.onethefull.dasomautobiography.data.model.NotExistData
 import com.onethefull.dasomautobiography.data.model.audiobiography.GetAutobiographyMenuResponse
 import com.onethefull.dasomautobiography.data.model.audiobiography.GetCategoryListResponse
 import com.onethefull.dasomautobiography.data.model.audiobiography.InsertLogResponse
-import com.onethefull.dasomautobiography.data.model.diary.GetDiarySentenceResponse
 import com.onethefull.dasomautobiography.repository.MenuRepository.Companion
-import com.onethefull.dasomautobiography.ui.diary.DiaryStatus
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 

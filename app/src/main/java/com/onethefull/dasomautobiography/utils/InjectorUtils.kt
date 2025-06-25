@@ -4,12 +4,10 @@ import android.content.Context
 import com.onethefull.dasomautobiography.MainActivity
 import com.onethefull.dasomautobiography.SplashViewModelFactory
 import com.onethefull.dasomautobiography.repository.QuestionListRepository
-import com.onethefull.dasomautobiography.repository.DiaryRepository
 import com.onethefull.dasomautobiography.repository.MenuRepository
 import com.onethefull.dasomautobiography.repository.QuestionDetailRepository
 import com.onethefull.dasomautobiography.repository.SpeechRepository
 import com.onethefull.dasomautobiography.repository.SplashRepository
-import com.onethefull.dasomautobiography.ui.diary.DiaryViewModelFactory
 import com.onethefull.dasomautobiography.ui.menu.MenuViewModelFactory
 import com.onethefull.dasomautobiography.ui.question.QuestionListViewModel
 import com.onethefull.dasomautobiography.ui.question.QuestionListViewModelFactory
@@ -51,15 +49,6 @@ object InjectorUtils {
         return MenuViewModelFactory(context as MainActivity, getMenuRepository(context))
     }
 
-    private fun getDiaryRepository(context : Context) : DiaryRepository {
-        return DiaryRepository.getInstance(context.applicationContext)
-    }
-
-    fun provideDiaryViewModelFactory(
-        context : Context
-    ) : DiaryViewModelFactory {
-        return DiaryViewModelFactory(context as MainActivity, getDiaryRepository(context))
-    }
 
     private fun getQuestionDetailRepository(context: Context) : QuestionDetailRepository {
         return QuestionDetailRepository.getInstance(context.applicationContext)

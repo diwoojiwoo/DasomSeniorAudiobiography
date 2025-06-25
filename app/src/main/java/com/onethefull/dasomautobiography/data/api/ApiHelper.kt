@@ -9,7 +9,6 @@ import com.onethefull.dasomautobiography.data.model.audiobiography.GetAutobiogra
 import com.onethefull.dasomautobiography.data.model.audiobiography.GetCategoryListResponse
 import com.onethefull.dasomautobiography.data.model.audiobiography.GetCategoryListResponseV2
 import com.onethefull.dasomautobiography.data.model.audiobiography.InsertLogResponse
-import com.onethefull.dasomautobiography.data.model.diary.GetDiarySentenceResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
@@ -44,14 +43,6 @@ interface ApiHelper {
         serialNum: String,
         type: String
     ): GetAutobiographyMenuResponseV2
-
-    suspend fun getDiarySentence(
-        customerCode: String,
-        deviceCode: String,
-        serialNum: String,
-        date: String,
-        type: String
-    ): GetDiarySentenceResponse
 
     suspend fun insertLog(
         customerCode: String,

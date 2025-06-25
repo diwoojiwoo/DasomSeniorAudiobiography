@@ -30,7 +30,6 @@ class MainActivity : BaseActivity() {
         binding = setContentView(this, R.layout.activity_main)
         navController = Navigation.findNavController(this, R.id.nav_host)
         setupViewModel()
-        startFragment()
     }
 
     override fun onResume() {
@@ -39,18 +38,6 @@ class MainActivity : BaseActivity() {
         GCTextToSpeech.getInstance()?.start(this)
         App.instance.isRunning = true
         viewModel.start()
-    }
-
-    /**
-     * Fragment 분리
-     */
-    fun startFragment() {
-        DWLog.d("MainActivity - startFragment")
-        start()
-    }
-
-    private fun start() {
-//        navController.navigate(R.id.splash_fragment, Bundle().apply {})
     }
 
     fun navigateToSpeechFragment(reason: String? = null) {

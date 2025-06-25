@@ -9,7 +9,6 @@ import com.onethefull.dasomautobiography.data.model.audiobiography.GetAutobiogra
 import com.onethefull.dasomautobiography.data.model.audiobiography.GetCategoryListResponse
 import com.onethefull.dasomautobiography.data.model.audiobiography.GetCategoryListResponseV2
 import com.onethefull.dasomautobiography.data.model.audiobiography.InsertLogResponse
-import com.onethefull.dasomautobiography.data.model.diary.GetDiarySentenceResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.*
@@ -18,22 +17,6 @@ import retrofit2.http.*
  * Created by sjw on 2021/11/10
  */
 interface ApiService {
-    /**
-     * 일기장
-     * */
-    @Headers("Content-Type: application/json")
-    @GET("{CUSTOMER_CODE}/{DEVICE_CODE}/alarm/getDiarySentence/{type}")
-    suspend fun getDiarySentence(
-        @Header("lang") lang: String,
-        @Header("languageCode") languageCode: String,
-        @Header("serviceCode") serviceCode: String,
-        @Header("voiceCode") voiceCode: String,
-        @Path("CUSTOMER_CODE") customerCode: String,
-        @Path("DEVICE_CODE") deviceCode: String,
-        @Path("type") type: String,
-        @QueryMap params: Map<String, String>
-    ) : GetDiarySentenceResponse
-
     /**
      * 메인 화면 카테고리 Summary
      * */

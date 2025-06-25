@@ -2,7 +2,6 @@ package com.onethefull.dasomautobiography.data.api
 
 import com.onethefull.dasomautobiography.App
 import com.onethefull.dasomautobiography.data.api.service.ApiService
-import com.onethefull.dasomautobiography.data.model.diary.GetDiarySentenceResponse
 import com.onethefull.dasomautobiography.utils.ParamGeneratorUtils
 import com.onethefull.dasomautobiography.BuildConfig
 import com.onethefull.dasomautobiography.data.model.audiobiography.DeleteLogResponse
@@ -152,22 +151,6 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
         autobiographyId
     )
 
-    override suspend fun getDiarySentence(
-        customerCode: String,
-        deviceCode: String,
-        serialNum: String,
-        date: String,
-        type: String
-    ): GetDiarySentenceResponse = apiService.getDiarySentence(
-        lang = App.instance.getLocale()?.dasomLangValue() ?: "ko",
-        languageCode = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
-        serviceCode = getServiceCode(),
-        voiceCode = getVoiceCode(),
-        customerCode,
-        deviceCode,
-        type,
-        ParamGeneratorUtils.getDiarySentenceParam(serialNum, date)
-    )
 
 
     override suspend fun getContent(

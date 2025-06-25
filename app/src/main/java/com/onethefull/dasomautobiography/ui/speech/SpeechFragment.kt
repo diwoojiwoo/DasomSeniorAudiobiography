@@ -146,7 +146,7 @@ class SpeechFragment : Fragment() {
         }
 
         binding.btnStop.setOnClickListener {
-            RxBus.publish(RxEvent.destroyApp)
+            findNavController().navigate(SpeechFragmentDirections.actionSpeechToMenuFragment())
         }
 
         binding.btnAnswer.setOnClickListener {
