@@ -83,7 +83,7 @@
                 android:fontFamily="@font/notosans_kr_b"
                 android:lineSpacingExtra="19sp"
                 android:scaleType="centerCrop"
-                android:textColor="#ffffff"
+                android:textColor="@color/white"
                 android:textSize="40sp"
                 android:textStyle="normal"
                 android:gravity ="center"

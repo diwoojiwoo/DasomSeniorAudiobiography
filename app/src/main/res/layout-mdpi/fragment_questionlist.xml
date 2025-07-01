@@ -14,7 +14,7 @@
             android:id="@+id/customToolbar"
             android:layout_width="match_parent"
             android:layout_height="126dp"
-            android:background="#ffffff"
+            android:background="@color/white"
             android:elevation="0dp"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 

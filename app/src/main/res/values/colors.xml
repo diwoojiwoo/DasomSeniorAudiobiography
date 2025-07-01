@@ -13,6 +13,7 @@
     <color name="white">#FFFFFFFF</color>
 
 
+    <color name="recordingTimerTextColor">#FAFF5E</color>
     <color name="colorBackground">#E6D011</color>
     <color name="colorOnBackground">#fff</color>
     <color name="colorSurface">#E7E8EC</color>

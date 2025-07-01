@@ -30,7 +30,7 @@
             android:layout_marginTop="70dp"
             android:fontFamily="@font/notosans_kr_medium"
             android:lineSpacingExtra="23sp"
-            android:textColor="#ffffff"
+            android:textColor="@color/white"
             android:textSize="48sp"
             android:textStyle="normal" />
 
@@ -46,7 +46,7 @@
             android:gravity="center"
             android:lineSpacingExtra="8sp"
             android:textAlignment="center"
-            android:textColor="#ffffff"
+            android:textColor="@color/white"
             android:textSize="45sp"
             android:textStyle="normal" />
 

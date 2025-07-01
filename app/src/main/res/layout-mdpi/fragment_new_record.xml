@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+
+        <RelativeLayout
+            android:id="@+id/layout_record"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true">
+
+            <RelativeLayout
+                android:id="@+id/layout_media_play"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="134.51dp">
+
+                <ImageButton
+                    android:id="@+id/btn_media_play"
+                    android:layout_width="168dp"
+                    android:layout_height="168dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/selector_new_play_btn" />
+
+                <TextView
+                    android:id="@+id/txt_media_play"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/btn_media_play"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="24dp"
+                    android:text="@string/recording_listen"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="48sp" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/layout_media_stop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="134.51dp">
+
+                <ImageButton
+                    android:id="@+id/btn_media_stop"
+                    android:layout_width="168dp"
+                    android:layout_height="168dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/btn_rec_play_stop_selector"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/txt_media_stop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/btn_media_stop"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="24dp"
+                    android:text="그만듣기"
+                    android:textColor="@color/white"
+                    android:textSize="48sp"
+                    android:visibility="gone"/>
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/layout_rec_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true">
+
+                <CheckBox
+                    android:id="@+id/ch_rec_state"
+                    android:layout_width="168dp"
+                    android:layout_height="168dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/selector_new_rec_btn"
+                    android:button="@null"
+                    android:checked="false" />
+
+                <TextView
+                    android:id="@+id/txt_rec_state"
+                    android:layout_width="276dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ch_rec_state"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="24dp"
+                    android:gravity="center"
+                    android:text="@string/recording_start"
+                    android:textColor="@color/white"
+                    android:textSize="48sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout_send"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginEnd="134.51dp">
+
+                <ImageButton
+                    android:id="@+id/save"
+                    android:layout_width="168dp"
+                    android:layout_height="168dp"
+                    android:background="@drawable/selector_send_btn" />
+
+                <TextView
+                    android:id="@+id/txt_send"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/save"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="24dp"
+                    android:text="@string/recording_save"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="48sp" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

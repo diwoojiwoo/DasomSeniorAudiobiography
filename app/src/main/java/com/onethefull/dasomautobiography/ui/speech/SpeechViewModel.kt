@@ -22,6 +22,7 @@ import com.onethefull.dasomautobiography.utils.Product
 import com.onethefull.dasomautobiography.utils.WMediaPlayer
 import com.onethefull.dasomautobiography.utils.bus.RxBus
 import com.onethefull.dasomautobiography.utils.bus.RxEvent
+import com.onethefull.dasomautobiography.utils.bus.RxEvent.Companion.AppDestroyUpdate
 import com.onethefull.dasomautobiography.utils.bus.RxEvent.Companion.NavigateToMenuFragment
 import com.onethefull.dasomautobiography.utils.bus.RxEvent.Companion.RemoveNavigateToMenuFragment
 import com.onethefull.dasomautobiography.utils.bus.RxEvent.Event
@@ -60,22 +61,16 @@ class SpeechViewModel(
     // 녹음 상태
     private val _isRecording = MutableLiveData<Boolean>()
     val isRecording: LiveData<Boolean> = _isRecording
+    var recordStatus: RecordStatus = RecordStatus.INIT
 
-    // 녹음 타이머 (1분)
-    private val _timeLeft = MutableLiveData(59) // 59초 타이머
-    val timeLeft: LiveData<Int> = _timeLeft
-
-    private val _isRunning = MutableLiveData(false) // 타이머 실행 여부
-    val isRunning: LiveData<Boolean> = _isRunning
+    // 재생 상태
+    private var mediaPlayer: MediaPlayer? = null
+    var playStatus: PlayStatus = PlayStatus.INIT
 
     private val _currentItem = MutableLiveData<Entry>() // MainViewModel에서 공유받은 데이터
     val currentItem: LiveData<Entry> = _currentItem
 
-    private var job: Job? = null // Coroutine Job
-
-    private var mediaPlayer: MediaPlayer? = null
-    private val _isPlaying = MutableLiveData<Boolean>(false)
-    val isPlaying: LiveData<Boolean> get() = _isPlaying
+    private var job: Job? = null
 
     init {
         connect()
@@ -93,7 +88,10 @@ class SpeechViewModel(
         DWLog.d("connect")
         GCTextToSpeech.getInstance()?.setCallback(this)
         GCTextToSpeech.getInstance()?.start(context)
-        RxBus.publish(RxEvent.destroyLongAppUpdate60)
+//        RxBus.publish(RxEvent.destroyLongAppUpdate60)
+
+        //TEST
+        RxBus.publish(RxBus.publish(Event(AppDestroyUpdate, 5 * 60 * 1000L, "AppDestroyUpdate")))
     }
 
     fun disconnect() {
@@ -260,6 +258,7 @@ class SpeechViewModel(
     fun startRecording() {
         RxBus.publish(RxEvent.destroyLongAppUpdate90)
         _isRecording.value = true  // 녹음 시작
+        recordStatus = RecordStatus.RECORDING
         startVoiceRecorder()
     }
 
@@ -267,45 +266,34 @@ class SpeechViewModel(
         RxBus.publish(RxEvent.destroyLongAppUpdate90)
         RxBus.publish(RxEvent.navigateMenuFragment60)
         _isRecording.value = false // 녹음 종료
+        recordStatus = RecordStatus.STOP
         stopVoiceRecorder()
     }
 
-    fun startTimer() {
-        if (_isRunning.value == true) return // 이미 실행 중이면 무시
-
-        _isRunning.value = true
-        _timeLeft.value = 59 // 59초 설정
-
-        job = uiScope.launch {
-            for (i in 58 downTo 0) { // 59→ 0초까지 감소
-                delay(1000)
-                _timeLeft.postValue(i)
-            }
-            _isRunning.postValue(false) // 59초 후 자동 종료
-            stopRecording() // 레코딩 종료
-        }
-    }
-
-    fun stopTimer() {
-        job?.cancel() // 코루틴 중지
-        _isRunning.value = false
-    }
-
     fun playWavFile() {
+        // 이미 재생 중이면 재시작 방지
+        if (playStatus == PlayStatus.PLAY) return
+
+        // 일시정지 상태라면 resume
+        if (playStatus == PlayStatus.PAUSE) {
+            resumeWavFile()
+            return
+        }
+
         stopWavFile() // 기존 재생 중이면 정지
 
         mediaPlayer = MediaPlayer().apply {
             try {
-                setDataSource("${wavDirPath}${wavFileName}${wavExt}") // WAV 파일 경로 설정
-                prepare() // 미디어 준비
-                start() // 재생
-                _isPlaying.value = true
+                setDataSource("$wavDirPath$wavFileName$wavExt")
+                prepare()
+                start()
+                playStatus = PlayStatus.PLAY
 
-                DWLog.d("WAV 파일 재생 시작: ${wavDirPath}${wavFileName}${wavExt}")
+                DWLog.d("WAV 파일 재생 시작: $wavDirPath$wavFileName$wavExt")
 
                 setOnCompletionListener {
-                    _isPlaying.value = false
-                    releaseMediaPlayer()
+                    onPlayCompleted?.invoke()
+                    stopWavFile()
                 }
             } catch (e: IOException) {
                 DWLog.e("WAV 파일 재생 실패: ${e.message}")
@@ -313,36 +301,35 @@ class SpeechViewModel(
         }
     }
 
-    fun stopWavFile() {
-        mediaPlayer?.apply {
-            stop()
-            releaseMediaPlayer()
-            DWLog.d("WAV 파일 정지")
+    fun pauseWavFile() {
+        mediaPlayer?.takeIf { it.isPlaying }?.apply {
+            pause()
+            playStatus = PlayStatus.PAUSE
+            DWLog.d("WAV 파일 일시정지")
         }
     }
 
-    fun pauseWavFile() {
-        mediaPlayer?.apply {
-            if (isPlaying) {
-                pause()
-                _isPlaying.value = false
-                DWLog.d("WAV 파일 일시 정지")
-            }
-        }
-    }
 
     fun resumeWavFile() {
         mediaPlayer?.apply {
             start()
-            _isPlaying.value = true
+            playStatus = PlayStatus.PLAY
             DWLog.d("WAV 파일 재개")
         }
+    }
+
+    fun stopWavFile() {
+        mediaPlayer?.apply {
+            stop()
+            DWLog.d("WAV 파일 정지")
+        }
+        releaseMediaPlayer()
+        playStatus = PlayStatus.STOP
     }
 
     private fun releaseMediaPlayer() {
         mediaPlayer?.release()
         mediaPlayer = null
-        _isPlaying.value = false
     }
 
     override fun onCleared() {
@@ -408,6 +395,22 @@ class SpeechViewModel(
             }
         }
     }
+
+    enum class RecordStatus {
+        INIT,
+        RECORDING,
+        STOP
+    }
+
+    enum class PlayStatus {
+        INIT,
+        PLAY,
+        REPLAY,
+        PAUSE,
+        STOP
+    }
+
+    var onPlayCompleted: (() -> Unit)? = null
 
     companion object {
         private const val wavFileName = "recorded_bio_reply"

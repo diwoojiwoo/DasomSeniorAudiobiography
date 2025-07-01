@@ -57,7 +57,7 @@
                 android:fontFamily="@font/notosans_kr_b"
                 android:textStyle="bold"
                 android:textSize="44sp"
-                android:textColor="#ffffff"
+                android:textColor="@color/white"
                 android:lineSpacingExtra="12sp"
                 android:layout_gravity="center_vertical|end"
                 android:layout_marginEnd="40dp"/>
@@ -118,35 +118,41 @@
             app:layout_constraintTop_toTopOf="parent"
             android:visibility="gone"/>
 
-        <!-- include를 사용하여 툴바 추가 -->
-        <include
-            android:id="@+id/include_record_start"
-            layout="@layout/toolbar_record_start_layout"
-            android:visibility="gone"/>
+        <!-- include를 사용하여 new 녹음 툴바 추가 -->
 
         <include
-            android:id="@+id/include_record_stop"
-            layout="@layout/toolbar_record_stop_layout"
-            android:visibility="gone"/>
-
-        <include
-            android:id="@+id/include_record_restart"
-            layout="@layout/toolbar_record_restart_layout"
+            android:id="@+id/include_new_record"
+            layout="@layout/fragment_new_record"
             android:visibility="gone"/>
 
         <TextView
-            android:id="@+id/tv_left_time"
+            android:id="@+id/tv_chronometer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_left_time"
+            android:textStyle="bold"
+            android:textSize="40sp"
+            android:textColor="@android:color/white"
+            android:gravity="end"
+            android:visibility="gone"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="213dp"
+            app:layout_constraintEnd_toStartOf="@+id/chronometer"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <Chronometer
+            android:id="@+id/chronometer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/notosans_kr_r"
             android:textStyle="bold"
             android:textSize="40sp"
-            android:textColor="#ffffff"
+            android:textColor="@android:color/black"
             android:lineSpacingExtra="19sp"
             android:gravity="end"
+            android:visibility="gone"
             android:layout_marginEnd="32dp"
             android:layout_marginBottom="213dp"
-            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
 

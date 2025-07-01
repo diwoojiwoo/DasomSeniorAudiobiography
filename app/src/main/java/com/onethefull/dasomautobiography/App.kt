@@ -127,6 +127,6 @@ class App : MultiDexApplication() {
         lateinit var instance: App
             private set
 
-        const val TAG = "[DASOM_AUTOGRAPHY]"
+        const val TAG = "[DASOM_AUTOBIOGRAPHY]"
     }
 }
