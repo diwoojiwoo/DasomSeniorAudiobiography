@@ -55,11 +55,12 @@ class SpeechFragment : Fragment() {
         super.onResume()
 
         binding.includeNewRecord.apply {
-            btnMediaPlay.isEnabled = false
-            save.isEnabled = false
+            layoutMediaPlay.isEnabled = false
+            layoutSend.isEnabled = false
             chRecState.isChecked = false
             chRecState.isEnabled = true
-            txtRecState.text = resources.getString(R.string.recording_start)
+            tvRecState.text = resources.getString(R.string.recording_start)
+            tvRecState.setTextColor(Color.WHITE)
 
             val alpha = chRecState.background
             alpha.alpha = 255
@@ -116,7 +117,7 @@ class SpeechFragment : Fragment() {
         }
 
         viewModel.insertLogEvent.observe(viewLifecycleOwner) { event ->
-            binding.includeNewRecord.save.isEnabled = true
+            binding.includeNewRecord.layoutSend.isEnabled = true
             when (event.status_code) {
                 -99, -3 -> {
                     Toasty.error(activity as MainActivity, event.status.toString()).show()
@@ -168,12 +169,12 @@ class SpeechFragment : Fragment() {
         binding.includeNewRecord.chRecState.setOnCheckedChangeListener { buttonView, isChecked ->
             if (buttonView.isChecked) {
                 binding.includeNewRecord.apply {
-                    btnMediaPlay.isEnabled = false
-                    txtMediaPlay.setTextColor(Color.DKGRAY)
-                    txtSend.setTextColor(Color.DKGRAY)
-                    txtRecState.text = getString(R.string.recording_end)
-
-                    save.isEnabled = false
+                    layoutMediaPlay.isEnabled = false
+                    tvMediaPlay.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray_33))
+                    txtSend.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray_33))
+                    tvRecState.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray_33))
+                    tvRecState.text = getString(R.string.recording_end)
+                    layoutSend.isEnabled = false
                 }
 
                 binding.chronometer.base = SystemClock.elapsedRealtime()
@@ -197,22 +198,24 @@ class SpeechFragment : Fragment() {
         }
 
         /* 재생 시작 버튼 선택 */
-        binding.includeNewRecord.btnMediaPlay.setOnClickListener {
+        binding.includeNewRecord.layoutMediaPlay.setOnClickListener {
             DWLog.e("Play Status :: ${viewModel.playStatus}")
             when (viewModel.playStatus) {
                 SpeechViewModel.PlayStatus.INIT, SpeechViewModel.PlayStatus.STOP -> {
                     viewModel.playWavFile()
                     timeWhenPlayStopped = 0
                     binding.includeNewRecord.apply {
-                        btnMediaPlay.visibility = View.GONE
-                        txtMediaPlay.visibility = View.GONE
-                        btnMediaStop.visibility = View.VISIBLE
+                        layoutMediaPlay.visibility = View.GONE
+                        tvMediaPlay.visibility = View.GONE
+                        layoutMediaStop.visibility = View.VISIBLE
                         txtMediaStop.visibility = View.VISIBLE
 
                         chRecState.isEnabled = false
+                        tvRecState.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray_33))
+
                         val alpha = chRecState.background
                         alpha.alpha = 70
-                        save.isEnabled = false
+                        layoutSend.isEnabled = false
 
                     }
                     binding.chronometer.base = SystemClock.elapsedRealtime() + offset
@@ -221,14 +224,15 @@ class SpeechFragment : Fragment() {
                 else -> {
                     viewModel.resumeWavFile()
                     binding.includeNewRecord.apply {
-                        btnMediaPlay.visibility = View.GONE
-                        txtMediaPlay.visibility = View.GONE
-                        btnMediaStop.visibility = View.VISIBLE
+                        layoutMediaPlay.visibility = View.GONE
+                        tvMediaPlay.visibility = View.GONE
+                        layoutMediaStop.visibility = View.VISIBLE
                         txtMediaStop.visibility = View.VISIBLE
 
                         chRecState.isEnabled = false
                         chRecState.background.alpha = 70
-                        save.isEnabled = false
+                        tvRecState.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray_33))
+                        layoutSend.isEnabled = false
                     }
                     binding.chronometer.base = SystemClock.elapsedRealtime() + timeWhenPlayStopped
                     binding.chronometer.start()
@@ -240,41 +244,44 @@ class SpeechFragment : Fragment() {
             DWLog.d("재생 완료 콜백 수신")
             timeWhenPlayStopped = 0
             binding.includeNewRecord.apply {
-                btnMediaStop.visibility = View.GONE
+                layoutMediaStop.visibility = View.GONE
                 txtMediaStop.visibility = View.GONE
-                btnMediaPlay.visibility = View.VISIBLE
-                txtMediaPlay.visibility = View.VISIBLE
+                layoutMediaPlay.visibility = View.VISIBLE
+                tvMediaPlay.visibility = View.VISIBLE
 
                 chRecState.isEnabled = true
+                tvRecState.setTextColor(Color.WHITE)
                 val alpha = chRecState.background
                 alpha.alpha = 255
 
-                save.isEnabled = true
+                layoutSend.isEnabled = true
             }
             binding.chronometer.base = SystemClock.elapsedRealtime()
             binding.chronometer.stop()
         }
 
         /* 재생 중지 버튼 선택 */
-        binding.includeNewRecord.btnMediaStop.setOnClickListener {
+        binding.includeNewRecord.layoutMediaStop.setOnClickListener {
             viewModel.pauseWavFile()
             binding.includeNewRecord.apply {
-                btnMediaStop.visibility = View.GONE
+                layoutMediaStop.visibility = View.GONE
                 txtMediaStop.visibility = View.GONE
-                btnMediaPlay.visibility = View.VISIBLE
-                txtMediaPlay.visibility = View.VISIBLE
+                layoutMediaPlay.visibility = View.VISIBLE
+                tvMediaPlay.visibility = View.VISIBLE
 
                 chRecState.isEnabled = true
                 chRecState.background.alpha = 255
-                save.isEnabled = true
+                tvRecState.setTextColor(Color.WHITE)
+
+                layoutSend.isEnabled = true
             }
             timeWhenPlayStopped = binding.chronometer.base - SystemClock.elapsedRealtime()
             binding.chronometer.stop()
         }
 
         /* 저장 버튼 선택 */
-        binding.includeNewRecord.save.setOnClickListener {
-            binding.includeNewRecord.save.isEnabled = false
+        binding.includeNewRecord.layoutSend.setOnClickListener {
+            binding.includeNewRecord.layoutSend.isEnabled = false
             viewModel.stopRecording()
             viewModel.stopWavFile()
             viewModel.insertLog()
@@ -314,13 +321,14 @@ class SpeechFragment : Fragment() {
     private fun stopRecording() {
         binding.includeNewRecord.apply {
             chRecState.isChecked = false
-            btnMediaPlay.isEnabled = true
-            txtMediaPlay.setTextColor(Color.WHITE)
-            txtSend.setTextColor(Color.WHITE)
-            save.isEnabled = true
+            layoutMediaPlay.isEnabled = true
+            tvMediaPlay.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray_33))
+            txtSend.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray_33))
+            layoutSend.isEnabled = true
             viewModel.stopRecording()
             if (viewModel.recordStatus == SpeechViewModel.RecordStatus.STOP) {
-                txtRecState.text = getString(R.string.recording_start)
+                tvRecState.text = getString(R.string.recording_start)
+                tvRecState.setTextColor(Color.WHITE)
             }
         }
         binding.chronometer.stop()

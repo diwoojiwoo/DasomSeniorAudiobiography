@@ -88,10 +88,7 @@ class SpeechViewModel(
         DWLog.d("connect")
         GCTextToSpeech.getInstance()?.setCallback(this)
         GCTextToSpeech.getInstance()?.start(context)
-//        RxBus.publish(RxEvent.destroyLongAppUpdate60)
-
-        //TEST
-        RxBus.publish(RxBus.publish(Event(AppDestroyUpdate, 5 * 60 * 1000L, "AppDestroyUpdate")))
+        RxBus.publish(RxEvent.destroyLongAppUpdate60)
     }
 
     fun disconnect() {

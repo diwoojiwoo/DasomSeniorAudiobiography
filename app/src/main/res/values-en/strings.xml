@@ -28,6 +28,7 @@
     <string name="recording_end">End Answer</string>
     <string name="recording_save">Save</string>
     <string name="recording_listen">Listen</string>
+    <string name="recording_listen_pause">Pause</string>
     <string name="answer_remove">Delete</string>
     <string name="dialog_popup_cancel">Cancel</string>
     <string name="dialog_popup_confirm">Confirm</string>

@@ -28,6 +28,7 @@
     <string name="recording_end">回答を終了</string>
     <string name="recording_save">保存</string>
     <string name="recording_listen">再生</string>
+    <string name="recording_listen_pause">一時停止</string>
     <string name="answer_remove">削除</string>
     <string name="dialog_popup_cancel">キャンセル</string>
     <string name="dialog_popup_confirm">確認</string>

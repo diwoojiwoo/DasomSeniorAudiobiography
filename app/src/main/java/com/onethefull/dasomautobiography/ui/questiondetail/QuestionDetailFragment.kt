@@ -32,6 +32,7 @@ import com.onethefull.dasomautobiography.utils.logger.DWLog
 import com.onethefull.dasomautobiography.utils.setOnSingleClickListener
 import com.onethefull.dasomautobiography.utils.speech.SpeechStatus
 import com.onethefull.wonderfulrobotmodule.ext.dasomLanguageCodeValue
+import androidx.core.graphics.toColorInt
 
 /**
  * Created by sjw on 2025. 3. 7.
@@ -427,7 +428,7 @@ class QuestionDetailFragment : Fragment() {
         // 녹음 텍스트
         binding.cbRecording.isChecked = false
         binding.tvRecording.text = requireContext().getString(R.string.title_start_answer)
-        binding.tvRecording.setTextColor(Color.parseColor("#333333"))
+        binding.tvRecording.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray_33))
     }
 
     private fun updateAnswerDisplay() {
@@ -491,7 +492,7 @@ class QuestionDetailFragment : Fragment() {
         // 녹음
         binding.cbRecording.isEnabled = true
         binding.tvRecording.text = requireContext().getString(R.string.title_start_answer)
-        binding.tvRecording.setTextColor(Color.parseColor("#333333"))
+        binding.tvRecording.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray_33))
 
         viewModel.resetTimer()
         viewModel.pauseWavFile()

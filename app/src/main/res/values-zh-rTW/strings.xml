@@ -28,6 +28,7 @@
     <string name="recording_end">回覆結束</string>
     <string name="recording_save">儲存</string>
     <string name="recording_listen">播放</string>
+    <string name="recording_listen_pause">暫停</string>
     <string name="answer_remove">刪除</string>
     <string name="dialog_popup_cancel">取消</string>
     <string name="dialog_popup_confirm">確認</string>

@@ -29,6 +29,7 @@
     <string name="recording_save">저장 </string>
     <string name="recording_listen">듣기</string>
     <string name="answer_remove">삭제</string>
+    <string name="recording_listen_pause">일시 정지</string>
     <string name="dialog_popup_cancel">취소</string>
     <string name="dialog_popup_confirm">확인</string>
     <string name="dialog_response_edit_answer">답변 수정이 완료 되었습니다.</string>
