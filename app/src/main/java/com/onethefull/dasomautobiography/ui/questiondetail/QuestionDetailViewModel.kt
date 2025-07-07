@@ -52,7 +52,7 @@ class QuestionDetailViewModel(
     private var wavUtils = WavFileUitls()
     var isSuccessRecog = false
 
-    // 음성출력 상태
+    // 음성 출력 상태
     private val _speechStatus: MutableLiveData<SpeechStatus> = MutableLiveData<SpeechStatus>()
     val speechStatus: LiveData<SpeechStatus> = _speechStatus
 
@@ -67,7 +67,7 @@ class QuestionDetailViewModel(
     private val _isRunning = MutableLiveData(false) // 타이머 실행 여부
     val isRunning: LiveData<Boolean> = _isRunning
 
-    private val _currentItem = MutableLiveData<Entry>() // MainViewModel에서 공유받은 데이터
+    private val _currentItem = MutableLiveData<Entry>() // MainViewModel에서 공유 받은 데이터
     val currentItem: LiveData<Entry> = _currentItem
 
     private var job: Job? = null // Coroutine Job
@@ -80,7 +80,7 @@ class QuestionDetailViewModel(
     private val _isPlaying = MutableLiveData<Boolean>()
     val isPlaying: LiveData<Boolean> get() = _isPlaying
 
-    // 답변 가져오기
+    // 답변 가져 오기
     private val _transText = MutableLiveData<String>()
     val transText: LiveData<String> get() = _transText
 
@@ -136,12 +136,12 @@ class QuestionDetailViewModel(
 
     override fun onRequestHardwareControl(result: String) {}
 
-    // 음성출력 시작
+    // 음성 출력 시작
     private fun speechStarted() {
         _speechStatus.value = SpeechStatus.SPEECH
     }
 
-    // 음성출력 종료
+    // 음성 출력 종료
     private fun speechFinished() {
         changeStatusSpeechFinished()
         checkCurrentStatus()
@@ -180,21 +180,14 @@ class QuestionDetailViewModel(
 
     override fun requestSendGenieLog(sttResult: String, genieResponse: String) {}
 
-    override fun onVoiceResult(result: String?) {
-//        isSuccessRecog = true
-//        result?.let {
-//            handleRecognition(result)
-//        }
-    }
-
-    private fun handleRecognition(text: String) {}
+    override fun onVoiceResult(result: String?) {}
 
     fun speech(text: String) {
         GCTextToSpeech.getInstance()?.speech(text)
     }
 
     /**
-     * 음성입력 처리 콜백
+     * 음성 입력 처리 콜백
      */
     private val voiceCallback = object : VoiceRecorder.Callback() {
         override fun onVoiceStart() {
@@ -300,7 +293,7 @@ class QuestionDetailViewModel(
     }
 
     fun stopTimer() {
-        job?.cancel() // 코루틴 중지
+        job?.cancel()
         _isRunning.value = false
     }
 
@@ -369,12 +362,12 @@ class QuestionDetailViewModel(
         stopWavFile() // ViewModel 종료 시 정리
     }
 
+    /**
+     * 자서전 로그 상세 보기
+     * autobiographyId 통하여 해당 질문에 대한 전체 답변 가져옴
+     * */
     private val _logDtlEvent = MutableLiveData<GetAutobiographyLogDtlResponseV2>()
     val logDtlEvent: LiveData<GetAutobiographyLogDtlResponseV2> get() = _logDtlEvent
-
-    private val _networkErrorEvent = MutableLiveData<Boolean>()
-    val networkErrorEvent: LiveData<Boolean> get() = _networkErrorEvent
-
     fun getLogDtl(autobiographyId: String) {
         uiScope.launch {
             val check204 = repository.check204() ?: false
@@ -387,7 +380,6 @@ class QuestionDetailViewModel(
                 ).let { response ->
                     when (response.statusCode) {
                         1001 -> {
-//                            Toasty.error(context, context.getString(R.string.message_not_exist_elderly_info)).show()
                             _logDtlEvent.postValue(
                                 GetAutobiographyLogDtlResponseV2(
                                     statusCode = response.statusCode,
@@ -400,7 +392,6 @@ class QuestionDetailViewModel(
                         }
 
                         -3 -> {
-//                            Toasty.error(context, context.getString(R.string.mes`sage_not_registration_elderly)).show()
                             _logDtlEvent.postValue(
                                 GetAutobiographyLogDtlResponseV2(
                                     statusCode = response.statusCode,
@@ -502,7 +493,7 @@ class QuestionDetailViewModel(
                         }
 
                         0 -> {
-                            _insertLogEvent.postValue(Status(response.statusCode, ""))
+                            _insertLogEvent.postValue(Status(response.statusCode, "success"))
                         }
 
                         else -> {

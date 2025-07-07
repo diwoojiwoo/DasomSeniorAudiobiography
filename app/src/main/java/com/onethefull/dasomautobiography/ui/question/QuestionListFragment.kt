@@ -17,6 +17,7 @@ import com.onethefull.dasomautobiography.utils.InjectorUtils
 import com.onethefull.dasomautobiography.utils.bus.RxBus
 import com.onethefull.dasomautobiography.utils.bus.RxEvent
 import com.onethefull.dasomautobiography.R
+import com.onethefull.dasomautobiography.contents.toast.Toasty
 import com.onethefull.dasomautobiography.data.model.audiobiography.Entry
 import com.onethefull.dasomautobiography.utils.Constant
 
@@ -76,6 +77,25 @@ class QuestionListFragment : Fragment(), ListAdapter.OnItemClickListener {
         viewModel.itemList.observe(viewLifecycleOwner) { items ->
             binding.progressBar.visibility = View.GONE
             adapter.updateItems(items)
+        }
+
+        viewModel.questionListEvent.observe(viewLifecycleOwner) { event ->
+            binding.progressBar.visibility = View.GONE
+            when (event.status_code) {
+                1001, -3 -> {
+                    Toasty.error(requireContext(), event.status.toString()).show()
+                    RxBus.publish(RxEvent.destroyShortAppUpdate)
+                }
+
+                -1 -> {
+                    Toasty.error(requireContext(), event.status ?: getString(R.string.message_network_error)).show()
+                    RxBus.publish(RxEvent.destroyShortAppUpdate)
+                }
+
+                else -> {
+
+                }
+            }
         }
 
         // 데이터 로딩

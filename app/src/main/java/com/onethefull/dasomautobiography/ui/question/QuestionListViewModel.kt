@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import com.onethefull.dasomautobiography.R
 import com.onethefull.dasomautobiography.base.BaseViewModel
 import com.onethefull.dasomautobiography.contents.toast.Toasty
+import com.onethefull.dasomautobiography.data.model.Status
 import com.onethefull.dasomautobiography.data.model.audiobiography.Entry
 import com.onethefull.dasomautobiography.provider.DasomProviderHelper
 import com.onethefull.dasomautobiography.repository.QuestionListRepository
@@ -40,10 +41,15 @@ class QuestionListViewModel(
         DWLog.d("disconnect")
     }
 
+    /**
+     * 자서전 타입 별 질문 리스트 불러오기
+     * */
+    private val _questionListEvent = MutableLiveData<Status>()
+    val questionListEvent: LiveData<Status> get() = _questionListEvent
     fun requestQuestionList(type: String) {
         uiScope.launch {
             val check204 = repository.check204() ?: false
-            if(check204) {
+            if (check204) {
                 repository.getQuestionListV2(
                     DasomProviderHelper.getCustomerCode(context),
                     DasomProviderHelper.getDeviceCode(context),
@@ -63,13 +69,16 @@ class QuestionListViewModel(
 
                         0 -> {
                             _itemList.value = response.list ?: emptyList()
+                            _questionListEvent.postValue(Status(0, "success"))
+                        }
+                        else -> {
+                            _questionListEvent.postValue(Status(response.statusCode, response.status ?: "알 수 없는 오류"))
                         }
                     }
 
                 }
             } else {
-                Toasty.error(context, context.getString(R.string.message_network_error)).show()
-                RxBus.publish(RxEvent.destroyApp)
+                _questionListEvent.postValue(Status(-1, context.getString(R.string.message_network_error)))
             }
         }
     }
