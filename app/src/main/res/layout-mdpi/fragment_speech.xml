@@ -56,7 +56,7 @@
                 android:text="@string/title_make_autobiography"
                 android:fontFamily="@font/notosans_kr_b"
                 android:textStyle="bold"
-                android:textSize="44sp"
+                android:textSize="40sp"
                 android:textColor="@color/white"
                 android:lineSpacingExtra="12sp"
                 android:layout_gravity="center_vertical|end"
