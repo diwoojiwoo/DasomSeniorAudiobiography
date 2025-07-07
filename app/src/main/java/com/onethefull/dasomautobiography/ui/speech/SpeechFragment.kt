@@ -45,7 +45,7 @@ class SpeechFragment : Fragment() {
     private var startTimeMillis: Long = 0L
     private val offset = 1L
     private var timeWhenPlayStopped: Long = 0
-    private val handler =  Handler(Looper.getMainLooper())
+    private val handler = Handler(Looper.getMainLooper())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,17 +85,11 @@ class SpeechFragment : Fragment() {
             "en-US" -> {
                 binding.tvTitleSpeech.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22f)
                 binding.tvQuestionTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 28f)
-//                binding.includeRecordStart.tvRecordingStart.setTextSize(TypedValue.COMPLEX_UNIT_SP, 28f)
-//                binding.includeRecordRestart.tvRestartAnswer.setTextSize(TypedValue.COMPLEX_UNIT_SP, 28f)
-//                binding.includeRecordStop.tvRecordingStop.setTextSize(TypedValue.COMPLEX_UNIT_SP, 28f)
             }
 
             else -> {
-                binding.tvTitleSpeech.setTextSize(TypedValue.COMPLEX_UNIT_SP, 44f)
+                binding.tvTitleSpeech.setTextSize(TypedValue.COMPLEX_UNIT_SP, 40f)
                 binding.tvQuestionTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32f)
-//                binding.includeRecordStart.tvRecordingStart.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32f)
-//                binding.includeRecordRestart.tvRestartAnswer.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32f)
-//                binding.includeRecordStop.tvRecordingStop.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32f)
             }
         }
 
@@ -221,6 +215,7 @@ class SpeechFragment : Fragment() {
                     binding.chronometer.base = SystemClock.elapsedRealtime() + offset
                     binding.chronometer.start()
                 }
+
                 else -> {
                     viewModel.resumeWavFile()
                     binding.includeNewRecord.apply {
@@ -314,7 +309,7 @@ class SpeechFragment : Fragment() {
                 binding.includeNewRecord.root.visibility = View.GONE
             }
 
-            else -> {   }
+            else -> {}
         }
     }
 

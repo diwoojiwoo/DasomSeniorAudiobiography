@@ -8,6 +8,7 @@ import com.onethefull.dasomautobiography.MainActivity
 import com.onethefull.dasomautobiography.R
 import com.onethefull.dasomautobiography.base.BaseViewModel
 import com.onethefull.dasomautobiography.contents.toast.Toasty
+import com.onethefull.dasomautobiography.data.model.Status
 import com.onethefull.dasomautobiography.provider.DasomProviderHelper
 import com.onethefull.dasomautobiography.repository.MenuRepository
 import com.onethefull.dasomautobiography.utils.WMediaPlayer
@@ -45,7 +46,11 @@ class MenuViewModel(
         WMediaPlayer.instance.setListener(null)
     }
 
-
+    /**
+     * 자서전 메뉴 가져오기
+     * */
+    private val _categoryStatusEvent = MutableLiveData<Status>()
+    val categoryStatusEvent: LiveData<Status> get() = _categoryStatusEvent
     fun getCategoryList() {
         uiScope.launch {
             val check204 = repository.check204() ?: false
@@ -56,22 +61,20 @@ class MenuViewModel(
                     Build.SERIAL,
                 ).let { response ->
                     when (response.statusCode) {
-                        1001 -> {
-                            Toasty.error(context, context.getString(R.string.message_not_exist_elderly_info)).show()
-                            RxBus.publish(RxEvent.destroyShortAppUpdate)
+                        1001, -3  -> {
+                            _categoryStatusEvent.postValue(Status(response.statusCode, response.status?: ""))
                         }
-
-                        -3 -> {
-                            Toasty.error(context, context.getString(R.string.message_not_registration_elderly)).show()
-                            RxBus.publish(RxEvent.destroyShortAppUpdate)
-                        }
-
                         0 -> {
                             _items.value = response.cateList ?: emptyList()
+                            _categoryStatusEvent.postValue(Status(0, "success"))
+                        }
+                        else -> {
+                            _categoryStatusEvent.postValue(Status(response.statusCode, response.status ?: "알 수 없는 오류"))
                         }
                     }
                 }
             } else {
+                _categoryStatusEvent.postValue(Status(-1, context.getString(R.string.message_network_error)))
                 Toasty.error(context, context.getString(R.string.message_network_error)).show()
                 RxBus.publish(RxEvent.destroyApp)
             }

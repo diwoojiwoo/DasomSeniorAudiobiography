@@ -70,8 +70,6 @@ class SpeechViewModel(
     private val _currentItem = MutableLiveData<Entry>() // MainViewModel에서 공유받은 데이터
     val currentItem: LiveData<Entry> = _currentItem
 
-    private var job: Job? = null
-
     init {
         connect()
     }
@@ -163,21 +161,14 @@ class SpeechViewModel(
 
     override fun requestSendGenieLog(sttResult: String, genieResponse: String) {}
 
-    override fun onVoiceResult(result: String?) {
-//        isSuccessRecog = true
-//        result?.let {
-//            handleRecognition(result)
-//        }
-    }
-
-    private fun handleRecognition(text: String) {}
+    override fun onVoiceResult(result: String?) {}
 
     fun speech(text: String) {
         GCTextToSpeech.getInstance()?.speech(text)
     }
 
     /**
-     * 음성입력 처리 콜백
+     * 음성 입력 처리 콜백
      */
     private val voiceCallback = object : VoiceRecorder.Callback() {
         override fun onVoiceStart() {
@@ -369,21 +360,10 @@ class SpeechViewModel(
                     wavUtils.getMultipartWaveFile()
                 ).let { response ->
                     when (response.statusCode) {
-                        -99 -> {
-                            _insertLogEvent.postValue(Status(response.statusCode, response.message))
-                        }
-
-                        -3 -> {
-                            _insertLogEvent.postValue(Status(response.statusCode, context.getString(R.string.message_not_registration_elderly)))
-                        }
-
-                        0 -> {
-                            _insertLogEvent.postValue(Status(response.statusCode, ""))
-                        }
-
-                        else -> {
-                            _insertLogEvent.postValue(Status(response.statusCode, ""))
-                        }
+                        -99 -> _insertLogEvent.postValue(Status(response.statusCode, response.message))
+                        -3 -> _insertLogEvent.postValue(Status(response.statusCode, context.getString(R.string.message_not_registration_elderly)))
+                        0 -> _insertLogEvent.postValue(Status(response.statusCode, response.message ?: ""))
+                        else -> _insertLogEvent.postValue(Status(response.statusCode, response.message ?: ""))
                     }
                 }
             } else {
