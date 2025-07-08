@@ -30,7 +30,7 @@ class ListAdapter(
             tvNumber.text = (position + 1).toString() // 1부터 시작
             tvQuestion.text = entry.viewQuestion
 
-            val language = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko"
+            val language = App.instance.getLocale()?.dasomLanguageCodeValue() ?: Constant.KO
             when (language) {
                 "ko-KR" ->  {
                     val dpWidth = 630

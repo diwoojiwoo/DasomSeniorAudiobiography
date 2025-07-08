@@ -89,7 +89,7 @@ class QuestionDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val language = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko"
+        val language = App.instance.getLocale()?.dasomLanguageCodeValue() ?: Constant.KO
         when (language) {
             "ko-KR" -> {
                 binding.tvLeftTime.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32f)

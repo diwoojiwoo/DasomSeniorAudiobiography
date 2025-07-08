@@ -1,5 +1,7 @@
 package com.onethefull.dasomautobiography.utils
 
+import android.content.res.Resources
+import android.util.TypedValue
 import android.view.View
 
 /**
@@ -15,4 +17,12 @@ fun View.setOnSingleClickListener(interval: Long = 5000L, listener: (View) -> Un
             listener(it)
         }
     }
+}
+
+fun Int.dpToPx(): Int {
+    return TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_DIP,
+        this.toFloat(),
+        Resources.getSystem().displayMetrics
+    ).toInt()
 }

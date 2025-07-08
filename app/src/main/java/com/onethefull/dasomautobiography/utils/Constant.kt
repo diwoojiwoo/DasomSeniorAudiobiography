@@ -11,6 +11,7 @@ object Constant {
     const val KEY_MOVE_REASON = "moveReason"
     const val MOVE_REASON_STT = "stt"
     const val MOVE_REASON_NO_ANSWER = "no_answer"
+    const val KO = "ko"
 }
 
 object Product {

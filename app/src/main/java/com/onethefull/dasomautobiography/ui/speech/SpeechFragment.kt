@@ -32,6 +32,7 @@ import com.onethefull.dasomautobiography.utils.logger.DWLog
 import com.onethefull.dasomautobiography.utils.speech.SpeechStatus
 import com.onethefull.wonderfulrobotmodule.ext.dasomLanguageCodeValue
 import androidx.core.graphics.toColorInt
+import com.onethefull.dasomautobiography.utils.dpToPx
 import com.onethefull.wonderfulrobotmodule.robot.BaseRobotController
 
 
@@ -79,15 +80,23 @@ class SpeechFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val language = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko"
+        val language = App.instance.getLocale()?.dasomLanguageCodeValue() ?: Constant.KO
         when (language) {
             "en-US" -> {
+                val layoutParams = binding.tvTitleSpeech.layoutParams as ViewGroup.MarginLayoutParams
+                layoutParams.marginStart = 80.dpToPx()
+                binding.tvTitleSpeech.layoutParams = layoutParams
                 binding.tvTitleSpeech.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22f)
                 binding.tvQuestionTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 28f)
             }
 
-            else -> {
+            "ja-JP" -> {
+                binding.tvTitleSpeech.setTextSize(TypedValue.COMPLEX_UNIT_SP, 40f)
+                binding.tvQuestionTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32f)
+                binding.includeNewRecord.tvRecState.setTextSize(TypedValue.COMPLEX_UNIT_SP, 28f)
+            }
+
+            else -> { // 한국, 번체, 간체
                 binding.tvTitleSpeech.setTextSize(TypedValue.COMPLEX_UNIT_SP, 40f)
                 binding.tvQuestionTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32f)
             }
@@ -191,7 +200,7 @@ class SpeechFragment : Fragment() {
             }
         }
 
-        /* 재생 시작 버튼 선택 */
+        // 재생 시작 버튼 선택
         binding.includeNewRecord.layoutMediaPlay.setOnClickListener {
             DWLog.e("Play Status :: ${viewModel.playStatus}")
             when (viewModel.playStatus) {
