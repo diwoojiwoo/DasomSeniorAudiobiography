@@ -87,6 +87,14 @@ class App : MultiDexApplication() {
                     OnethefullBase.PARAM_NEXT_SCENE_ACTION,
                     params?.getString(OnethefullBase.PARAM_NEXT_SCENE_ACTION,"")
                 )
+                send.putExtra(
+                    OnethefullBase.PARAM_MOTION_DETECTED,
+                    params?.getBoolean(OnethefullBase.PARAM_MOTION_DETECTED, false)
+                )
+                send.putExtra(
+                    OnethefullBase.PARAM_EFFECT_ON,
+                    params?.getBoolean(OnethefullBase.PARAM_EFFECT_ON, false)
+                )
             }
             else -> {
 
