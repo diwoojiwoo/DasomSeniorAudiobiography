@@ -2,6 +2,7 @@ package com.onethefull.dasomautobiography
 
 import android.os.Bundle
 import android.os.Process
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil.setContentView
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
@@ -49,10 +50,11 @@ class MainActivity : BaseActivity() {
         viewModel.start()
     }
 
-    fun navigateToSpeechFragment(reason: String? = null) {
-        val bundle = Bundle().apply {
-            reason?.let { putString(Constant.KEY_MOVE_REASON, it) }
-        }
+    fun navigateToSpeechFragment(reason: String? = null, motionDetected: Boolean = false) {
+        val bundle = bundleOf(
+            Constant.KEY_MOVE_REASON to reason,
+            Constant.PARAM_MOTION_DETECTED to motionDetected
+        )
         supportFragmentManager.findFragmentById(R.id.nav_host)
             ?.findNavController()
             ?.navigate(R.id.action_global_speechFragment, bundle)

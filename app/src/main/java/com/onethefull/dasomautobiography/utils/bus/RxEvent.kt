@@ -32,6 +32,7 @@ class RxEvent {
         val destroyLongAppUpdate90 = Event(AppDestroyUpdate, 90 * 1000L, "AppDestroyUpdate")
 
         val navigateMenuFragment60 = Event(NavigateToMenuFragment, 60 * 1000L, "NavigateToMenuFragment")
+        val removeNavigateToMenuFragment = Event(RemoveNavigateToMenuFragment, 0L, "RemoveNavigateToMenuFragment")
     }
 
     init {

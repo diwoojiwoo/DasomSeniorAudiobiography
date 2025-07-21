@@ -80,6 +80,12 @@ class SpeechFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // 상황인식 변수 확인
+        val motionDetected = arguments?.getBoolean(Constant.PARAM_MOTION_DETECTED) ?: false
+        DWLog.d("SpeechFragment - motionDetected = $motionDetected")
+        sharedViewModel.setMotionDetected(true)
+
         val language = App.instance.getLocale()?.dasomLanguageCodeValue() ?: Constant.KO
         when (language) {
             "en-US" -> {

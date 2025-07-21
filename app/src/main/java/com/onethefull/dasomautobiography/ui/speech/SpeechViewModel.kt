@@ -67,7 +67,8 @@ class SpeechViewModel(
     private var mediaPlayer: MediaPlayer? = null
     var playStatus: PlayStatus = PlayStatus.INIT
 
-    private val _currentItem = MutableLiveData<Entry>() // MainViewModel에서 공유받은 데이터
+    // MainViewModel에서 공유받은 데이터
+    private val _currentItem = MutableLiveData<Entry>()
     val currentItem: LiveData<Entry> = _currentItem
 
     init {
@@ -93,7 +94,7 @@ class SpeechViewModel(
         DWLog.d("disconnect")
         GCTextToSpeech.getInstance()?.release()
         WMediaPlayer.instance.setListener(null)
-        RxBus.publish(Event(RemoveNavigateToMenuFragment, 0L, "RemoveNavigateToMenuFragment"))
+        RxBus.publish(RxEvent.removeNavigateToMenuFragment)
     }
 
     /***

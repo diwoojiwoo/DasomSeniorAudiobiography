@@ -39,11 +39,11 @@ class MainViewModel : BaseViewModel() {
                 updateTerminator(event.time)
             }
 
-            RxEvent.NavigateToMenuFragment-> {
+            RxEvent.NavigateToMenuFragment -> {
                 updateNavigator(event.time)
             }
 
-            RxEvent.RemoveNavigateToMenuFragment-> {
+            RxEvent.RemoveNavigateToMenuFragment -> {
                 removeNavigator()
             }
         }
@@ -56,9 +56,14 @@ class MainViewModel : BaseViewModel() {
                 App.instance.currentActivity?.finishAffinity()
             }
 
-            MESSAGE_WHAT_NAVIGATE_MENU_FRAGMENT-> {
+            MESSAGE_WHAT_NAVIGATE_MENU_FRAGMENT -> {
                 DWLog.d("NavigateToMenuFragment")
-                App.instance.currentActivity?.findNavController(R.id.nav_host)?.navigate(R.id.action_speech_to_menu_fragment)
+                if (isMotionDetected.value == true) {
+                   DWLog.d("오늘은 여기까지 기록할 게요. 나중에 다시 이야 기해요~ 발화")
+                    App.instance.currentActivity?.findNavController(R.id.nav_host)?.navigate(R.id.action_speech_to_menu_fragment)
+                } else {
+                    App.instance.currentActivity?.findNavController(R.id.nav_host)?.navigate(R.id.action_speech_to_menu_fragment)
+                }
             }
         }
         false
@@ -145,6 +150,16 @@ class MainViewModel : BaseViewModel() {
 
     fun selectItem(entry: Entry) {
         _selectedItem.value = entry
+    }
+
+    /**
+     * 상황인식 여부 값 공유
+     */
+    private val _isMotionDetected = MutableLiveData<Boolean>()
+    val isMotionDetected: LiveData<Boolean> get() = _isMotionDetected
+
+    fun setMotionDetected(value: Boolean) {
+        _isMotionDetected.value = value
     }
 
     companion object {

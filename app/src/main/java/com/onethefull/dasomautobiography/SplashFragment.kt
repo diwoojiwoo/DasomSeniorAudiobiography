@@ -86,7 +86,7 @@ class SplashFragment : Fragment() {
             if (event == SpeechType.CONTENT && !hasNavigated) {
                 hasNavigated = true
                 viewLifecycleOwner.lifecycleScope.launch {
-                    (activity as? MainActivity)?.navigateToSpeechFragment(Constant.MOVE_REASON_STT)
+                    (activity as? MainActivity)?.navigateToSpeechFragment(Constant.MOVE_REASON_STT, motionDetected = motionDetected)
                 }
             }
         }
