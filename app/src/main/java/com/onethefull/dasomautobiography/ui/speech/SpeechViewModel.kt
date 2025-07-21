@@ -6,9 +6,12 @@ import android.os.Build
 import android.os.RemoteException
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.findNavController
+import com.onethefull.dasomautobiography.App
 import com.onethefull.dasomautobiography.BuildConfig
 import com.onethefull.dasomautobiography.MainViewModel
 import com.onethefull.dasomautobiography.R
+import com.onethefull.dasomautobiography.SpeechType
 import com.onethefull.dasomautobiography.base.BaseViewModel
 import com.onethefull.dasomautobiography.contents.toast.Toasty
 import com.onethefull.dasomautobiography.data.model.Status
@@ -35,6 +38,11 @@ import com.onethefull.dasomautobiography.utils.speech.GCSpeechToTextImpl
 import com.onethefull.dasomautobiography.utils.speech.GCTextToSpeech
 import com.onethefull.dasomautobiography.utils.speech.GenieSpeechToTextImpl
 import com.onethefull.dasomautobiography.utils.speech.SpeechStatus
+import com.onethefull.wonderfulrobotmodule.robot.BaseRobotController
+import com.onethefull.wonderfulrobotmodule.robot.IMotionCallback
+import com.onethefull.wonderfulrobotmodule.robot.KebbiMotion
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -71,8 +79,16 @@ class SpeechViewModel(
     private val _currentItem = MutableLiveData<Entry>()
     val currentItem: LiveData<Entry> = _currentItem
 
+    // 60초 뒤 메뉴이동 이벤트 구독
+    private val compositeDisposable = CompositeDisposable()
+
+    // 상황인식 값 공유
+    private val _isMotionDetected = MutableLiveData<Boolean>()
+    val isMotionDetected: LiveData<Boolean> get() = _isMotionDetected
+
     init {
         connect()
+        observeNavigateEvent()
     }
 
     fun fetchDataFromSharedViewModel(sharedViewModel: MainViewModel) {
@@ -95,6 +111,26 @@ class SpeechViewModel(
         GCTextToSpeech.getInstance()?.release()
         WMediaPlayer.instance.setListener(null)
         RxBus.publish(RxEvent.removeNavigateToMenuFragment)
+    }
+
+    private fun observeNavigateEvent() {
+        compositeDisposable.add(
+            RxBus.listen(Event::class.java)
+                .observeOn(AndroidSchedulers.mainThread())
+                .filter { it.typeNumber == NavigateToMenuFragment }
+                .subscribe { event ->
+                    DWLog.d("SpeechViewModel: 60초 뒤 종료 이벤트 받음, time = ${event.time}")
+                    if(_isMotionDetected.value == true) {
+                        synchronized(this) {
+                            BaseRobotController.robotService?.robotMotor?.reset()
+                            BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.CALL_ACCEPT, callback)
+                            GCTextToSpeech.getInstance()?.speech(context.getString(R.string.message_finish_activity_recognition_1))
+                        }
+                    } else {
+                        App.instance.currentActivity?.findNavController(R.id.nav_host)?.navigate(R.id.action_speech_to_menu_fragment)
+                    }
+                }
+        )
     }
 
     /***
@@ -323,6 +359,7 @@ class SpeechViewModel(
 
     override fun onCleared() {
         super.onCleared()
+        compositeDisposable.dispose()
         stopWavFile() // ViewModel 종료 시 정리
     }
 
@@ -371,6 +408,20 @@ class SpeechViewModel(
                 Toasty.error(context, context.getString(R.string.message_network_error)).show()
                 RxBus.publish(RxEvent.destroyApp)
             }
+        }
+    }
+
+
+    /**
+     * 상황인식 여부 값 공유
+     */
+    fun setMotionDetected(value: Boolean) {
+        _isMotionDetected.value = value
+    }
+
+    var callback: IMotionCallback = object : IMotionCallback.Stub() {
+        override fun finishMotion() {
+            BaseRobotController.robotService?.robotMotor?.reset()
         }
     }
 

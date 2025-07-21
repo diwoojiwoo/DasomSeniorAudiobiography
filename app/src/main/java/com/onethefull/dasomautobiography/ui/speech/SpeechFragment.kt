@@ -84,7 +84,8 @@ class SpeechFragment : Fragment() {
         // 상황인식 변수 확인
         val motionDetected = arguments?.getBoolean(Constant.PARAM_MOTION_DETECTED) ?: false
         DWLog.d("SpeechFragment - motionDetected = $motionDetected")
-        sharedViewModel.setMotionDetected(true)
+//        sharedViewModel.setMotionDetected(motionDetected)
+        viewModel.setMotionDetected(motionDetected)
 
         val language = App.instance.getLocale()?.dasomLanguageCodeValue() ?: Constant.KO
         when (language) {

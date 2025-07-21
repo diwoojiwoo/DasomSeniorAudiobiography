@@ -142,15 +142,6 @@ class SplashViewModel(
         }
     }
 
-    private suspend fun startMotionFinish() {
-        _speechType.value = SpeechType.END
-        delay(500L)
-        synchronized(this) {
-            BaseRobotController.robotService?.robotMotor?.reset()
-            BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.CALL_ACCEPT, callback)
-            GCTextToSpeech.getInstance()?.speech(context.getString(R.string.message_finish_activity_recognition_1))
-        }
-    }
 
     fun setMotionDetected(value: Boolean) {
         _isMotionDetected.value = value

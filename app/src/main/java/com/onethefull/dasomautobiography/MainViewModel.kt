@@ -58,12 +58,12 @@ class MainViewModel : BaseViewModel() {
 
             MESSAGE_WHAT_NAVIGATE_MENU_FRAGMENT -> {
                 DWLog.d("NavigateToMenuFragment")
-                if (isMotionDetected.value == true) {
-                   DWLog.d("오늘은 여기까지 기록할 게요. 나중에 다시 이야 기해요~ 발화")
-                    App.instance.currentActivity?.findNavController(R.id.nav_host)?.navigate(R.id.action_speech_to_menu_fragment)
-                } else {
-                    App.instance.currentActivity?.findNavController(R.id.nav_host)?.navigate(R.id.action_speech_to_menu_fragment)
-                }
+//                if (isMotionDetected.value == true) {
+//                   DWLog.d("오늘은 여기까지 기록할 게요. 나중에 다시 이야 기해요~ 발화")
+//                    App.instance.currentActivity?.findNavController(R.id.nav_host)?.navigate(R.id.action_speech_to_menu_fragment)
+//                } else {
+//                    App.instance.currentActivity?.findNavController(R.id.nav_host)?.navigate(R.id.action_speech_to_menu_fragment)
+//                }
             }
         }
         false
