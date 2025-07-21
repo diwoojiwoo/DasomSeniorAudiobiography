@@ -76,7 +76,6 @@ class App : MultiDexApplication() {
         send.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
         send.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         DWLog.w("onCommand action:$action")
-
         when (action) {
             OnethefullBase.ACTION_OPEN -> {
                 send.putExtra(

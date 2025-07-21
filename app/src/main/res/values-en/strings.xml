@@ -39,4 +39,8 @@
     <string name="text_additional_answer">Add Another Answer</string>
     <string name="recording_start_do">Answer</string>
 
+    <string name="message_intro_activity_recognition_1">Master, shall we gather the stories from the past one by one? There’s a feature called "Autobiography".</string>
+    <string name="message_intro_activity_recognition_2">I’d like to record your life, Master. Even old memories can be truly precious when we bring them back.</string>
+    <string name="message_intro_activity_recognition_3">I have something I’d like to ask you, Master. Please start by sharing a good story for the autobiography.</string>
+    <string name="message_finish_activity_recognition_1">I’ll stop recording for today. Let’s talk again later.</string>
 </resources>

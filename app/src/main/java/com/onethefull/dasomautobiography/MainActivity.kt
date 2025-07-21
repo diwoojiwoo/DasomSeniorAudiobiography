@@ -30,6 +30,15 @@ class MainActivity : BaseActivity() {
         binding = setContentView(this, R.layout.activity_main)
         navController = Navigation.findNavController(this, R.id.nav_host)
         setupViewModel()
+        if (savedInstanceState == null) {
+            val isMotionDetected = intent.getBooleanExtra(Constant.PARAM_MOTION_DETECTED, false)
+            val isEffectOn = intent.getBooleanExtra(Constant.PARAM_EFFECT_ON, false)
+            val bundle = Bundle().apply {
+                putBoolean(Constant.PARAM_MOTION_DETECTED, isMotionDetected)
+                putBoolean(Constant.PARAM_EFFECT_ON, isEffectOn)
+            }
+            navController.setGraph(R.navigation.nav_graph, bundle)
+        }
     }
 
     override fun onResume() {
@@ -59,7 +68,7 @@ class MainActivity : BaseActivity() {
         GCTextToSpeech.getInstance()?.release()
         App.instance.isRunning = false
         viewModel.release()
-        Process.killProcess(Process.myPid())
+//        Process.killProcess(Process.myPid())
     }
 
     private fun setupViewModel() {

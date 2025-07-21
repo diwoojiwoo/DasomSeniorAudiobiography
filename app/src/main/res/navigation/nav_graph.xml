@@ -10,6 +10,17 @@
         android:id="@+id/splash_fragment"
         android:name="com.onethefull.dasomautobiography.SplashFragment"
         tools:layout="@layout/fragment_splash">
+
+        <argument
+            android:name="isMotionDetected"
+            android:defaultValue="false"
+            app:argType="boolean" />
+
+        <argument
+            android:name="isEffectOn"
+            android:defaultValue="false"
+            app:argType="boolean" />
+
         <action
             android:id="@+id/action_splashFragment_to_menuFragment"
             app:destination="@id/menu_fragment"

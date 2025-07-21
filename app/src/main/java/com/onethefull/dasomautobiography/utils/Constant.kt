@@ -12,6 +12,9 @@ object Constant {
     const val MOVE_REASON_STT = "stt"
     const val MOVE_REASON_NO_ANSWER = "no_answer"
     const val KO = "ko"
+
+    const val PARAM_MOTION_DETECTED = "isMotionDetected"
+    const val PARAM_EFFECT_ON = "isEffectOn"
 }
 
 object Product {

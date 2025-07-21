@@ -39,4 +39,9 @@
 
     <string name="text_additional_answer">추가 답변</string>
     <string name="recording_start_do">답변하기</string>
+
+    <string name="message_intro_activity_recognition_1">주인님. 예전에 있었던 이야기들을 하나씩 모아볼까요. 자서전이라는 기능이 있어요.</string>
+    <string name="message_intro_activity_recognition_2">제가 주인님의 삶을 기록해보려고 해요. 오래된 기억도 꺼내보면 참 소중하잖아요.</string>
+    <string name="message_intro_activity_recognition_3">주인님께 여줘보고 싶은게 있어요. 자서전으로 좋은 이야기부터 들려주세요.</string>
+    <string name="message_finish_activity_recognition_1">오늘은 여기까지 기록할게요. 나중에 다시 이야기해요</string>
 </resources>

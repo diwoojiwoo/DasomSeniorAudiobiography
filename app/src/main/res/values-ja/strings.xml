@@ -39,5 +39,8 @@
     <string name="text_additional_answer">追加の回答</string>
     <string name="recording_start_do">回答する</string>
 
-
+    <string name="message_intro_activity_recognition_1">ご主人様、昔の出来事をひとつずつ集めてみませんか？「自伝」という機能がありますよ。</string>
+    <string name="message_intro_activity_recognition_2">ご主人様の人生を記録してみようと思います。昔の思い出も振り返るととても大切ですよね。</string>
+    <string name="message_intro_activity_recognition_3">ご主人様にお聞きしたいことがあります。自伝には素敵なお話から聞かせてくださいね。</string>
+    <string name="message_finish_activity_recognition_1">今日はここまで記録しますね。また後でお話ししましょう。</string>
 </resources>

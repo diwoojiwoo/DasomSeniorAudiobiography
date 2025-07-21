@@ -39,4 +39,8 @@
     <string name="text_additional_answer">追加回答</string>
     <string name="recording_start_do">开始回答</string>
 
+    <string name="message_intro_activity_recognition_1">主人，我们来一点一点地收集过去的故事吧。有一个叫“自传”的功能哦。</string>
+    <string name="message_intro_activity_recognition_2">我想试着记录主人的人生。回忆过去的记忆，也是非常珍贵的哦。</string>
+    <string name="message_intro_activity_recognition_3">我有些事情想请教主人。请从美好的故事开始讲起，作为自传的开始吧。</string>
+    <string name="message_finish_activity_recognition_1">今天就记录到这里吧。我们之后再聊。</string>
 </resources>
