@@ -61,7 +61,7 @@ class SplashFragment : Fragment() {
                 // 2.  상황인식-자서전
                 DWLog.e("2.  상황인식-자서전")
                 if (effectOn) {
-                    val mediaPlayer = MediaPlayer.create(App.instance, R.raw.d54)
+                    val mediaPlayer = MediaPlayer.create(App.instance, R.raw.effect)
                     mediaPlayer.setOnCompletionListener { it.release() }
                     MainScope().launch {
                         delay(2000)

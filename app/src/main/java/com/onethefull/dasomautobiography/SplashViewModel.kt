@@ -56,15 +56,8 @@ class SplashViewModel(
     fun disconnect() {
         DWLog.d("disconnect")
         GCTextToSpeech.getInstance()?.release()
-        if (BaseRobotController.robotService != null) {
-            try {
-                BaseRobotController.robotService?.release()
-            } catch (e: Exception) {
-                DWLog.e("RobotService release() failed: ${e.message}")
-            }
-        } else {
-            DWLog.w("RobotService disconnect() called but service is null")
-        }
+        BaseRobotController.robotService?.robotMotor?.stopWheel()
+        BaseRobotController.robotService?.robotMotor?.reset()
     }
 
     fun getContent() {
@@ -140,7 +133,6 @@ class SplashViewModel(
             context.getString(R.string.message_intro_activity_recognition_2),
             context.getString(R.string.message_intro_activity_recognition_3),
         ).random()
-
 
         delay(1000L)
         synchronized(this) {
