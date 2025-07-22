@@ -46,24 +46,35 @@ class MainViewModel : BaseViewModel() {
             RxEvent.RemoveNavigateToMenuFragment -> {
                 removeNavigator()
             }
+
+            RxEvent.FinishMotionDetectEvent -> {
+                updateFinishMotionDetect()
+            }
         }
     }
 
     private val mHandlerCallback = Handler.Callback { msg ->
         when (msg.what) {
             MESSAGE_WHAT_TERMINATE_APP -> {
+                DWLog.d("MESSAGE_WHAT_TERMINATE_APP")
                 SceneHelper.switchOut()
                 App.instance.currentActivity?.finishAffinity()
             }
 
             MESSAGE_WHAT_NAVIGATE_MENU_FRAGMENT -> {
-                DWLog.d("NavigateToMenuFragment")
-//                if (isMotionDetected.value == true) {
-//                   DWLog.d("오늘은 여기까지 기록할 게요. 나중에 다시 이야 기해요~ 발화")
-//                    App.instance.currentActivity?.findNavController(R.id.nav_host)?.navigate(R.id.action_speech_to_menu_fragment)
-//                } else {
-//                    App.instance.currentActivity?.findNavController(R.id.nav_host)?.navigate(R.id.action_speech_to_menu_fragment)
-//                }
+                DWLog.d("MESSAGE_WHAT_NAVIGATE_MENU_FRAGMENT => NavigateToMenuFragment")
+                val navController = App.instance.currentActivity?.findNavController(R.id.nav_host)
+                val currentDestination = navController?.currentDestination?.id
+                if (navController != null && currentDestination == R.id.speech_fragment) {
+                    navController.navigate(R.id.action_speech_to_menu_fragment)
+                }
+            }
+
+            MESSAGE_WHAT_DESTROY_AFTER_SPEECH -> {
+                DWLog.d("MESSAGE_WHAT_DESTROY_AFTER_SPEECH")
+                if(_isMotionDetected.value == true) {
+
+                }
             }
         }
         false
@@ -138,6 +149,21 @@ class MainViewModel : BaseViewModel() {
         handler.removeMessages(MESSAGE_WHAT_NAVIGATE_MENU_FRAGMENT)
     }
 
+    /**
+     *  60초 후 발화 후 종료 예약
+     * */
+    private fun updateFinishMotionDetect(time: Long) {
+        DWLog.i("FinishMotionDetectEvent 수신 → 60초 후 종료 예약")
+        handler.sendMessageDelayed(
+            handler.obtainMessage(MESSAGE_WHAT_DESTROY_AFTER_SPEECH),
+            time
+        )
+    }
+
+    private fun removeFinishMotionDetect() {
+        handler.removeMessages(MESSAGE_WHAT_DESTROY_AFTER_SPEECH)
+    }
+
     override fun onCleared() {
         super.onCleared()
     }
@@ -168,6 +194,7 @@ class MainViewModel : BaseViewModel() {
         // MESSAGE ID
         const val MESSAGE_WHAT_TERMINATE_APP = 0x202
         const val MESSAGE_WHAT_NAVIGATE_MENU_FRAGMENT = 0x204
+        const val MESSAGE_WHAT_DESTROY_AFTER_SPEECH = 0x205
     }
 
 }

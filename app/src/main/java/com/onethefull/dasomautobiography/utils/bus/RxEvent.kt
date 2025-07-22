@@ -19,6 +19,8 @@ class RxEvent {
         const val AppDestroyUpdate = 0x01
         const val NavigateToMenuFragment = 0x02
         const val RemoveNavigateToMenuFragment = 0x03
+        const val FinishMotionDetectEvent = 0x04
+
 
         val map = HashMap<Int, String>()
 
@@ -33,6 +35,8 @@ class RxEvent {
 
         val navigateMenuFragment60 = Event(NavigateToMenuFragment, 60 * 1000L, "NavigateToMenuFragment")
         val removeNavigateToMenuFragment = Event(RemoveNavigateToMenuFragment, 0L, "RemoveNavigateToMenuFragment")
+
+        val finishMotionDetectEvent60 = Event(FinishMotionDetectEvent, 60 * 1000L, "FinishMotionDetectEvent")
     }
 
     init {
@@ -40,5 +44,6 @@ class RxEvent {
         map[AppDestroyUpdate] = "AppDestroyUpdate"
         map[NavigateToMenuFragment] = "NavigateToMenuFragment"
         map[RemoveNavigateToMenuFragment] = "RemoveNavigateToMenuFragment"
+        map[FinishMotionDetectEvent] = "FinishMotionDetectEvent"
     }
 }
