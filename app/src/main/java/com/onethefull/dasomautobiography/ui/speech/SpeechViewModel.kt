@@ -3,6 +3,8 @@ package com.onethefull.dasomautobiography.ui.speech
 import android.app.Activity
 import android.media.MediaPlayer
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.os.RemoteException
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -79,6 +81,14 @@ class SpeechViewModel(
     private val _currentItem = MutableLiveData<Entry>()
     val currentItem: LiveData<Entry> = _currentItem
 
+    //상황인식-자서전 플로우 중 "답변 있음?" 30초 응답 대기 타이머
+    private val handler = Handler(Looper.getMainLooper())
+    private val timeoutMillis = 30_000L
+
+    private val timeoutRunnable = Runnable {
+        performTimeoutSpeech()
+    }
+
     init {
         connect()
     }
@@ -87,15 +97,6 @@ class SpeechViewModel(
         sharedViewModel.selectedItem.value?.let { item ->
             _currentItem.value = item  // SpeechViewModel 내부 LiveData에 저장
             DWLog.d("SpeechViewModel: sharedViewModel에서 데이터 가져옴 -> $item")
-        }
-    }
-
-    fun finishMotion() {
-        _speechStatus.value = SpeechStatus.END
-        synchronized(this) {
-            BaseRobotController.robotService?.robotMotor?.reset()
-            BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.CALL_ACCEPT, callback)
-            GCTextToSpeech.getInstance()?.speech(context.getString(R.string.message_finish_activity_recognition_1))
         }
     }
 
@@ -137,7 +138,8 @@ class SpeechViewModel(
 
     // 음성출력 시작
     private fun speechStarted() {
-        _speechStatus.value = SpeechStatus.SPEECH
+        if (_speechStatus.value != SpeechStatus.END)
+            _speechStatus.value = SpeechStatus.SPEECH
     }
 
     // 음성출력 종료
@@ -150,7 +152,13 @@ class SpeechViewModel(
      * TTS 출력이 끝난 상태 변경
      */
     private fun changeStatusSpeechFinished() {
-        _speechStatus.value = SpeechStatus.WAITING
+        if (_speechStatus.value == SpeechStatus.END) {
+            RxBus.publish(RxEvent.destroyApp)
+        } else {
+            if (_isMotionDetected.value == true)
+                startInactivityTimer() // 상황인식-자서전 경우, 발화 종료 후 답변 대기 30초 타이머 실행
+            _speechStatus.value = SpeechStatus.WAITING
+        }
     }
 
     /**
@@ -340,6 +348,7 @@ class SpeechViewModel(
 
     override fun onCleared() {
         super.onCleared()
+        removeInactivityTimer()
         stopWavFile() // ViewModel 종료 시 정리
     }
 
@@ -349,6 +358,7 @@ class SpeechViewModel(
     private val _insertLogEvent = MutableLiveData<Status>()
     val insertLogEvent: LiveData<Status> get() = _insertLogEvent
     fun insertLog() {
+        removeInactivityTimer()
         uiScope.launch {
             val check204 = repository.check204() ?: false
             if (check204) {
@@ -391,9 +401,52 @@ class SpeechViewModel(
         }
     }
 
+    /**
+     * 로봇움직임 완료 콜백
+     * */
     var callback: IMotionCallback = object : IMotionCallback.Stub() {
         override fun finishMotion() {
             BaseRobotController.robotService?.robotMotor?.reset()
+        }
+    }
+
+    /**
+     * 상황인식 여부 값 공유
+     */
+    private val _isMotionDetected = MutableLiveData<Boolean>()
+    val isMotionDetected: LiveData<Boolean> get() = _isMotionDetected
+
+    fun setMotionDetected(value: Boolean) {
+        _isMotionDetected.value = value
+    }
+
+    fun notifyUserInteraction() {
+        resetInactivityTimer()
+    }
+
+    private fun startInactivityTimer() {
+        DWLog.d("startInactivityTimer")
+        handler.postDelayed(timeoutRunnable, timeoutMillis)
+    }
+
+    private fun resetInactivityTimer() {
+        DWLog.d("resetInactivityTimer")
+        handler.removeCallbacks(timeoutRunnable)
+        handler.postDelayed(timeoutRunnable, timeoutMillis)
+    }
+
+    private fun removeInactivityTimer() {
+        DWLog.d("removeInactivityTimer")
+        handler.removeCallbacks(timeoutRunnable)
+    }
+
+    private fun performTimeoutSpeech() {
+        DWLog.d("performTimeoutSpeech")
+        _speechStatus.value = SpeechStatus.END
+        synchronized(this) {
+            BaseRobotController.robotService?.robotMotor?.reset()
+            BaseRobotController.robotService?.robotMotor?.motionStart(KebbiMotion.CALL_ACCEPT, callback)
+            GCTextToSpeech.getInstance()?.speech(context.getString(R.string.message_finish_activity_recognition_1))
         }
     }
 

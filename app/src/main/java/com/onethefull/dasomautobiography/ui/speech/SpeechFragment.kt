@@ -32,6 +32,7 @@ import com.onethefull.dasomautobiography.utils.logger.DWLog
 import com.onethefull.dasomautobiography.utils.speech.SpeechStatus
 import com.onethefull.wonderfulrobotmodule.ext.dasomLanguageCodeValue
 import androidx.core.graphics.toColorInt
+import androidx.navigation.NavOptions
 import com.onethefull.dasomautobiography.utils.dpToPx
 import com.onethefull.wonderfulrobotmodule.robot.BaseRobotController
 
@@ -84,7 +85,7 @@ class SpeechFragment : Fragment() {
         // 상황인식 변수 확인
         val motionDetected = arguments?.getBoolean(Constant.PARAM_MOTION_DETECTED) ?: false
         DWLog.d("SpeechFragment - motionDetected = $motionDetected")
-        sharedViewModel.setMotionDetected(motionDetected)
+        viewModel.setMotionDetected(motionDetected)
 
         val language = App.instance.getLocale()?.dasomLanguageCodeValue() ?: Constant.KO
         when (language) {
@@ -94,6 +95,7 @@ class SpeechFragment : Fragment() {
                 binding.tvTitleSpeech.layoutParams = layoutParams
                 binding.tvTitleSpeech.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22f)
                 binding.tvQuestionTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 28f)
+                binding.includeNewRecord.tvRecState.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24.5f)
             }
 
             "ja-JP" -> {
@@ -163,7 +165,12 @@ class SpeechFragment : Fragment() {
         }
 
         binding.btnStop.setOnClickListener {
-            findNavController().navigate(SpeechFragmentDirections.actionSpeechToMenuFragment())
+            findNavController().navigate(
+                SpeechFragmentDirections.actionSpeechToMenuFragment(),
+                NavOptions.Builder()
+                    .setPopUpTo(R.id.speech_fragment, true)
+                    .build()
+            )
         }
 
         binding.btnAnswer.setOnClickListener {

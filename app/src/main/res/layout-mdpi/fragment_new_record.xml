@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="20dp"
-            android:fontFamily="@font/notosans_kr_b"
+            android:fontFamily="@font/notosans_kr_r"
             android:gravity="center"
             android:lineHeight="47sp"
             android:text="@string/recording_listen"

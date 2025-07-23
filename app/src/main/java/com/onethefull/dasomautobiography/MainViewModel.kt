@@ -46,10 +46,6 @@ class MainViewModel : BaseViewModel() {
             RxEvent.RemoveNavigateToMenuFragment -> {
                 removeNavigator()
             }
-
-            RxEvent.FinishMotionDetectEvent -> {
-                updateFinishMotionDetect()
-            }
         }
     }
 
@@ -67,13 +63,6 @@ class MainViewModel : BaseViewModel() {
                 val currentDestination = navController?.currentDestination?.id
                 if (navController != null && currentDestination == R.id.speech_fragment) {
                     navController.navigate(R.id.action_speech_to_menu_fragment)
-                }
-            }
-
-            MESSAGE_WHAT_DESTROY_AFTER_SPEECH -> {
-                DWLog.d("MESSAGE_WHAT_DESTROY_AFTER_SPEECH")
-                if(_isMotionDetected.value == true) {
-
                 }
             }
         }
@@ -149,21 +138,6 @@ class MainViewModel : BaseViewModel() {
         handler.removeMessages(MESSAGE_WHAT_NAVIGATE_MENU_FRAGMENT)
     }
 
-    /**
-     *  60초 후 발화 후 종료 예약
-     * */
-    private fun updateFinishMotionDetect(time: Long) {
-        DWLog.i("FinishMotionDetectEvent 수신 → 60초 후 종료 예약")
-        handler.sendMessageDelayed(
-            handler.obtainMessage(MESSAGE_WHAT_DESTROY_AFTER_SPEECH),
-            time
-        )
-    }
-
-    private fun removeFinishMotionDetect() {
-        handler.removeMessages(MESSAGE_WHAT_DESTROY_AFTER_SPEECH)
-    }
-
     override fun onCleared() {
         super.onCleared()
     }
@@ -178,23 +152,12 @@ class MainViewModel : BaseViewModel() {
         _selectedItem.value = entry
     }
 
-    /**
-     * 상황인식 여부 값 공유
-     */
-    private val _isMotionDetected = MutableLiveData<Boolean>()
-    val isMotionDetected: LiveData<Boolean> get() = _isMotionDetected
-
-    fun setMotionDetected(value: Boolean) {
-        _isMotionDetected.value = value
-    }
-
     companion object {
         const val TIME_TERMINATE_APP = 90 * 1000L
 
         // MESSAGE ID
         const val MESSAGE_WHAT_TERMINATE_APP = 0x202
         const val MESSAGE_WHAT_NAVIGATE_MENU_FRAGMENT = 0x204
-        const val MESSAGE_WHAT_DESTROY_AFTER_SPEECH = 0x205
     }
 
 }
