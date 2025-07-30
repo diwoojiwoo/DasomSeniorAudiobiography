@@ -25,21 +25,14 @@ class MainActivity : BaseActivity() {
 
     // 웨이크업 연속어 문장 수신
     var mSentence: String? = null
+    private var isGraphSet = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        DWLog.d("MainActivity - onCreate ")
         binding = setContentView(this, R.layout.activity_main)
         navController = Navigation.findNavController(this, R.id.nav_host)
         setupViewModel()
-        if (savedInstanceState == null) {
-            val isMotionDetected = intent.getBooleanExtra(Constant.PARAM_MOTION_DETECTED, false)
-            val isEffectOn = intent.getBooleanExtra(Constant.PARAM_EFFECT_ON, false)
-            val bundle = Bundle().apply {
-                putBoolean(Constant.PARAM_MOTION_DETECTED, isMotionDetected)
-                putBoolean(Constant.PARAM_EFFECT_ON, isEffectOn)
-            }
-            navController.setGraph(R.navigation.nav_graph, bundle)
-        }
     }
 
     override fun onResume() {
@@ -47,6 +40,18 @@ class MainActivity : BaseActivity() {
         DWLog.d("MainActivity - onResume ")
         GCTextToSpeech.getInstance()?.start(this)
         App.instance.isRunning = true
+
+        if (!isGraphSet) {
+            val isMotionDetected = intent.getBooleanExtra(Constant.PARAM_MOTION_DETECTED, false)
+            val isEffectOn = intent.getBooleanExtra(Constant.PARAM_EFFECT_ON, false)
+            val bundle = Bundle().apply {
+                putBoolean(Constant.PARAM_MOTION_DETECTED, isMotionDetected)
+                putBoolean(Constant.PARAM_EFFECT_ON, isEffectOn)
+            }
+            navController.setGraph(R.navigation.nav_graph, bundle)
+            isGraphSet = true
+        }
+
         viewModel.start()
     }
 
