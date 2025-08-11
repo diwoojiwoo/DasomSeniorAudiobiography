@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Color
 import android.os.Bundle
+import android.os.SystemClock
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -33,6 +34,7 @@ import com.onethefull.dasomautobiography.utils.setOnSingleClickListener
 import com.onethefull.dasomautobiography.utils.speech.SpeechStatus
 import com.onethefull.wonderfulrobotmodule.ext.dasomLanguageCodeValue
 import androidx.core.graphics.toColorInt
+import com.onethefull.dasomautobiography.ui.speech.SpeechViewModel
 
 /**
  * Created by sjw on 2025. 3. 7.
@@ -324,7 +326,7 @@ class QuestionDetailFragment : Fragment() {
         binding.tvContent.text = sharedViewModel.selectedItem.value?.viewQuestion // 질문 재세팅
 
         viewModel.timeLeft.observe(viewLifecycleOwner) { time ->
-            if (time < 60) {
+            if (time < 61) {
                 binding.tvLeftTime.setTextColor(Color.parseColor("#ff6363"))
                 binding.tvLeftTime.text = String.format(requireContext().getString(R.string.title_left_time) + "00:%02d", time)
             }
@@ -335,8 +337,8 @@ class QuestionDetailFragment : Fragment() {
 //                DWLog.d("답변 하기")
                 // 듣기 버튼 상태
                 binding.btnPlay.isEnabled = false
-                binding.btnPlay.isChecked = false
-                binding.tvPlay.setTextColor(Color.DKGRAY)
+                binding.btnPlay.setBackgroundResource(R.drawable.selector_dialog_play_btn) // 혹은 원하는 배경
+                binding.tvPlay.setTextColor(Color.GRAY)
 
                 // 저장 버튼 상태
                 binding.btnSave.isEnabled = false
@@ -346,13 +348,12 @@ class QuestionDetailFragment : Fragment() {
                 binding.tvRecording.text = requireContext().getString(R.string.title_end_answer)
                 binding.tvRecording.setTextColor(Color.parseColor("#ff6363"))
 
-                viewModel.startTimer() // 타이머 시작
+                viewModel.startTimer()
                 viewModel.startRecording()
             } else {
 //                DWLog.d("답변 종료")
                 // 듣기 버튼 상태 -> 체크되지 않음 && 활성화 상태
                 binding.btnPlay.isEnabled = true
-                binding.btnPlay.isChecked = false
                 binding.tvPlay.setTextColor(Color.GRAY)
 
                 binding.btnSave.isEnabled = true
@@ -361,38 +362,36 @@ class QuestionDetailFragment : Fragment() {
                 binding.tvRecording.text = requireContext().getString(R.string.title_start_answer)
                 binding.tvRecording.setTextColor(Color.BLACK)
 
-                viewModel.resetTimer()
+                viewModel.pauseTimer()
                 viewModel.stopRecording()
             }
         }
 
-        binding.btnPlay.setOnCheckedChangeListener { cb, isChecked ->
-            if (cb.isChecked) {
-//                DWLog.e("녹음된 음성 듣기 중")
-
-                binding.btnPlay.isEnabled = true
-                binding.tvPlay.setTextColor(Color.BLACK)
-                binding.tvPlay.text = requireContext().getString(R.string.title_stop_answer)
-
-                binding.cbRecording.isEnabled = false
-                binding.tvRecording.text = requireContext().getString(R.string.title_start_answer)
-                binding.tvRecording.setTextColor(Color.GRAY)
-
-                binding.btnSave.isEnabled = false
-                binding.tvSave.setTextColor(Color.GRAY)
-
-                viewModel.startTimer()
-                viewModel.playWavFile()
-            } else {
-//                DWLog.e("음성 듣기 중 정지 누름")
-                resetPlayUI()
-            }
-        }
-
-
-        viewModel.isPlaying.observe(viewLifecycleOwner) {
-            if (!it) {
-                resetPlayUI()
+        // 재생 버튼
+        binding.btnPlay.setOnClickListener {
+            when(viewModel.playStatus) {
+                SpeechViewModel.PlayStatus.INIT,  SpeechViewModel.PlayStatus.STOP -> {
+                    // 재생 시작
+                    DWLog.d("재생 시작")
+                    viewModel.playWavFile()
+                    updatePlayUI(isPlaying = true)
+                }
+                SpeechViewModel.PlayStatus.PLAY -> {
+                    // 재생 중이면 일시정지 or 정지 처리
+                    DWLog.d("재생 중이면 일시정지")
+                    viewModel.pauseWavFile()
+                    updatePlayUI(isPlaying = false)
+                }
+                SpeechViewModel.PlayStatus.PAUSE -> {
+                    // 일시정지 상태면 재생 재개
+                    DWLog.d("일시정지 상태면 재생 재개")
+                    viewModel.resumeWavFile()
+                    updatePlayUI(isPlaying = true)
+                }
+                else -> {
+                    // 필요 시 기타 상태 처리
+                    DWLog.d("필요 시 기타 상태 처리")
+                }
             }
         }
 
@@ -413,12 +412,18 @@ class QuestionDetailFragment : Fragment() {
             viewModel.stopWavFile()
             viewModel.stopRecording()
         }
+
+        viewModel.onPlayCompleted = {
+            DWLog.d("재생 완료 콜백 수신")
+            updatePlayUI(isPlaying = false)
+        }
     }
 
     private fun initView() {
-        // 듣기 버튼 상태 (체크되지 않음 && 비활성화 상태)
+        DWLog.d("initView")
+        // 듣기 버튼 상태
         binding.btnPlay.isEnabled = false
-        binding.btnPlay.isChecked = false
+        binding.btnPlay.setBackgroundResource(R.drawable.selector_dialog_play_btn) // 혹은 원하는 배경
         binding.tvPlay.setTextColor(Color.GRAY)
 
         // 저장 버튼 상태
@@ -429,6 +434,34 @@ class QuestionDetailFragment : Fragment() {
         binding.cbRecording.isChecked = false
         binding.tvRecording.text = requireContext().getString(R.string.title_start_answer)
         binding.tvRecording.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray_33))
+    }
+
+    private fun updatePlayUI(isPlaying: Boolean) {
+        if (isPlaying) {
+            binding.btnPlay.isEnabled = true
+            binding.tvPlay.text = getString(R.string.title_stop_answer)
+            binding.tvPlay.setTextColor(Color.BLACK)
+            binding.btnPlay.setBackgroundResource(R.drawable.btn_play_pause) // pause 아이콘으로 변경
+
+            binding.cbRecording.isEnabled = false
+            binding.tvRecording.text = getString(R.string.title_start_answer)
+            binding.tvRecording.setTextColor(Color.GRAY)
+
+            binding.btnSave.isEnabled = false
+            binding.tvSave.setTextColor(Color.GRAY)
+        } else {
+            binding.btnPlay.isEnabled = true
+            binding.tvPlay.text = getString(R.string.title_listen_answer) // '듣기'
+            binding.tvPlay.setTextColor(Color.BLACK)
+            binding.btnPlay.setBackgroundResource(R.drawable.selector_dialog_play_btn) // play 아이콘으로 변경
+
+            binding.cbRecording.isEnabled = true
+            binding.tvRecording.text = getString(R.string.title_start_answer)
+            binding.tvRecording.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray_33))
+
+            binding.btnSave.isEnabled = true
+            binding.tvSave.setTextColor(Color.BLACK)
+        }
     }
 
     private fun updateAnswerDisplay() {
@@ -476,26 +509,6 @@ class QuestionDetailFragment : Fragment() {
             // 답변이 없을 때 기본 텍스트
             binding.tvRetry.text = requireContext().getString(R.string.title_additional_answer)
         }
-    }
-
-    private fun resetPlayUI() {
-        // 듣기
-        binding.btnPlay.isEnabled = true
-        binding.btnPlay.isChecked = false
-        binding.tvPlay.setTextColor(Color.BLACK)
-        binding.tvPlay.text = requireContext().getString(R.string.title_listen_answer)
-
-        // 저장
-        binding.btnSave.isEnabled = true
-        binding.tvSave.setTextColor(Color.BLACK)
-
-        // 녹음
-        binding.cbRecording.isEnabled = true
-        binding.tvRecording.text = requireContext().getString(R.string.title_start_answer)
-        binding.tvRecording.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray_33))
-
-        viewModel.resetTimer()
-        viewModel.pauseWavFile()
     }
 
     override fun onPause() {

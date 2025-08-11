@@ -20,6 +20,7 @@ import com.onethefull.dasomautobiography.data.model.audiobiography.GetAutobiogra
 import com.onethefull.dasomautobiography.data.model.audiobiography.TotalMap
 import com.onethefull.dasomautobiography.provider.DasomProviderHelper
 import com.onethefull.dasomautobiography.repository.QuestionDetailRepository
+import com.onethefull.dasomautobiography.ui.speech.SpeechViewModel.PlayStatus
 import com.onethefull.dasomautobiography.utils.Constant
 import com.onethefull.dasomautobiography.utils.ParamGeneratorUtils
 import com.onethefull.dasomautobiography.utils.WMediaPlayer
@@ -77,8 +78,7 @@ class QuestionDetailViewModel(
 
     // 녹음 파일 재생 하기
     private var mediaPlayer: MediaPlayer? = null
-    private val _isPlaying = MutableLiveData<Boolean>()
-    val isPlaying: LiveData<Boolean> get() = _isPlaying
+    var playStatus: PlayStatus = PlayStatus.INIT
 
     // 답변 가져 오기
     private val _transText = MutableLiveData<String>()
@@ -277,33 +277,52 @@ class QuestionDetailViewModel(
     }
 
     fun startTimer() {
-        if (_isRunning.value == true) return // 이미 실행 중이면 무시
+        DWLog.d("startTimer")
+        if (_isRunning.value == true) return
 
         _isRunning.value = true
-        _timeLeft.value = 59 // 59초 설정
+
+        // 남은 시간이 없으면 새로 60초 설정
+        if (_timeLeft.value == null || _timeLeft.value!! <= 0) {
+            _timeLeft.value = 60
+        }
 
         job = uiScope.launch {
-            for (i in 58 downTo 0) { // 59→ 0초까지 감소
+            while ((_timeLeft.value ?: 0) > 0 && _isRunning.value == true) {
                 delay(1000)
-                _timeLeft.postValue(i)
+                _timeLeft.value = (_timeLeft.value ?: 0) - 1
             }
-            _isRunning.postValue(false) // 59초 후 자동 종료
-            stopRecording() // 레코딩 종료
+            _isRunning.postValue(false)
+            if ((_timeLeft.value ?: 0) <= 0) {
+                stopRecording()
+            }
         }
     }
 
-    fun stopTimer() {
+
+    fun pauseTimer() {
+        DWLog.d("pauseTimer")
         job?.cancel()
         _isRunning.value = false
     }
 
     fun resetTimer() {
+        DWLog.d("resetTimer")
         job?.cancel()
         _isRunning.value = false
         _timeLeft.value = 60
     }
 
     fun playWavFile() {
+        // 이미 재생 중이면 재시작 방지
+        if (playStatus == PlayStatus.PLAY) return
+
+        // 일시정지 상태라면 resume
+        if (playStatus == PlayStatus.PAUSE) {
+            resumeWavFile()
+            return
+        }
+
         stopWavFile() // 기존 재생 중이면 정지
 
         mediaPlayer = MediaPlayer().apply {
@@ -311,25 +330,20 @@ class QuestionDetailViewModel(
                 setDataSource("${wavDirPath}${wavFileName}${wavExt}") // WAV 파일 경로 설정
                 prepare() // 미디어 준비
                 start() // 재생
-                _isPlaying.value = true
+                playStatus = PlayStatus.PLAY
+                startTimer()
 
-                DWLog.d("WAV 파일 재생 시작: ${wavDirPath}${wavFileName}${wavExt}")
+                DWLog.d("-WAV 파일 재생 시작: ${wavDirPath}${wavFileName}${wavExt}-")
 
                 setOnCompletionListener {
-                    _isPlaying.postValue(false)
+                    onPlayCompleted?.invoke()
                     releaseMediaPlayer()
+                    playStatus = PlayStatus.STOP
+                    resetTimer() // 재생 끝나면 타이머 리셋
                 }
             } catch (e: IOException) {
-                DWLog.e("WAV 파일 재생 실패: ${e.message}")
+                DWLog.e("-WAV 파일 재생 실패: ${e.message}-")
             }
-        }
-    }
-
-    fun stopWavFile() {
-        mediaPlayer?.apply {
-            stop()
-            releaseMediaPlayer()
-            DWLog.d("WAV 파일 정지")
         }
     }
 
@@ -337,8 +351,9 @@ class QuestionDetailViewModel(
         mediaPlayer?.apply {
             if (isPlaying) {
                 pause()
-                _isPlaying.value = false
-                DWLog.d("WAV 파일 일시 정지")
+                playStatus = PlayStatus.PAUSE
+                DWLog.d("-WAV 파일 일시 정지-")
+                pauseTimer()
             }
         }
     }
@@ -346,15 +361,26 @@ class QuestionDetailViewModel(
     fun resumeWavFile() {
         mediaPlayer?.apply {
             start()
-            _isPlaying.value = true
-            DWLog.d("WAV 파일 재개")
+            playStatus = PlayStatus.PLAY
+            DWLog.d("-WAV 파일 재개-")
+            startTimer()
         }
+    }
+
+    fun stopWavFile() {
+        mediaPlayer?.apply {
+            stop()
+            DWLog.d("-WAV 파일 정지-")
+        }
+        releaseMediaPlayer()
+        playStatus = PlayStatus.STOP
+        pauseTimer()
+        resetTimer()
     }
 
     private fun releaseMediaPlayer() {
         mediaPlayer?.release()
         mediaPlayer = null
-        _isPlaying.value = false
     }
 
     override fun onCleared() {
@@ -560,6 +586,8 @@ class QuestionDetailViewModel(
     private suspend fun isServiceAvailable(): Boolean {
         return repository.check204() ?: false
     }
+
+    var onPlayCompleted: (() -> Unit)? = null
 
     companion object {
         private const val wavFileName = "recorded_bio_reply"

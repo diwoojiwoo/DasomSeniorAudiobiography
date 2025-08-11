@@ -244,14 +244,13 @@
                     android:background="@android:drawable/ic_menu_close_clear_cancel"/>
 
                 <!--    듣기 이미지  -->
-                <CheckBox
+                <ImageButton
                     android:id="@+id/btn_play"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginTop="201dp"
                     android:layout_marginStart="108dp"
-                    android:button="@null"
                     android:enabled="false"
                     android:background="@drawable/selector_dialog_play_btn" />
 
@@ -268,7 +267,7 @@
                     android:layout_marginStart="163dp"
                     android:text="@string/recording_listen"
                     android:textColor="@android:color/darker_gray"
-                    android:lineSpacingExtra="15sp"
+                    android:lineSpacingExtra="0sp"
                     android:gravity="center_horizontal" />
 
                 <!--    답변하기 이미지 -->
