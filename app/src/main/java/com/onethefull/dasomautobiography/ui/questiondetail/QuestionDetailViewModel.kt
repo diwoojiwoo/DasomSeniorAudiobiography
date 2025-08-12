@@ -277,7 +277,7 @@ class QuestionDetailViewModel(
     }
 
     fun startTimer() {
-        DWLog.d("startTimer")
+//        DWLog.d("startTimer")
         if (_isRunning.value == true) return
 
         _isRunning.value = true
@@ -301,13 +301,13 @@ class QuestionDetailViewModel(
 
 
     fun pauseTimer() {
-        DWLog.d("pauseTimer")
+//        DWLog.d("pauseTimer")
         job?.cancel()
         _isRunning.value = false
     }
 
     fun resetTimer() {
-        DWLog.d("resetTimer")
+//        DWLog.d("resetTimer")
         job?.cancel()
         _isRunning.value = false
         _timeLeft.value = 60
@@ -352,7 +352,7 @@ class QuestionDetailViewModel(
             if (isPlaying) {
                 pause()
                 playStatus = PlayStatus.PAUSE
-                DWLog.d("-WAV 파일 일시 정지-")
+//                DWLog.d("-WAV 파일 일시 정지-")
                 pauseTimer()
             }
         }
@@ -362,7 +362,7 @@ class QuestionDetailViewModel(
         mediaPlayer?.apply {
             start()
             playStatus = PlayStatus.PLAY
-            DWLog.d("-WAV 파일 재개-")
+//            DWLog.d("-WAV 파일 재개-")
             startTimer()
         }
     }
@@ -370,7 +370,7 @@ class QuestionDetailViewModel(
     fun stopWavFile() {
         mediaPlayer?.apply {
             stop()
-            DWLog.d("-WAV 파일 정지-")
+//            DWLog.d("-WAV 파일 정지-")
         }
         releaseMediaPlayer()
         playStatus = PlayStatus.STOP

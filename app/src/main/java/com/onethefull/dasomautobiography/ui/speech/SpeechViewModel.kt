@@ -459,7 +459,6 @@ class SpeechViewModel(
     enum class PlayStatus {
         INIT,
         PLAY,
-        REPLAY,
         PAUSE,
         STOP
     }

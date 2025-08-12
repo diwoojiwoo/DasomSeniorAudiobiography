@@ -327,12 +327,16 @@ class QuestionDetailFragment : Fragment() {
 
         viewModel.timeLeft.observe(viewLifecycleOwner) { time ->
             if (time < 61) {
-                binding.tvLeftTime.setTextColor(Color.parseColor("#ff6363"))
+                binding.tvLeftTime.setTextColor(
+                    ContextCompat.getColor(requireContext(), R.color.coral)
+                )
                 binding.tvLeftTime.text = String.format(requireContext().getString(R.string.title_left_time) + "00:%02d", time)
             }
         }
 
         binding.cbRecording.setOnCheckedChangeListener { cb, isChecked ->
+            val isEnglish = language.startsWith("en")
+
             if (cb.isChecked) {
 //                DWLog.d("답변 하기")
                 // 듣기 버튼 상태
@@ -345,9 +349,11 @@ class QuestionDetailFragment : Fragment() {
                 binding.tvSave.setTextColor(Color.DKGRAY)
 
                 // 녹음 텍스트
-                binding.tvRecording.text = requireContext().getString(R.string.title_end_answer)
-                binding.tvRecording.setTextColor(Color.parseColor("#ff6363"))
 
+                binding.tvRecording.text = requireContext().getString(R.string.title_end_answer)
+                binding.tvRecording.setTextColor(
+                    ContextCompat.getColor(requireContext(), R.color.coral)
+                )
                 viewModel.startTimer()
                 viewModel.startRecording()
             } else {
@@ -360,6 +366,10 @@ class QuestionDetailFragment : Fragment() {
                 binding.tvSave.setTextColor(Color.GRAY)
 
                 binding.tvRecording.text = requireContext().getString(R.string.title_start_answer)
+                binding.tvRecording.setTextSize(
+                    TypedValue.COMPLEX_UNIT_SP,
+                    if (isEnglish) 28f else 32f
+                )
                 binding.tvRecording.setTextColor(Color.BLACK)
 
                 viewModel.pauseTimer()
@@ -372,25 +382,21 @@ class QuestionDetailFragment : Fragment() {
             when(viewModel.playStatus) {
                 SpeechViewModel.PlayStatus.INIT,  SpeechViewModel.PlayStatus.STOP -> {
                     // 재생 시작
-                    DWLog.d("재생 시작")
+//                    DWLog.d("재생 시작")
                     viewModel.playWavFile()
                     updatePlayUI(isPlaying = true)
                 }
                 SpeechViewModel.PlayStatus.PLAY -> {
-                    // 재생 중이면 일시정지 or 정지 처리
-                    DWLog.d("재생 중이면 일시정지")
+                    // 재생 중이면 일시정지
+//                    DWLog.d("재생 중이면 일시정지")
                     viewModel.pauseWavFile()
                     updatePlayUI(isPlaying = false)
                 }
                 SpeechViewModel.PlayStatus.PAUSE -> {
                     // 일시정지 상태면 재생 재개
-                    DWLog.d("일시정지 상태면 재생 재개")
+//                    DWLog.d("일시정지 상태면 재생 재개")
                     viewModel.resumeWavFile()
                     updatePlayUI(isPlaying = true)
-                }
-                else -> {
-                    // 필요 시 기타 상태 처리
-                    DWLog.d("필요 시 기타 상태 처리")
                 }
             }
         }
