@@ -5,6 +5,7 @@ import com.onethefull.dasomautobiography.MainActivity
 import com.onethefull.dasomautobiography.SplashViewModelFactory
 import com.onethefull.dasomautobiography.repository.QuestionListRepository
 import com.onethefull.dasomautobiography.repository.MenuRepository
+import com.onethefull.dasomautobiography.repository.NewSpeechRepository
 import com.onethefull.dasomautobiography.repository.QuestionDetailRepository
 import com.onethefull.dasomautobiography.repository.SpeechRepository
 import com.onethefull.dasomautobiography.repository.SplashRepository
@@ -14,6 +15,7 @@ import com.onethefull.dasomautobiography.ui.question.QuestionListViewModelFactor
 import com.onethefull.dasomautobiography.ui.questiondetail.QuestionDetailViewModel
 import com.onethefull.dasomautobiography.ui.questiondetail.QuestionDetailViewModelFactory
 import com.onethefull.dasomautobiography.ui.speech.SpeechViewModelFactory
+import com.onethefull.dasomautobiography.ui.speech.new.NewSpeechViewModelFactory
 
 /**
  * Created by sjw on 2021/11/10
@@ -27,6 +29,16 @@ object InjectorUtils {
         context : Context
     ) : SpeechViewModelFactory {
         return SpeechViewModelFactory(context as MainActivity, getSpeechRepository(context))
+    }
+
+    private fun getNewSpeechRepository(context: Context) : NewSpeechRepository {
+        return NewSpeechRepository.getInstance(context.applicationContext)
+    }
+
+    fun provideNewSpeechViewModelFactory(
+        context : Context
+    ) : NewSpeechViewModelFactory {
+        return NewSpeechViewModelFactory(context as MainActivity, getNewSpeechRepository(context))
     }
 
     private fun getQuestionListRepository(context: Context) : QuestionListRepository {

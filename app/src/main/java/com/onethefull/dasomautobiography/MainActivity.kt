@@ -65,6 +65,16 @@ class MainActivity : BaseActivity() {
             ?.navigate(R.id.action_global_speechFragment, bundle)
     }
 
+    fun navigateToNewSpeechFragment(reason: String? = null, motionDetected: Boolean = false) {
+        val bundle = bundleOf(
+            Constant.KEY_MOVE_REASON to reason,
+            Constant.PARAM_MOTION_DETECTED to motionDetected
+        )
+        supportFragmentManager.findFragmentById(R.id.nav_host)
+            ?.findNavController()
+            ?.navigate(R.id.action_global_new_speechFragment, bundle)
+    }
+
     fun back() {
         navController.navigateUp()
     }

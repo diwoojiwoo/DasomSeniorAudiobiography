@@ -90,8 +90,22 @@
             app:destination="@id/menu_fragment"/>
     </fragment>
 
+    <!-- NewSpeechFragment   -->
+    <fragment
+        android:id="@+id/new_speech_fragment"
+        android:name="com.onethefull.dasomautobiography.ui.speech.new.NewSpeechFragment">
+
+    </fragment>
+
+
     <action
         android:id="@+id/action_global_speechFragment"
         app:destination="@id/speech_fragment"
+        app:launchSingleTop="true" />
+
+
+    <action
+        android:id="@+id/action_global_new_speechFragment"
+        app:destination="@id/new_speech_fragment"
         app:launchSingleTop="true" />
 </navigation>

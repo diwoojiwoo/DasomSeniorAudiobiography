@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:background="@drawable/uber">
+
+        <FrameLayout
+            android:id="@+id/fl_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_bg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <View
+                android:id="@+id/iv_bg_black"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#99000000"
+                android:visibility="gone"/>
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/fl_speech_status"
+            android:layout_width="600dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="105dp"
+            android:background="@drawable/bg_speech_status"
+            android:gravity="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="40dp"
+                android:src="@drawable/icon_listen_active"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="32dp"/>
+
+            <TextView
+                android:id="@+id/tv_speech"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="질문을 읽어드리고 있습니다.."
+                android:fontFamily="@font/notosans_kr_r"
+                android:textSize="35sp"
+                android:textColor="#f66e35"
+                android:lineSpacingExtra="12sp"
+                android:layout_gravity="center" />
+        </FrameLayout>
+
+
+        <FrameLayout
+            android:id="@+id/fl_title"
+            android:layout_width="366dp"
+            android:layout_height="88dp"
+            android:layout_marginStart="24dp"
+            android:background="@drawable/speech_title_background"
+            android:fontFamily="@font/pretendard_bold"
+            android:gravity="center"
+            android:lineSpacingExtra="32sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="40dp"
+                android:src="@drawable/icon_book"
+                android:layout_gravity="center_vertical"
+                android:visibility="gone"
+                android:layout_marginStart="32dp"/>
+
+            <TextView
+                android:id="@+id/tv_title_speech"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="배우자"
+                android:fontFamily="@font/notosans_kr_b"
+                android:textStyle="bold"
+                android:textSize="40sp"
+                android:textColor="@color/white"
+                android:lineSpacingExtra="12sp"
+                android:layout_gravity="center" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/btn_stop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_destroy"
+            android:layout_marginEnd="24dp"
+            android:layout_marginTop="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!--   다른질문하기 버튼    -->
+        <FrameLayout
+            android:id="@+id/fl_another_question"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="284dp"
+                android:layout_height="88dp"
+                android:background="@drawable/btn_another_question_bg"
+                android:layout_marginTop="268dp"
+                android:layout_marginEnd="24dp"
+                android:text="@string/btn_another_question"
+                android:fontFamily="@font/pretendard_bold"
+                android:textStyle="bold"
+                android:textSize="32sp"
+                android:textColor="#333333"
+                android:lineSpacingExtra="24sp"
+                android:gravity="center" />
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src ="@drawable/icon_arrow_right_orange"
+                android:layout_gravity="end"
+                android:layout_marginTop="290dp"
+                android:layout_marginEnd="48dp"/>
+        </FrameLayout>
+
+        <!--   답변하기 마이크 버튼    -->
+        <ImageView
+            android:id="@+id/btn_answer"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:src="@drawable/btn_answer_selector"
+            android:layout_marginTop="56dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone"/>
+
+        <!-- include를 사용하여 new 녹음 툴바 추가 -->
+
+        <include
+            android:id="@+id/include_new_record"
+            layout="@layout/fragment_new_record"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/tv_chronometer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_left_time"
+            android:textStyle="bold"
+            android:textSize="40sp"
+            android:textColor="@android:color/white"
+            android:gravity="end"
+            android:visibility="gone"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="213dp"
+            app:layout_constraintEnd_toStartOf="@+id/chronometer"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <Chronometer
+            android:id="@+id/chronometer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/notosans_kr_r"
+            android:textStyle="bold"
+            android:textSize="40sp"
+            android:textColor="@android:color/black"
+            android:lineSpacingExtra="19sp"
+            android:gravity="end"
+            android:visibility="gone"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="213dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <!--  질문 타입 타이틀    -->
+        <TextView
+            android:id="@+id/tv_question_title"
+            android:layout_width="240dp"
+            android:layout_height="72dp"
+            android:layout_marginStart="24dp"
+            android:background="@drawable/speech_question_title_background"
+            android:fontFamily="@font/pretendard_bold"
+            android:gravity="center"
+            android:lineSpacingExtra="32sp"
+            android:text=""
+            android:layout_marginTop="328dp"
+            android:textColor="#eeeceb"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/tv_question"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_question"
+            android:layout_width="976dp"
+            android:layout_height="400dp"
+            android:layout_marginBottom="20dp"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMaxTextSize="90sp"
+            android:autoSizeMinTextSize="28sp"
+            android:autoSizeStepGranularity="1sp"
+            android:ellipsize="none"
+            android:scrollHorizontally="false"
+            android:singleLine="false"
+            android:inputType="textMultiLine"
+            android:text="길동님의 30세 때 한국 최초 올림픽이 개최되
+었어요! 대한민국이 처음 국제 행사를 진행하
+게 되었는데요. 이 때 가장 인상깊었던 기억을
+말씀해 주세요."
+            android:background="@drawable/new_speech_question_background"
+            android:fontFamily="@font/pretendard_bold"
+            android:lineSpacingExtra="8sp"
+            android:paddingBottom="60dp"
+            android:paddingEnd="48sp"
+            android:paddingStart="48dp"
+            android:paddingTop="30dp"
+            android:textColor="#333333"
+            android:gravity="top"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:targetApi="o" />
+
+        <FrameLayout
+            android:id="@+id/fl_reading"
+            android:layout_width="280dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/new_reading_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_reading"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_gravity="center_vertical|start"
+                android:layout_marginStart="32dp"
+                android:background="@drawable/btn_play_pause_normal"/>
+
+            <TextView
+                android:id="@+id/tv_reading"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/notosans_kr_b"
+                android:lineSpacingExtra="12sp"
+                android:text="읽는 중.."
+                android:textColor="@color/white"
+                android:textSize="35sp" />
+        </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
