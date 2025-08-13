@@ -61,8 +61,12 @@ class MainViewModel : BaseViewModel() {
                 DWLog.d("MESSAGE_WHAT_NAVIGATE_MENU_FRAGMENT => NavigateToMenuFragment")
                 val navController = App.instance.currentActivity?.findNavController(R.id.nav_host)
                 val currentDestination = navController?.currentDestination?.id
-                if (navController != null && currentDestination == R.id.speech_fragment) {
-                    navController.navigate(R.id.action_speech_to_menu_fragment)
+
+                if (navController != null) {
+                    when (currentDestination) {
+                        R.id.speech_fragment -> navController.navigate(R.id.action_speech_to_menu_fragment)
+                        R.id.new_speech_fragment -> navController.navigate(R.id.action_new_speech_to_menu_fragment)
+                    }
                 }
             }
         }

@@ -73,15 +73,10 @@ class SplashFragment : Fragment() {
                 }
             } else {
                 // 3.  메뉴 > 자서전 선택 > 메뉴 화면 이동
-//                DWLog.e("3.  메뉴 > 자서전 선택 > 메뉴 화면 이동")
-//                viewLifecycleOwner.lifecycleScope.launch {
-//                    delay(1500)
-//                    findNavController().navigate(R.id.action_splashFragment_to_menuFragment)
-//                }
-                /********Test ******/
-                DWLog.e("Test!!!!!!!!!!!!!!!!!!")
+                DWLog.e("3.  메뉴 > 자서전 선택 > 메뉴 화면 이동")
                 viewLifecycleOwner.lifecycleScope.launch {
-                    (activity as? MainActivity)?.navigateToNewSpeechFragment(Constant.MOVE_REASON_STT, motionDetected = motionDetected)
+                    delay(1500)
+                    findNavController().navigate(R.id.action_splashFragment_to_menuFragment)
                 }
             }
         }
@@ -91,7 +86,7 @@ class SplashFragment : Fragment() {
             if (event == SpeechType.CONTENT && !hasNavigated) {
                 hasNavigated = true
                 viewLifecycleOwner.lifecycleScope.launch {
-                    (activity as? MainActivity)?.navigateToSpeechFragment(Constant.MOVE_REASON_STT, motionDetected = motionDetected)
+                    (activity as? MainActivity)?.navigateToNewSpeechFragment(Constant.MOVE_REASON_STT, motionDetected = motionDetected)
                 }
             }
         }

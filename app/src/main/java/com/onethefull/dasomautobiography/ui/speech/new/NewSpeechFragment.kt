@@ -10,11 +10,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.onethefull.dasomautobiography.App
@@ -30,6 +31,7 @@ import com.onethefull.dasomautobiography.utils.bus.RxEvent
 import com.onethefull.dasomautobiography.utils.logger.DWLog
 import com.onethefull.dasomautobiography.utils.speech.SpeechStatus
 import androidx.navigation.NavOptions
+import com.onethefull.dasomautobiography.data.model.audiobiography.Entry
 import com.onethefull.dasomautobiography.databinding.FragmentNewSpeechBinding
 import com.onethefull.dasomautobiography.utils.dpToPx
 import com.onethefull.wonderfulrobotmodule.ext.dasomLanguageCodeValue
@@ -114,17 +116,7 @@ class NewSpeechFragment : Fragment() {
 
         setUpSpeech()
         viewModel.currentItem.observe(viewLifecycleOwner) { item ->
-            binding.flSpeechStatus.visibility  = View.VISIBLE
-            binding.flReading.visibility  = View.VISIBLE
-            binding.tvQuestionTitle.text = item.typeName
-            binding.tvQuestion.text = item.viewQuestion
-            Glide.with(requireContext())
-                .load(item.imgUrl)
-                .placeholder(ContextCompat.getDrawable(requireContext(), R.color.transparent))
-                .error(ContextCompat.getDrawable(requireContext(), R.drawable.item))
-                .centerCrop()
-                .into(binding.ivBg)
-            viewModel.speech(item.question)
+            updateQuestionUI(item, playSpeech = true)
         }
 
         viewModel.insertLogEvent.observe(viewLifecycleOwner) { event ->
@@ -132,8 +124,7 @@ class NewSpeechFragment : Fragment() {
             when (event.status_code) {
                 -99, -3 -> {
                     Toasty.error(activity as MainActivity, event.status.toString()).show()
-                    // TODO
-//                    findNavController().navigate(SpeechFragmentDirections.actionSpeechToMenuFragment())
+                    findNavController().navigate(NewSpeechFragmentDirections.actionNewSpeechToMenuFragment())
                 }
 
                 0 -> {
@@ -144,13 +135,11 @@ class NewSpeechFragment : Fragment() {
                             setDialogListener(object : ResultDialog.DialogListener {
                                 override fun checkAnswer() { // 답변 확인하기
                                     DWLog.d("답변 확인하기 버튼 클릭 ==> 답변 확인 UI")
-                                    // TODO
-//                                    findNavController().navigate(SpeechFragmentDirections.actionSpeechFragmentToQuestiondetailFragment())
+                                    findNavController().navigate(NewSpeechFragmentDirections.actionNewSpeechFragmentToQuestiondetailFragment())
                                 }
 
                                 override fun moveHome() {
-                                    // TODO
-//                                    findNavController().navigate(SpeechFragmentDirections.actionSpeechToMenuFragment())
+                                    findNavController().navigate(NewSpeechFragmentDirections.actionNewSpeechToMenuFragment())
                                 }
                             })
                             setDismissListener(object : ResultDialog.DialogDismissListener {
@@ -168,13 +157,12 @@ class NewSpeechFragment : Fragment() {
         }
 
         binding.btnStop.setOnClickListener {
-            // TODO
-//            findNavController().navigate(
-//                SpeechFragmentDirections.actionSpeechToMenuFragment(),
-//                NavOptions.Builder()
-//                    .setPopUpTo(R.id.speech_fragment, true)
-//                    .build()
-//            )
+            findNavController().navigate(
+                NewSpeechFragmentDirections.actionNewSpeechToMenuFragment(),
+                NavOptions.Builder()
+                    .setPopUpTo(R.id.new_speech_fragment, true)
+                    .build()
+            )
         }
 
         binding.btnAnswer.setOnClickListener {
@@ -186,6 +174,46 @@ class NewSpeechFragment : Fragment() {
             binding.chronometer.visibility = View.VISIBLE // 01:00
         }
 
+        // 신규 "질문 다시 듣기" 버튼 클릭
+        binding.flQListen.setOnClickListener {
+            viewModel.currentItem.value?.let { updateQuestionUI(it, true) }
+        }
+
+        // 신규 "답변 하기" 버튼 클릭
+        binding.flQAnswer.setOnClickListener {
+            binding.flTitle.visibility = View.GONE // 상단 typeName 타이틀 제거
+            binding.flQListen.visibility = View.GONE
+            binding.flQAnswer.visibility = View.GONE
+
+            binding.tvQuestionTitle.visibility = View.VISIBLE
+            binding.includeNewRecord.root.visibility = View.VISIBLE
+            binding.tvChronometer.visibility = View.VISIBLE // 남은 시간
+            binding.chronometer.visibility = View.VISIBLE // 01:00
+
+            // 레이아웃 크기 변경 (dp → px 변환)
+            val params = binding.tvQuestion.layoutParams as ConstraintLayout.LayoutParams
+            params.width = 976.dpToPx()
+            params.height = 176.dpToPx()
+            params.bottomMargin = 24.dpToPx()
+            binding.tvQuestion.layoutParams = params
+
+            // 배경
+            binding.tvQuestion.setBackgroundResource(R.drawable.speech_question_background)
+
+            // 오토사이즈 설정
+            TextViewCompat.setAutoSizeTextTypeWithDefaults(
+                binding.tvQuestion,
+                TextViewCompat.AUTO_SIZE_TEXT_TYPE_UNIFORM
+            )
+
+            TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration(
+                binding.tvQuestion,
+                12, // minSize sp
+                48, // maxSize sp
+                1,  // stepGranularity sp
+                TypedValue.COMPLEX_UNIT_SP
+            )
+        }
         binding.includeNewRecord.chRecState.setOnCheckedChangeListener { buttonView, isChecked ->
             if (buttonView.isChecked) {
                 binding.includeNewRecord.apply {
@@ -321,25 +349,23 @@ class NewSpeechFragment : Fragment() {
             SpeechStatus.WAITING -> {
                 binding.ivBgBlack.visibility = View.VISIBLE
                 binding.btnAnswer.visibility = View.GONE
-                binding.flAnotherQuestion.visibility = View.GONE
 
-                binding.flTitle.visibility = View.GONE // 상단 "자서전 만들기" 타이틀 제거
-                binding.flAnotherQuestion.visibility = View.GONE // "다른 질문 보기" 마이크 버튼 제거
-                binding.includeNewRecord.root.visibility = View.VISIBLE
+                binding.flSpeechStatus.visibility = View.GONE
+                binding.flReading.visibility = View.GONE
 
-                binding.flSpeechStatus.visibility  = View.GONE
-                binding.flReading.visibility  = View.GONE
+                binding.flQAnswer.visibility = View.VISIBLE
+                binding.flQListen.visibility = View.VISIBLE
             }
 
             SpeechStatus.SPEECH -> {
                 binding.ivBgBlack.visibility = View.GONE
                 binding.btnAnswer.visibility = View.GONE
-                binding.flAnotherQuestion.visibility = View.GONE
-                binding.includeNewRecord.root.visibility = View.GONE
 
-                binding.flSpeechStatus.visibility  = View.VISIBLE
-                binding.flReading.visibility  = View.VISIBLE
+                binding.flSpeechStatus.visibility = View.VISIBLE
+                binding.flReading.visibility = View.VISIBLE
 
+                binding.flQAnswer.visibility = View.GONE
+                binding.flQListen.visibility = View.GONE
             }
 
             else -> {}
@@ -362,6 +388,33 @@ class NewSpeechFragment : Fragment() {
         binding.chronometer.stop()
         binding.chronometer.setTextColor(Color.WHITE)
         binding.tvChronometer.setTextColor(Color.WHITE)
+    }
+
+    private fun updateQuestionUI(item: Entry, playSpeech: Boolean){
+        binding.flSpeechStatus.visibility = View.VISIBLE
+        binding.flReading.visibility = View.VISIBLE
+
+        binding.ivBgBlack.visibility = View.GONE
+        binding.flQListen.visibility = View.GONE
+        binding.flQAnswer.visibility = View.GONE
+        binding.tvQuestionTitle.visibility = View.GONE
+
+        binding.tvQuestionTitle.text = item.typeName
+        binding.tvQuestion.text = item.viewQuestion
+        binding.tvTitleSpeech.text = item.typeName
+
+        Glide.with(requireContext())
+            .load(item.imgUrl)
+            .placeholder(ContextCompat.getDrawable(requireContext(), R.color.transparent))
+            .error(ContextCompat.getDrawable(requireContext(), R.drawable.item))
+            .centerCrop()
+            .into(binding.ivBg)
+
+        if (playSpeech) {
+            binding.root.post {
+                viewModel.speech(item.question)
+            }
+        }
     }
 
     override fun onPause() {

@@ -53,7 +53,7 @@
                 android:id="@+id/tv_speech"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="질문을 읽어드리고 있습니다.."
+                android:text="@string/text_reading_your_question"
                 android:fontFamily="@font/notosans_kr_r"
                 android:textSize="35sp"
                 android:textColor="#f66e35"
@@ -86,7 +86,6 @@
                 android:id="@+id/tv_title_speech"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="배우자"
                 android:fontFamily="@font/notosans_kr_b"
                 android:textStyle="bold"
                 android:textSize="40sp"
@@ -150,7 +149,6 @@
             android:visibility="gone"/>
 
         <!-- include를 사용하여 new 녹음 툴바 추가 -->
-
         <include
             android:id="@+id/include_new_record"
             layout="@layout/fragment_new_record"
@@ -178,7 +176,7 @@
             android:fontFamily="@font/notosans_kr_r"
             android:textStyle="bold"
             android:textSize="40sp"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/white"
             android:lineSpacingExtra="19sp"
             android:gravity="end"
             android:visibility="gone"
@@ -204,8 +202,7 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/tv_question"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:visibility="gone"/>
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_question"
@@ -220,10 +217,6 @@
             android:scrollHorizontally="false"
             android:singleLine="false"
             android:inputType="textMultiLine"
-            android:text="길동님의 30세 때 한국 최초 올림픽이 개최되
-었어요! 대한민국이 처음 국제 행사를 진행하
-게 되었는데요. 이 때 가장 인상깊었던 기억을
-말씀해 주세요."
             android:background="@drawable/new_speech_question_background"
             android:fontFamily="@font/pretendard_bold"
             android:lineSpacingExtra="8sp"
@@ -241,8 +234,8 @@
         <FrameLayout
             android:id="@+id/fl_reading"
             android:layout_width="280dp"
-            android:layout_height="60dp"
-            android:layout_marginBottom="24dp"
+            android:layout_height="80dp"
+            android:layout_marginBottom="34dp"
             android:background="@drawable/new_reading_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -265,7 +258,55 @@
                 android:layout_marginStart="10dp"
                 android:fontFamily="@font/notosans_kr_b"
                 android:lineSpacingExtra="12sp"
-                android:text="읽는 중.."
+                android:text="@string/text_reading"
+                android:textColor="@color/white"
+                android:textSize="35sp" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/fl_q_listen"
+            android:layout_width="300dp"
+            android:layout_height="80dp"
+            android:layout_marginBottom="34dp"
+            android:layout_marginStart="204dp"
+            android:background="@drawable/btn_confirm_background"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tv_q_listen"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:fontFamily="@font/notosans_kr_b"
+                android:lineSpacingExtra="12sp"
+                android:text="@string/text_listen_again"
+                android:textColor="@color/white"
+                android:textSize="35sp" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/fl_q_answer"
+            android:layout_width="280dp"
+            android:layout_height="80dp"
+            android:layout_marginBottom="34dp"
+            android:layout_marginEnd="224dp"
+            android:background="@drawable/btn_replay_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tv_q_answer"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:fontFamily="@font/notosans_kr_b"
+                android:lineSpacingExtra="12sp"
+                android:text="@string/text_answer"
                 android:textColor="@color/white"
                 android:textSize="35sp" />
         </FrameLayout>

@@ -94,7 +94,13 @@
     <fragment
         android:id="@+id/new_speech_fragment"
         android:name="com.onethefull.dasomautobiography.ui.speech.new.NewSpeechFragment">
+        <action
+            android:id="@+id/action_new_speech_fragment_to_questiondetail_fragment"
+            app:destination="@id/question_detail_fragment"/>
 
+        <action
+            android:id="@+id/action_new_speech_to_menu_fragment"
+            app:destination="@id/menu_fragment"/>
     </fragment>
 
 

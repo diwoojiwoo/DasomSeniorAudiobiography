@@ -43,4 +43,9 @@
     <string name="message_intro_activity_recognition_2">我想試著記錄主人的人生。回憶起過去的記憶，也是非常珍貴的呢。</string>
     <string name="message_intro_activity_recognition_3">我有些事情想請教主人。請從美好的故事開始說起，作為自傳的開頭吧。</string>
     <string name="message_finish_activity_recognition_1">今天就記錄到這裡吧。我們之後再聊。</string>
+
+    <string name="text_listen_again">再次收聽</string>
+    <string name="text_answer">回答</string>
+    <string name="text_reading_your_question">正在朗讀您的問題</string>
+    <string name="text_reading">正在朗讀</string>
 </resources>

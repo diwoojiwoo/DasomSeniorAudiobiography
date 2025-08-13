@@ -43,4 +43,9 @@
     <string name="message_intro_activity_recognition_2">ご主人様の人生を記録してみようと思います。昔の思い出も振り返るととても大切ですよね。</string>
     <string name="message_intro_activity_recognition_3">ご主人様にお聞きしたいことがあります。自伝には素敵なお話から聞かせてくださいね。</string>
     <string name="message_finish_activity_recognition_1">今日はここまで記録しますね。また後でお話ししましょう。</string>
+
+    <string name="text_listen_again">もう一度質問する</string>
+    <string name="text_answer">回答する</string>
+    <string name="text_reading_your_question">質問を読み上げています</string>
+    <string name="text_reading">読み上げ中</string>
 </resources>

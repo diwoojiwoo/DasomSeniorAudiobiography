@@ -44,4 +44,9 @@
     <string name="message_intro_activity_recognition_2">제가 주인님의 삶을 기록해보려고 해요. 오래된 기억도 꺼내보면 참 소중하잖아요.</string>
     <string name="message_intro_activity_recognition_3">주인님께 여줘보고 싶은게 있어요. 자서전으로 좋은 이야기부터 들려주세요.</string>
     <string name="message_finish_activity_recognition_1">오늘은 여기까지 기록할게요. 나중에 다시 이야기해요</string>
+
+    <string name="text_listen_again">질문 다시 듣기</string>
+    <string name="text_answer">답변하기</string>
+    <string name="text_reading_your_question">질문을 읽어드리고 있습니다..</string>
+    <string name="text_reading">읽는 중..</string>
 </resources>

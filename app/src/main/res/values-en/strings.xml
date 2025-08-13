@@ -43,4 +43,9 @@
     <string name="message_intro_activity_recognition_2">I’d like to record your life, Master. Even old memories can be truly precious when we bring them back.</string>
     <string name="message_intro_activity_recognition_3">I have something I’d like to ask you, Master. Please start by sharing a good story for the autobiography.</string>
     <string name="message_finish_activity_recognition_1">I’ll stop recording for today. Let’s talk again later.</string>
+
+    <string name="text_listen_again">Listen Again</string>
+    <string name="text_answer">Answer</string>
+    <string name="text_reading_your_question">Reading your question...</string>
+    <string name="text_reading">Reading...</string>
 </resources>
