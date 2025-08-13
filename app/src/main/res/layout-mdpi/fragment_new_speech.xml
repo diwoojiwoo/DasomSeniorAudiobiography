@@ -220,7 +220,7 @@
             android:background="@drawable/new_speech_question_background"
             android:fontFamily="@font/pretendard_bold"
             android:lineSpacingExtra="8sp"
-            android:paddingBottom="60dp"
+            android:paddingBottom="90dp"
             android:paddingEnd="48sp"
             android:paddingStart="48dp"
             android:paddingTop="30dp"
