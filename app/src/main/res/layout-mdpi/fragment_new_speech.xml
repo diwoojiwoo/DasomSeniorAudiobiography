@@ -6,8 +6,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        android:background="@drawable/uber">
+        android:fitsSystemWindows="true">
 
         <FrameLayout
             android:id="@+id/fl_bg"
@@ -195,7 +194,6 @@
             android:fontFamily="@font/pretendard_bold"
             android:gravity="center"
             android:lineSpacingExtra="32sp"
-            android:text=""
             android:layout_marginTop="328dp"
             android:textColor="#eeeceb"
             android:textSize="32sp"
@@ -255,7 +253,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:gravity="center_vertical"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="25dp"
                 android:fontFamily="@font/notosans_kr_b"
                 android:lineSpacingExtra="12sp"
                 android:text="@string/text_reading"

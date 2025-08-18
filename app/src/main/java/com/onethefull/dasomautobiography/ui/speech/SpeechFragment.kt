@@ -33,6 +33,7 @@ import com.onethefull.dasomautobiography.utils.speech.SpeechStatus
 import com.onethefull.wonderfulrobotmodule.ext.dasomLanguageCodeValue
 import androidx.core.graphics.toColorInt
 import androidx.navigation.NavOptions
+import com.onethefull.dasomautobiography.ui.speech.new.NewSpeechViewModel
 import com.onethefull.dasomautobiography.utils.dpToPx
 import com.onethefull.wonderfulrobotmodule.robot.BaseRobotController
 
@@ -209,7 +210,8 @@ class SpeechFragment : Fragment() {
                 }, limitTimeMillis)
             } else {
                 DWLog.d("녹음 멈춤 ${viewModel.recordStatus}")
-                stopRecording()
+                if (viewModel.recordStatus == SpeechViewModel.RecordStatus.RECORDING)
+                    stopRecording()
             }
         }
 

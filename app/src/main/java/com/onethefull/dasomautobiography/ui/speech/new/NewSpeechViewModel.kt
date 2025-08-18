@@ -471,4 +471,8 @@ class NewSpeechViewModel(
         private const val wavDirPath = "/sdcard/audio/temp/"
         private const val wavExt = ".wav"
     }
+
+    fun extendAnswerTime() {
+        RxBus.publish(RxEvent.destroyLongAppUpdate60)
+    }
 }

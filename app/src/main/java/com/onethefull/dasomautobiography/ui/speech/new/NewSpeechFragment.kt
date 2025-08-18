@@ -90,10 +90,6 @@ class NewSpeechFragment : Fragment() {
         val language = App.instance.getLocale()?.dasomLanguageCodeValue() ?: Constant.KO
         when (language) {
             "en-US" -> {
-                val layoutParams = binding.tvTitleSpeech.layoutParams as ViewGroup.MarginLayoutParams
-                layoutParams.marginStart = 80.dpToPx()
-                binding.tvTitleSpeech.layoutParams = layoutParams
-                binding.tvTitleSpeech.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22f)
                 binding.tvQuestionTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 28f)
                 binding.includeNewRecord.tvRecState.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24.5f)
             }
@@ -177,7 +173,9 @@ class NewSpeechFragment : Fragment() {
         // 신규 "질문 다시 듣기" 버튼 클릭
         binding.flQListen.setOnClickListener {
             viewModel.currentItem.value?.let { updateQuestionUI(it, true) }
+            viewModel.extendAnswerTime()
         }
+
 
         // 신규 "답변 하기" 버튼 클릭
         binding.flQAnswer.setOnClickListener {
@@ -190,15 +188,25 @@ class NewSpeechFragment : Fragment() {
             binding.tvChronometer.visibility = View.VISIBLE // 남은 시간
             binding.chronometer.visibility = View.VISIBLE // 01:00
 
-            // 레이아웃 크기 변경 (dp → px 변환)
             val params = binding.tvQuestion.layoutParams as ConstraintLayout.LayoutParams
             params.width = 976.dpToPx()
-            params.height = 176.dpToPx()
-            params.bottomMargin = 24.dpToPx()
+            params.height = 180.dpToPx()
             binding.tvQuestion.layoutParams = params
 
-            // 배경
-            binding.tvQuestion.setBackgroundResource(R.drawable.speech_question_background)
+            binding.tvQuestion.apply {
+                isSingleLine = false
+                ellipsize = null
+                maxLines = 2
+                setPadding(paddingLeft, paddingTop, paddingRight, 20.dpToPx())
+            }
+
+            TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration(
+                binding.tvQuestion,
+                50, // 최소 글자 크기 줄여줌
+                90, // 최대 글자 크기
+                1,
+                TypedValue.COMPLEX_UNIT_SP
+            )
 
             // 오토사이즈 설정
             TextViewCompat.setAutoSizeTextTypeWithDefaults(
@@ -206,14 +214,12 @@ class NewSpeechFragment : Fragment() {
                 TextViewCompat.AUTO_SIZE_TEXT_TYPE_UNIFORM
             )
 
-            TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration(
-                binding.tvQuestion,
-                12, // minSize sp
-                48, // maxSize sp
-                1,  // stepGranularity sp
-                TypedValue.COMPLEX_UNIT_SP
-            )
+            // 배경
+            binding.tvQuestion.setBackgroundResource(R.drawable.speech_question_background)
+
+            viewModel.extendAnswerTime() // 종료시간 연장
         }
+
         binding.includeNewRecord.chRecState.setOnCheckedChangeListener { buttonView, isChecked ->
             if (buttonView.isChecked) {
                 binding.includeNewRecord.apply {
@@ -241,7 +247,8 @@ class NewSpeechFragment : Fragment() {
                 }, limitTimeMillis)
             } else {
                 DWLog.d("녹음 멈춤 ${viewModel.recordStatus}")
-                stopRecording()
+                if (viewModel.recordStatus == NewSpeechViewModel.RecordStatus.RECORDING)
+                    stopRecording()
             }
         }
 
@@ -390,7 +397,7 @@ class NewSpeechFragment : Fragment() {
         binding.tvChronometer.setTextColor(Color.WHITE)
     }
 
-    private fun updateQuestionUI(item: Entry, playSpeech: Boolean){
+    private fun updateQuestionUI(item: Entry, playSpeech: Boolean) {
         binding.flSpeechStatus.visibility = View.VISIBLE
         binding.flReading.visibility = View.VISIBLE
 
