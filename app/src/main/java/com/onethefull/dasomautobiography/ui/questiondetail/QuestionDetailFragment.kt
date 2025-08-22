@@ -180,6 +180,7 @@ class QuestionDetailFragment : Fragment() {
                 -99, -3, -104 -> {
                     Toasty.error(activity as MainActivity, event.status.toString()).show()
                     binding.customToolbar.visibility = View.VISIBLE
+                    binding.layoutQuestionAnswerDetail.visibility = View.VISIBLE
                     binding.layoutQuestionDetail.visibility = View.VISIBLE
                     binding.layoutAnswerDetail.visibility = View.VISIBLE
                     binding.layoutSelectDetail.visibility = View.VISIBLE
@@ -195,6 +196,7 @@ class QuestionDetailFragment : Fragment() {
                                 override fun checkAnswer() {
                                     dismiss()
                                     binding.customToolbar.visibility = View.VISIBLE
+                                    binding.layoutQuestionAnswerDetail.visibility = View.VISIBLE
                                     binding.layoutQuestionDetail.visibility = View.VISIBLE
                                     binding.layoutAnswerDetail.visibility = View.VISIBLE
                                     binding.layoutSelectDetail.visibility = View.VISIBLE
@@ -302,6 +304,7 @@ class QuestionDetailFragment : Fragment() {
          */
         binding.tvRetry.setOnClickListener {
             binding.customToolbar.visibility = View.GONE
+            binding.layoutQuestionAnswerDetail.visibility = View.GONE
             binding.layoutQuestionDetail.visibility = View.GONE
             binding.layoutAnswerDetail.visibility = View.GONE
             binding.layoutSelectDetail.visibility = View.GONE
@@ -409,6 +412,7 @@ class QuestionDetailFragment : Fragment() {
 
         binding.ivCancel.setOnClickListener {
             binding.customToolbar.visibility = View.VISIBLE
+            binding.layoutQuestionAnswerDetail.visibility = View.VISIBLE
             binding.layoutQuestionDetail.visibility = View.VISIBLE
             binding.layoutAnswerDetail.visibility = View.VISIBLE
             binding.layoutSelectDetail.visibility = View.VISIBLE

@@ -2,8 +2,8 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- 체크된 상태일 때 배경 -->
-    <item android:state_checked="true" android:drawable="@drawable/icon_listen_active" />
-
+<!--    <item android:state_checked="true" android:drawable="@drawable/icon_listen_active" />-->
+    <item android:state_checked="true" android:drawable="@drawable/btn_play_pause_normal" />
     <!-- 체크 안 된 상태일 때 배경 -->
     <item android:drawable="@drawable/icon_listen" />
 
