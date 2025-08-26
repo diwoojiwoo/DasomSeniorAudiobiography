@@ -6,11 +6,10 @@
     <string name="message_not_exist_elderly_info">"Please enter the senior's gender and date of birth."</string>
     <string name="message_not_registration_elderly">"Please register the senior."</string>
     <string name="message_max_answer_3">A maximum of 3 answers are allowed.</string>
-    <string name="status_answered">"Answered"</string>
-    <string name="status_unanswered">"Unanswered"</string>
+    <string name="status_answered">"Done"</string>
+    <string name="status_unanswered">"Not yet"</string>
     <string name="message_registering_answer">"Registering answer."</string>
-    <string name="prefix_title_question">"Question : "</string>
-    <string name="prefix_title_answer">"Answer : "</string>
+    <string name="prefix_title_answer">"Me : "</string>
     <string name="title_left_time">"Left time " </string>
     <string name="title_end_answer">"End of answer"</string>
     <string name="title_start_answer">"Answer"</string>
@@ -18,8 +17,8 @@
     <string name="title_additional_answer">"Additional answer"</string>
     <string name="title_listen_answer">"Listen"</string>
     <string name="message_success_to_answer">"Your autobiography has been saved!"</string>
-    <string name="message_check_answer">"Check your answer"</string>
-    <string name="message_back_to_home">"Go back to home"</string>
+    <string name="message_check_answer">"My answer"</string>
+    <string name="message_back_to_home">" Main page"</string>
 
     <string name="message_title_remove_answer">"The saved answer will be deleted."</string>
     <string name="message_content_remove_answer">"Please submit your answer again."</string>

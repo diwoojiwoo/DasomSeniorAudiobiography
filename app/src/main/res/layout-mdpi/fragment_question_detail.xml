@@ -62,212 +62,124 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.appcompat.widget.Toolbar>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_question_answer_detail"
-            android:layout_width="match_parent"
-            android:layout_height="340dp">
-
-            <!-- 질문 영역 -->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/layout_question_detail"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/new_answer_detail_background"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="8dp"
-                android:padding="15dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/layout_answer_detail"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHeight_max="150dp">
-
-                <CheckBox
-                    android:id="@+id/tv_listen_question"
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    android:button="@null"
-                    android:background="@drawable/btn_listen_checkbox"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"/>
-
-                <!-- 스크롤 가능한 TextView -->
-                <ScrollView
-                    android:layout_width="855dp"
-                    android:layout_height="120dp"
-                    android:fillViewport="true"
-                    android:layout_marginStart="20dp"
-                    app:layout_constraintStart_toEndOf="@id/tv_listen_question"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent">
-
-                    <TextView
-                        android:id="@+id/tv_question"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="40sp"
-                        android:textColor="#333333"
-                        android:gravity="center_vertical"
-                        android:fontFamily="@font/notosans_kr_b"
-                        android:scrollbars="vertical"
-                        android:lineSpacingExtra="4dp"/>
-                </ScrollView>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <!-- 답변 영역 -->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/layout_answer_detail"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="8dp"
-                android:padding="15dp"
-                android:background="@drawable/new_answer_detail_background"
-                app:layout_constraintTop_toBottomOf="@+id/layout_question_detail"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHeight_max="150dp">
-
-                <CheckBox
-                    android:id="@+id/tv_listen_answer"
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    android:button="@null"
-                    android:background="@drawable/btn_listen_checkbox"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"/>
-
-                <!-- 스크롤 가능한 TextView -->
-                <ScrollView
-                    android:layout_width="855dp"
-                    android:layout_height="120dp"
-                    android:fillViewport="true"
-                    android:layout_marginStart="20dp"
-                    app:layout_constraintStart_toEndOf="@id/tv_listen_answer"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent">
-
-                    <TextView
-                        android:id="@+id/tv_answer"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="40sp"
-                        android:textColor="#333333"
-                        android:gravity="center_vertical"
-                        android:fontFamily="@font/notosans_kr_b"
-                        android:scrollbars="vertical"
-                        android:lineSpacingExtra="4dp"/>
-                </ScrollView>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
 
         <!-- 질문 영역 -->
-<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--            android:id="@+id/layout_question_detail"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="8dp"-->
-<!--            android:layout_marginBottom="8dp"-->
-<!--            android:layout_marginStart="20dp"-->
-<!--            android:layout_marginEnd="20dp"-->
-<!--            android:background="@drawable/new_answer_detail_background"-->
-<!--            android:padding="30dp"-->
-<!--            android:gravity="center">-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_question_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="120dp"
+            android:maxHeight="190dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/new_answer_detail_background"
+            android:padding="30dp"
+            android:gravity="center">
 
-<!--            <CheckBox-->
-<!--                android:id="@+id/tv_listen_question"-->
-<!--                android:layout_width="64dp"-->
-<!--                android:layout_height="64dp"-->
-<!--                android:background="@drawable/btn_listen_checkbox"-->
-<!--                android:fontFamily="@font/notosans_kr_b"-->
-<!--                android:lineSpacingExtra="19sp"-->
-<!--                android:scaleType="centerCrop"-->
-<!--                android:textColor="@color/white"-->
-<!--                android:textSize="40sp"-->
-<!--                android:textStyle="normal"-->
-<!--                android:gravity ="center"-->
-<!--                android:button="@null"-->
-<!--                app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent" />-->
+            <CheckBox
+                android:id="@+id/tv_listen_question"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:background="@drawable/btn_listen_checkbox"
+                android:fontFamily="@font/notosans_kr_b"
+                android:lineSpacingExtra="19sp"
+                android:scaleType="centerCrop"
+                android:textColor="@color/white"
+                android:textSize="40sp"
+                android:textStyle="normal"
+                android:gravity ="center"
+                android:button="@null"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-<!--            <TextView-->
-<!--                android:id="@+id/tv_question"-->
-<!--                android:layout_width="820dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:textColor="#333333"-->
-<!--                android:textSize="40sp"-->
-<!--                android:fontFamily="@font/notosans_kr_b"-->
-<!--                android:maxLines="4"-->
-<!--                android:layout_marginStart="20dp"-->
-<!--                app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                app:layout_constraintStart_toEndOf="@+id/tv_listen_question"-->
-<!--                app:layout_constraintTop_toTopOf="parent"-->
-<!--                android:autoSizeTextType="uniform"-->
-<!--                android:autoSizeMaxTextSize="40sp"-->
-<!--                android:autoSizeMinTextSize="16sp"-->
-<!--                android:autoSizeStepGranularity="2sp"-->
-<!--                tools:targetApi="o" />-->
-<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+            <TextView
+                android:id="@+id/tv_question"
+                android:layout_width="855dp"
+                android:layout_height="wrap_content"
+                android:textColor="#333333"
+                android:textSize="40sp"
+                android:fontFamily="@font/notosans_kr_b"
+                android:maxLines="4"
+                android:layout_marginStart="20dp"
+                android:autoSizeTextType="uniform"
+                android:gravity="center_vertical"
+                android:autoSizeMaxTextSize="40sp"
+                android:autoSizeMinTextSize="22sp"
+                android:autoSizeStepGranularity="2sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tv_listen_question"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:targetApi="o" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-<!--        &lt;!&ndash; 답변 영역 &ndash;&gt;-->
-<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--            android:id="@+id/layout_answer_detail"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="120dp"-->
-<!--            android:layout_marginTop="8dp"-->
-<!--            android:layout_marginStart="20dp"-->
-<!--            android:layout_marginEnd="20dp"-->
-<!--            android:gravity="center"-->
-<!--            android:background="@drawable/new_answer_detail_background"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/layout_question_detail">-->
+        <!-- 답변 영역 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_answer_detail"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:gravity="center"
+            android:background="@drawable/new_answer_detail_background"
+            app:layout_constraintTop_toBottomOf="@+id/layout_question_detail">
 
-<!--            <CheckBox-->
-<!--                android:id="@+id/tv_listen_answer"-->
-<!--                android:layout_width="64dp"-->
-<!--                android:layout_height="64dp"-->
-<!--                android:background="@drawable/btn_listen_checkbox"-->
-<!--                android:fontFamily="@font/notosans_kr_b"-->
-<!--                android:lineSpacingExtra="19sp"-->
-<!--                android:scaleType="centerCrop"-->
-<!--                android:layout_marginStart="30dp"-->
-<!--                android:textColor="#ffffff"-->
-<!--                android:textSize="40sp"-->
-<!--                android:textStyle="normal"-->
-<!--                android:gravity ="center"-->
-<!--                android:button="@null"-->
-<!--                app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent" />-->
+            <CheckBox
+                android:id="@+id/tv_listen_answer"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:background="@drawable/btn_listen_checkbox"
+                android:fontFamily="@font/notosans_kr_b"
+                android:lineSpacingExtra="19sp"
+                android:scaleType="centerCrop"
+                android:layout_marginStart="30dp"
+                android:textColor="#ffffff"
+                android:textSize="40sp"
+                android:textStyle="normal"
+                android:gravity ="center"
+                android:button="@null"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-<!--            <TextView-->
-<!--                android:id="@+id/tv_answer"-->
-<!--                android:layout_width="820dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:textColor="#333333"-->
-<!--                android:textSize="40sp"-->
-<!--                android:fontFamily="@font/notosans_kr_b"-->
-<!--                android:maxLines="4"-->
-<!--                android:layout_marginStart="20dp"-->
-<!--                app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                app:layout_constraintStart_toEndOf="@+id/tv_listen_answer"-->
-<!--                app:layout_constraintHorizontal_bias="0.1"-->
-<!--                app:layout_constraintTop_toTopOf="parent"-->
-<!--                android:autoSizeTextType="uniform"-->
-<!--                android:autoSizeMaxTextSize="40sp"-->
-<!--                android:autoSizeMinTextSize="16sp"-->
-<!--                android:autoSizeStepGranularity="2sp"-->
-<!--                tools:targetApi="o" />-->
-<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+            <TextView
+                android:id="@+id/tv_answer"
+                android:layout_width="855dp"
+                android:layout_height="wrap_content"
+                android:textColor="#333333"
+                android:textSize="40sp"
+                android:fontFamily="@font/notosans_kr_b"
+                android:maxLines="4"
+                android:layout_marginStart="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tv_listen_answer"
+                app:layout_constraintHorizontal_bias="0.1"
+                app:layout_constraintTop_toTopOf="parent"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMaxTextSize="40sp"
+                android:autoSizeMinTextSize="16sp"
+                android:autoSizeStepGranularity="2sp"
+                tools:targetApi="o" />
+
+            <TextView
+                android:id="@+id/tv_answer_status"
+                android:layout_width="160dp"
+                android:layout_height="60dp"
+                android:layout_marginEnd="20dp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/notosans_kr_b"
+                android:gravity="center"
+                android:textSize="25sp"
+                android:background="@drawable/replay_listen_background"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.1"
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="gone"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- 녹음 레이아웃 -->
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -435,6 +347,37 @@
             </FrameLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/fl_speech_status"
+        android:layout_width="600dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="105dp"
+        android:background="@drawable/bg_speech_status"
+        android:layout_gravity="center_horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="36dp"
+            android:layout_height="40dp"
+            android:src="@drawable/icon_listen_active"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="32dp"/>
+
+        <TextView
+            android:id="@+id/tv_speech"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_reading_your_question"
+            android:fontFamily="@font/notosans_kr_r"
+            android:textSize="35sp"
+            android:textColor="#f66e35"
+            android:lineSpacingExtra="12sp"
+            android:layout_gravity="center" />
+    </FrameLayout>
 
     <!-- 삭제 / 추가 버튼: 하단 고정 -->
     <LinearLayout

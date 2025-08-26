@@ -9,8 +9,7 @@
     <string name="status_answered">"답변 완료"</string>
     <string name="status_unanswered">"미답변"</string>
     <string name="message_registering_answer">"답변을 등록 중입니다."</string>
-    <string name="prefix_title_question">"질문 : "</string>
-    <string name="prefix_title_answer">"답변 : "</string>
+    <string name="prefix_title_answer">"나 : "</string>
     <string name="title_left_time">"남은 시간 " </string>
     <string name="title_end_answer">"답변 종료"</string>
     <string name="title_start_answer">"답변 하기"</string>

@@ -113,7 +113,7 @@ class QuestionDetailFragment : Fragment() {
                 binding.tvAnswer.text = requireContext().getString(R.string.message_registering_answer)
                 binding.tvAnswer.setTextColor(Color.WHITE)
                 binding.toolbarTitle.text = item.typeName
-                binding.tvQuestion.text = requireContext().getString(R.string.prefix_title_question) + item.viewQuestion
+                binding.tvQuestion.text = item.viewQuestion
                 viewModel.getLogDtl(item.autobiographyId.toString())
             } else {
                 RxBus.publish(RxEvent.destroyApp)
@@ -180,7 +180,6 @@ class QuestionDetailFragment : Fragment() {
                 -99, -3, -104 -> {
                     Toasty.error(activity as MainActivity, event.status.toString()).show()
                     binding.customToolbar.visibility = View.VISIBLE
-                    binding.layoutQuestionAnswerDetail.visibility = View.VISIBLE
                     binding.layoutQuestionDetail.visibility = View.VISIBLE
                     binding.layoutAnswerDetail.visibility = View.VISIBLE
                     binding.layoutSelectDetail.visibility = View.VISIBLE
@@ -196,7 +195,6 @@ class QuestionDetailFragment : Fragment() {
                                 override fun checkAnswer() {
                                     dismiss()
                                     binding.customToolbar.visibility = View.VISIBLE
-                                    binding.layoutQuestionAnswerDetail.visibility = View.VISIBLE
                                     binding.layoutQuestionDetail.visibility = View.VISIBLE
                                     binding.layoutAnswerDetail.visibility = View.VISIBLE
                                     binding.layoutSelectDetail.visibility = View.VISIBLE
@@ -237,9 +235,20 @@ class QuestionDetailFragment : Fragment() {
         /**
          * 문제 듣기 버튼 클릭 리스너
          * */
-        binding.tvListenQuestion.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
+//        binding.tvListenQuestion.setOnCheckedChangeListener { _, isChecked ->
+//            if (isChecked) {
+//                viewModel.startSpeech(sharedViewModel.selectedItem.value?.viewQuestion.toString())
+//            }
+//        }
+
+        /**
+         * 문제 듣기 버튼 전체 클릭 리스너
+         * */
+        binding.layoutQuestionDetail.setOnClickListener {
+            if (viewModel.speechStatus.value == null || viewModel.speechStatus.value == SpeechStatus.WAITING) {
                 viewModel.startSpeech(sharedViewModel.selectedItem.value?.viewQuestion.toString())
+            } else {
+                DWLog.d("발화x")
             }
         }
 
@@ -261,13 +270,29 @@ class QuestionDetailFragment : Fragment() {
         viewModel.speechStatus.observe(viewLifecycleOwner) { status ->
             when (status) {
                 SpeechStatus.SPEECH -> {
-//                  binding.tvListenQuestion.background = ContextCompat.getDrawable(requireContext(), R.drawable.icon_listen_active)
-//                  binding.tvListenAnswer.background = ContextCompat.getDrawable(requireContext(), R.drawable.icon_listen_active)
+                    binding.tvListenQuestion.isChecked = true
+                    binding.layoutQuestionDetail.background = ContextCompat.getDrawable(requireContext(), R.drawable.new_answer_detail_background_active)
+
+                    binding.flSpeechStatus.visibility = View.VISIBLE
+                    binding.btnRetry.background = ContextCompat.getDrawable(requireContext(), R.drawable.add_anwser_background_inactive)
+                    binding.tvRetry.isClickable = false
+                    binding.tvRetry.isFocusable = false
+                    binding.tvRetry.isFocusableInTouchMode = false
+                    binding.btnDelete.isEnabled = false
+                    binding.btnDelete.isClickable = false
                 }
 
                 else -> {
                     binding.tvListenQuestion.isChecked = false
-                    binding.tvListenAnswer.isChecked = false
+                    binding.layoutQuestionDetail.background = ContextCompat.getDrawable(requireContext(), R.drawable.new_answer_detail_background)
+
+                    binding.flSpeechStatus.visibility = View.GONE
+                    binding.btnRetry.background = ContextCompat.getDrawable(requireContext(), R.drawable.add_anwser_background)
+                    binding.tvRetry.isClickable = true
+                    binding.tvRetry.isFocusable = true
+                    binding.tvRetry.isFocusableInTouchMode = true
+                    binding.btnDelete.isEnabled = true
+                    binding.btnDelete.isClickable = true
                 }
             }
         }
@@ -304,7 +329,6 @@ class QuestionDetailFragment : Fragment() {
          */
         binding.tvRetry.setOnClickListener {
             binding.customToolbar.visibility = View.GONE
-            binding.layoutQuestionAnswerDetail.visibility = View.GONE
             binding.layoutQuestionDetail.visibility = View.GONE
             binding.layoutAnswerDetail.visibility = View.GONE
             binding.layoutSelectDetail.visibility = View.GONE
@@ -382,19 +406,21 @@ class QuestionDetailFragment : Fragment() {
 
         // 재생 버튼
         binding.btnPlay.setOnClickListener {
-            when(viewModel.playStatus) {
-                SpeechViewModel.PlayStatus.INIT,  SpeechViewModel.PlayStatus.STOP -> {
+            when (viewModel.playStatus) {
+                SpeechViewModel.PlayStatus.INIT, SpeechViewModel.PlayStatus.STOP -> {
                     // 재생 시작
 //                    DWLog.d("재생 시작")
                     viewModel.playWavFile()
                     updatePlayUI(isPlaying = true)
                 }
+
                 SpeechViewModel.PlayStatus.PLAY -> {
                     // 재생 중이면 일시정지
 //                    DWLog.d("재생 중이면 일시정지")
                     viewModel.pauseWavFile()
                     updatePlayUI(isPlaying = false)
                 }
+
                 SpeechViewModel.PlayStatus.PAUSE -> {
                     // 일시정지 상태면 재생 재개
 //                    DWLog.d("일시정지 상태면 재생 재개")
@@ -412,7 +438,6 @@ class QuestionDetailFragment : Fragment() {
 
         binding.ivCancel.setOnClickListener {
             binding.customToolbar.visibility = View.VISIBLE
-            binding.layoutQuestionAnswerDetail.visibility = View.VISIBLE
             binding.layoutQuestionDetail.visibility = View.VISIBLE
             binding.layoutAnswerDetail.visibility = View.VISIBLE
             binding.layoutSelectDetail.visibility = View.VISIBLE
@@ -422,6 +447,7 @@ class QuestionDetailFragment : Fragment() {
             viewModel.stopWavFile()
             viewModel.stopRecording()
         }
+
 
         viewModel.onPlayCompleted = {
             DWLog.d("재생 완료 콜백 수신")
@@ -475,6 +501,7 @@ class QuestionDetailFragment : Fragment() {
     }
 
     private fun updateAnswerDisplay() {
+        val maxLength = 20
         val event = viewModel.logDtlEvent.value ?: return
         val answers = event.autobiographyMap?.list ?: emptyList()
 
@@ -484,7 +511,19 @@ class QuestionDetailFragment : Fragment() {
             binding.tvAnswer.setTextColor(Color.BLACK)
 
             val currentAnswer = answers[currentAnswerIndex]
-            binding.tvAnswer.text = requireContext().getString(R.string.prefix_title_answer) + currentAnswer.transText
+            binding.tvAnswer.text = if (currentAnswer.transText.length > maxLength) {
+                currentAnswer.transText.take(maxLength) + "…" // 20자 넘어가면 끝에 … 붙임
+            } else {
+                currentAnswer.transText
+            }
+
+            binding.tvAnswerStatus.visibility = View.VISIBLE
+            if (currentAnswer.transText.length <= maxLength) {
+                binding.tvAnswerStatus.text = "다시듣기" // "다시듣기" 문자열
+            } else {
+                binding.tvAnswerStatus.text = "전체보기" // "전체보기"
+            }
+
             viewModel.setAnswerAudioUrl(currentAnswer.answerAudioUrl ?: "")
             viewModel.setLogId((currentAnswer.autobiographyLogId ?: -1).toString())
             if (answers.size == 1) {

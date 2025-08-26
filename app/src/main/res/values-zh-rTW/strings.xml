@@ -9,8 +9,7 @@
     <string name="status_answered">"已回答"</string>
     <string name="status_unanswered">"未回答"</string>
     <string name="message_registering_answer">"我们正在记录您的答案。"</string>
-    <string name="prefix_title_question">"問題 : "</string>
-    <string name="prefix_title_answer">"回答 : "</string>
+    <string name="prefix_title_answer">"我 : "</string>
     <string name="title_left_time">"剩餘時間 " </string>
     <string name="title_end_answer">"回覆結束"</string>
     <string name="title_start_answer">"回答"</string>

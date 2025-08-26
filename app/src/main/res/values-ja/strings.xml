@@ -9,8 +9,7 @@
     <string name="status_answered">"回答完了"</string>
     <string name="status_unanswered">"未回答"</string>
     <string name="message_registering_answer">"回答を登録中です。"</string>
-    <string name="prefix_title_question">"質問 : "</string>
-    <string name="prefix_title_answer">"回答 : "</string>
+    <string name="prefix_title_answer">"私 : "</string>
     <string name="title_left_time">"残り時間 " </string>
     <string name="title_end_answer">"回答を終了"</string>
     <string name="title_start_answer">"答える"</string>
