@@ -48,4 +48,11 @@
     <string name="text_answer">답변하기</string>
     <string name="text_reading_your_question">질문을 읽어드리고 있습니다..</string>
     <string name="text_reading">읽는 중..</string>
+
+    <string name="text_reading_your_answer_1">"첫번째 답변을 읽어드리고 있습니다.."</string>
+    <string name="text_reading_your_answer_2">"두번째 답변을 읽어드리고 있습니다.."</string>
+    <string name="text_reading_your_answer_3">"세번째 답변을 읽어드리고 있습니다.."</string>
+    <string name="text_reply_listen">"다시듣기"</string>
+    <string name="text_full_view">"전체보기"</string>
+    <string name="text_my_answer">"내가 등록한 답변"</string>
 </resources>

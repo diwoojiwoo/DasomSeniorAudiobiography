@@ -433,6 +433,7 @@ class NewSpeechFragment : Fragment() {
         viewModel.disconnect()
     }
 
+
     companion object {
 
     }

@@ -33,6 +33,7 @@ import com.onethefull.dasomautobiography.utils.speech.GCSpeechToText
 import com.onethefull.dasomautobiography.utils.speech.GCSpeechToTextImpl
 import com.onethefull.dasomautobiography.utils.speech.GCTextToSpeech
 import com.onethefull.dasomautobiography.utils.speech.GenieSpeechToTextImpl
+import com.onethefull.dasomautobiography.utils.speech.SpeakingTarget
 import com.onethefull.dasomautobiography.utils.speech.SpeechStatus
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -90,6 +91,10 @@ class QuestionDetailViewModel(
     private val _logId = MutableLiveData<String>()
     val logId: LiveData<String> get() = _logId
 
+    // 발화 타켓
+    private val _speakingTarget = MutableLiveData<SpeakingTarget>()
+    val speakingTarget: LiveData<SpeakingTarget> get() = _speakingTarget
+
     init {
         connect()
     }
@@ -106,7 +111,8 @@ class QuestionDetailViewModel(
         DWLog.d("connect")
         GCTextToSpeech.getInstance()?.setCallback(this)
         GCTextToSpeech.getInstance()?.start(context)
-        RxBus.publish(RxEvent.Event(RxEvent.AppDestroyUpdate, 90 * 1000L, "AppDestroyUpdate"))
+        // TEST
+        RxBus.publish(RxEvent.Event(RxEvent.AppDestroyUpdate, 900 * 1000L, "AppDestroyUpdate"))
     }
 
     fun disconnect() {
@@ -566,12 +572,20 @@ class QuestionDetailViewModel(
         }
     }
 
+    fun stopSpeech() {
+        GCTextToSpeech.getInstance()?.requestReleaseSpeech()
+    }
+
     fun setLogId(logId: String) {
         _logId.value = logId
     }
 
     fun setAnswerAudioUrl(url: String) {
         _answerAudioUrl.value = url
+    }
+
+    fun setSpeakingTarget(target: SpeakingTarget) {
+        _speakingTarget.postValue(target)
     }
 
     fun removeLogById(logId: Int) {

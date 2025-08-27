@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Color
 import android.os.Bundle
-import android.os.SystemClock
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -21,20 +20,20 @@ import com.onethefull.dasomautobiography.App
 import com.onethefull.dasomautobiography.MainActivity
 import com.onethefull.dasomautobiography.MainViewModel
 import com.onethefull.dasomautobiography.R
+import com.onethefull.dasomautobiography.contents.dialog.FullTextDialog
 import com.onethefull.dasomautobiography.contents.dialog.PopupDialog
 import com.onethefull.dasomautobiography.contents.dialog.ResponseEditDialog
 import com.onethefull.dasomautobiography.contents.toast.Toasty
 import com.onethefull.dasomautobiography.databinding.FragmentQuestionDetailBinding
+import com.onethefull.dasomautobiography.ui.speech.SpeechViewModel
 import com.onethefull.dasomautobiography.utils.Constant
 import com.onethefull.dasomautobiography.utils.InjectorUtils
 import com.onethefull.dasomautobiography.utils.bus.RxBus
 import com.onethefull.dasomautobiography.utils.bus.RxEvent
 import com.onethefull.dasomautobiography.utils.logger.DWLog
-import com.onethefull.dasomautobiography.utils.setOnSingleClickListener
+import com.onethefull.dasomautobiography.utils.speech.SpeakingTarget
 import com.onethefull.dasomautobiography.utils.speech.SpeechStatus
 import com.onethefull.wonderfulrobotmodule.ext.dasomLanguageCodeValue
-import androidx.core.graphics.toColorInt
-import com.onethefull.dasomautobiography.ui.speech.SpeechViewModel
 
 /**
  * Created by sjw on 2025. 3. 7.
@@ -232,14 +231,6 @@ class QuestionDetailFragment : Fragment() {
             }
         }
 
-        /**
-         * 문제 듣기 버튼 클릭 리스너
-         * */
-//        binding.tvListenQuestion.setOnCheckedChangeListener { _, isChecked ->
-//            if (isChecked) {
-//                viewModel.startSpeech(sharedViewModel.selectedItem.value?.viewQuestion.toString())
-//            }
-//        }
 
         /**
          * 문제 듣기 버튼 전체 클릭 리스너
@@ -247,31 +238,29 @@ class QuestionDetailFragment : Fragment() {
         binding.layoutQuestionDetail.setOnClickListener {
             if (viewModel.speechStatus.value == null || viewModel.speechStatus.value == SpeechStatus.WAITING) {
                 viewModel.startSpeech(sharedViewModel.selectedItem.value?.viewQuestion.toString())
+                viewModel.setSpeakingTarget(SpeakingTarget.QUESTION)
             } else {
                 DWLog.d("발화x")
-            }
-        }
-
-        /**
-         * 답변 듣기 버튼 클릭 리스너
-         * */
-        binding.tvListenAnswer.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                val audioUrl = viewModel.answerAudioUrl.value
-                if (!audioUrl.isNullOrBlank()) {
-                    viewModel.startUrlSpeech(audioUrl)
-                } else {
-                    DWLog.e("Audio URL is null or blank")
-                    viewModel.startSpeech(viewModel.transText.value.toString())
-                }
             }
         }
 
         viewModel.speechStatus.observe(viewLifecycleOwner) { status ->
             when (status) {
                 SpeechStatus.SPEECH -> {
-                    binding.tvListenQuestion.isChecked = true
-                    binding.layoutQuestionDetail.background = ContextCompat.getDrawable(requireContext(), R.drawable.new_answer_detail_background_active)
+                    when (viewModel.speakingTarget.value) {
+                        SpeakingTarget.QUESTION -> {
+                            binding.tvListenQuestion.background = ContextCompat.getDrawable(requireContext(), R.drawable.btn_play_pause_normal)
+                            binding.layoutQuestionDetail.background = ContextCompat.getDrawable(requireContext(), R.drawable.new_answer_detail_background_active)
+                            binding.tvSpeech.text = requireContext().getString(R.string.text_reading_your_question)
+                        }
+
+                        SpeakingTarget.ANSWER -> {
+                            binding.tvListenAnswer.background = ContextCompat.getDrawable(requireContext(), R.drawable.btn_play_pause_normal)
+                            binding.layoutAnswerDetail.background = ContextCompat.getDrawable(requireContext(), R.drawable.new_answer_detail_background_active)
+                        }
+
+                        else -> {}
+                    }
 
                     binding.flSpeechStatus.visibility = View.VISIBLE
                     binding.btnRetry.background = ContextCompat.getDrawable(requireContext(), R.drawable.add_anwser_background_inactive)
@@ -280,12 +269,26 @@ class QuestionDetailFragment : Fragment() {
                     binding.tvRetry.isFocusableInTouchMode = false
                     binding.btnDelete.isEnabled = false
                     binding.btnDelete.isClickable = false
+
+                    binding.tvAnswerStatus.isEnabled = false
+                    binding.tvAnswerStatus.isClickable = false
+                    binding.tvAnswerStatus.alpha = 0.5f // 회색 느낌
                 }
 
                 else -> {
-                    binding.tvListenQuestion.isChecked = false
-                    binding.layoutQuestionDetail.background = ContextCompat.getDrawable(requireContext(), R.drawable.new_answer_detail_background)
+                    when (viewModel.speakingTarget.value) {
+                        SpeakingTarget.QUESTION -> {
+                            binding.tvListenQuestion.background = ContextCompat.getDrawable(requireContext(), R.drawable.icon_listen)
+                            binding.layoutQuestionDetail.background = ContextCompat.getDrawable(requireContext(), R.drawable.new_answer_detail_background)
+                        }
 
+                        SpeakingTarget.ANSWER -> {
+                            binding.tvListenAnswer.background = ContextCompat.getDrawable(requireContext(), R.drawable.icon_listen)
+                            binding.layoutAnswerDetail.background = ContextCompat.getDrawable(requireContext(), R.drawable.new_answer_detail_background)
+                        }
+
+                        else -> {}
+                    }
                     binding.flSpeechStatus.visibility = View.GONE
                     binding.btnRetry.background = ContextCompat.getDrawable(requireContext(), R.drawable.add_anwser_background)
                     binding.tvRetry.isClickable = true
@@ -293,6 +296,10 @@ class QuestionDetailFragment : Fragment() {
                     binding.tvRetry.isFocusableInTouchMode = true
                     binding.btnDelete.isEnabled = true
                     binding.btnDelete.isClickable = true
+
+                    binding.tvAnswerStatus.isEnabled = true
+                    binding.tvAnswerStatus.isClickable = true
+                    binding.tvAnswerStatus.alpha = 1f
                 }
             }
         }
@@ -448,7 +455,6 @@ class QuestionDetailFragment : Fragment() {
             viewModel.stopRecording()
         }
 
-
         viewModel.onPlayCompleted = {
             DWLog.d("재생 완료 콜백 수신")
             updatePlayUI(isPlaying = false)
@@ -501,14 +507,14 @@ class QuestionDetailFragment : Fragment() {
     }
 
     private fun updateAnswerDisplay() {
-        val maxLength = 20
+        val maxLength = 18
         val event = viewModel.logDtlEvent.value ?: return
         val answers = event.autobiographyMap?.list ?: emptyList()
 
         if (answers.isNotEmpty() && viewModel.transText.value != "") {
             binding.layoutAnswerDetail.background = ContextCompat.getDrawable(activity as MainActivity, R.drawable.new_answer_detail_background)
             binding.tvListenAnswer.background = ContextCompat.getDrawable(activity as MainActivity, R.drawable.btn_listen_checkbox)
-            binding.tvAnswer.setTextColor(Color.BLACK)
+            binding.tvAnswer.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray_33))
 
             val currentAnswer = answers[currentAnswerIndex]
             binding.tvAnswer.text = if (currentAnswer.transText.length > maxLength) {
@@ -518,10 +524,54 @@ class QuestionDetailFragment : Fragment() {
             }
 
             binding.tvAnswerStatus.visibility = View.VISIBLE
+            val tvSpeech =  when (currentAnswerIndex) {
+                0 -> requireContext().getString(R.string.text_reading_your_answer_1)
+                1 -> requireContext().getString(R.string.text_reading_your_answer_2)
+                2 -> requireContext().getString(R.string.text_reading_your_answer_3)
+                else -> {
+                    ""
+                }
+            }
+            binding.tvSpeech.text = tvSpeech
+
             if (currentAnswer.transText.length <= maxLength) {
-                binding.tvAnswerStatus.text = "다시듣기" // "다시듣기" 문자열
+                binding.tvAnswerStatus.text = requireContext().getString(R.string.text_reply_listen) // "다시듣기"
+                binding.tvAnswerStatus.setOnClickListener {
+                    val audioUrl = viewModel.answerAudioUrl.value
+                    if (!audioUrl.isNullOrBlank()) {
+                        viewModel.startUrlSpeech(audioUrl)
+                    } else {
+                        DWLog.e("Audio URL is null or blank")
+                        viewModel.startSpeech(currentAnswer.transText)
+                    }
+                    viewModel.setSpeakingTarget(SpeakingTarget.ANSWER)
+                }
             } else {
-                binding.tvAnswerStatus.text = "전체보기" // "전체보기"
+                binding.tvAnswerStatus.text = requireContext().getString(R.string.text_full_view) // "전체 보기"
+                binding.tvAnswerStatus.setOnClickListener {
+                    activity?.let { activity ->
+                        FullTextDialog(activity)
+                            .setTtsText(
+                                currentAnswer.transText,
+                                { text ->
+                                    val audioUrl = currentAnswer.answerAudioUrl
+                                    if (!audioUrl.isNullOrBlank()) {
+                                        viewModel.startUrlSpeech(audioUrl)
+                                    } else {
+                                        DWLog.e("Audio URL is null or blank")
+                                        viewModel.startSpeech(text)
+                                    }
+                                },
+                                tvSpeech
+                            )
+                            .setDialogListener(object : FullTextDialog.DialogListener {
+                                override fun onCancelTts() {
+                                    viewModel.stopSpeech()
+                                }
+                            })
+                            .show()
+                    }
+                }
             }
 
             viewModel.setAnswerAudioUrl(currentAnswer.answerAudioUrl ?: "")
@@ -563,7 +613,10 @@ class QuestionDetailFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         viewModel.disconnect()
-        requireContext().unregisterReceiver(receiver)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        requireContext().unregisterReceiver(receiver)
+    }
 }

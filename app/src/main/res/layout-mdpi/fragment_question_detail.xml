@@ -78,11 +78,11 @@
             android:padding="30dp"
             android:gravity="center">
 
-            <CheckBox
+            <TextView
                 android:id="@+id/tv_listen_question"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
-                android:background="@drawable/btn_listen_checkbox"
+                android:background="@drawable/icon_listen"
                 android:fontFamily="@font/notosans_kr_b"
                 android:lineSpacingExtra="19sp"
                 android:scaleType="centerCrop"
@@ -90,7 +90,6 @@
                 android:textSize="40sp"
                 android:textStyle="normal"
                 android:gravity ="center"
-                android:button="@null"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -100,13 +99,13 @@
                 android:layout_width="855dp"
                 android:layout_height="wrap_content"
                 android:textColor="#333333"
-                android:textSize="40sp"
                 android:fontFamily="@font/notosans_kr_b"
                 android:maxLines="4"
+                android:textSize="50sp"
                 android:layout_marginStart="20dp"
                 android:autoSizeTextType="uniform"
                 android:gravity="center_vertical"
-                android:autoSizeMaxTextSize="40sp"
+                android:autoSizeMaxTextSize="50sp"
                 android:autoSizeMinTextSize="22sp"
                 android:autoSizeStepGranularity="2sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -127,11 +126,11 @@
             android:background="@drawable/new_answer_detail_background"
             app:layout_constraintTop_toBottomOf="@+id/layout_question_detail">
 
-            <CheckBox
+            <TextView
                 android:id="@+id/tv_listen_answer"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
-                android:background="@drawable/btn_listen_checkbox"
+                android:background="@drawable/icon_listen"
                 android:fontFamily="@font/notosans_kr_b"
                 android:lineSpacingExtra="19sp"
                 android:scaleType="centerCrop"
@@ -140,26 +139,26 @@
                 android:textSize="40sp"
                 android:textStyle="normal"
                 android:gravity ="center"
-                android:button="@null"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_answer"
-                android:layout_width="855dp"
+                android:layout_width="690dp"
                 android:layout_height="wrap_content"
                 android:textColor="#333333"
-                android:textSize="40sp"
+                android:textSize="50sp"
+                android:gravity="center_vertical"
                 android:fontFamily="@font/notosans_kr_b"
-                android:maxLines="4"
+                android:maxLines="1"
                 android:layout_marginStart="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/tv_listen_answer"
                 app:layout_constraintHorizontal_bias="0.1"
                 app:layout_constraintTop_toTopOf="parent"
                 android:autoSizeTextType="uniform"
-                android:autoSizeMaxTextSize="40sp"
+                android:autoSizeMaxTextSize="50sp"
                 android:autoSizeMinTextSize="16sp"
                 android:autoSizeStepGranularity="2sp"
                 tools:targetApi="o" />
@@ -244,7 +243,6 @@
                     android:lineHeight="59sp"
                     android:textAlignment="center"
                     android:textColor="#333333"
-                    android:textSize="40sp"
                     android:textStyle="normal"
                     android:maxLines="3"
                     android:autoSizeTextType="uniform"
@@ -369,14 +367,18 @@
 
         <TextView
             android:id="@+id/tv_speech"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:text="@string/text_reading_your_question"
             android:fontFamily="@font/notosans_kr_r"
-            android:textSize="35sp"
             android:textColor="#f66e35"
             android:lineSpacingExtra="12sp"
-            android:layout_gravity="center" />
+            android:gravity="center"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="23sp"
+            android:autoSizeMaxTextSize="35sp"
+            android:autoSizeStepGranularity="1sp"
+            android:layout_marginStart="52dp"/>
     </FrameLayout>
 
     <!-- 삭제 / 추가 버튼: 하단 고정 -->

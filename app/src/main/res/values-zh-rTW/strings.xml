@@ -47,4 +47,11 @@
     <string name="text_answer">回答</string>
     <string name="text_reading_your_question">正在朗讀您的問題</string>
     <string name="text_reading">正在朗讀</string>
+
+    <string name="text_reading_your_answer_1">"我會閱讀第一個註冊的答案"</string>
+    <string name="text_reading_your_answer_2">"我將閱讀第二個註冊答案。"</string>
+    <string name="text_reading_your_answer_3">"我將閱讀第三個註冊答案。"</string>
+    <string name="text_reply_listen">"重听"</string>
+    <string name="text_full_view">"全部"</string>
+    <string name="text_my_answer">"我提交的回答"</string>
 </resources>

@@ -44,7 +44,14 @@
     <string name="message_finish_activity_recognition_1">今天就记录到这里吧。我们之后再聊。</string>
 
     <string name="text_listen_again">再次收听</string>
-    <string name="text_answer">回ㅁ</string>
+    <string name="text_answer">回答</string>
     <string name="text_reading_your_question">正在朗读您的问题</string>
     <string name="text_reading">正在朗读</string>
+
+    <string name="text_reading_your_answer_1">"我将阅读第一个注册答案。"</string>
+    <string name="text_reading_your_answer_2">"我将阅读第二个注册答案。"</string>
+    <string name="text_reading_your_answer_3">"我将阅读第三个注册答案。"</string>
+    <string name="text_reply_listen">"重听"</string>
+    <string name="text_full_view">"全部"</string>
+    <string name="text_my_answer">"我提交的回答"</string>
 </resources>

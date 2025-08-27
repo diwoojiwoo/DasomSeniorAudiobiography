@@ -47,4 +47,11 @@
     <string name="text_answer">回答する</string>
     <string name="text_reading_your_question">質問を読み上げています</string>
     <string name="text_reading">読み上げ中</string>
+
+    <string name="text_reading_your_answer_1">"最初の回答を読み上げます。"</string>
+    <string name="text_reading_your_answer_2">"2番目の回答を読み上げます。"</string>
+    <string name="text_reading_your_answer_3">"3番目の回答を読み上げます。"</string>
+    <string name="text_reply_listen">"再生"</string>
+    <string name="text_full_view">"全部"</string>
+    <string name="text_my_answer">"自分の回答"</string>
 </resources>
