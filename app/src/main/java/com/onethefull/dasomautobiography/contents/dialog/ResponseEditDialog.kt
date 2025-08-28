@@ -22,8 +22,13 @@ class ResponseEditDialog(context: Context) : BaseDialog<DialogResponseEditBindin
     private var dialogListener: DialogListener? = null
     private var dismissListener: DialogDismissListener? = null
 
+    private var isAutoDismiss = false
+
     var handler = Handler(Looper.getMainLooper()) {
-        if (App.instance.currentActivity != null) this.dismiss()
+        if (App.instance.currentActivity != null) {
+            isAutoDismiss = true
+            dismiss()
+        }
         false
     }
 
@@ -38,25 +43,36 @@ class ResponseEditDialog(context: Context) : BaseDialog<DialogResponseEditBindin
 
         binding.btnCheckAnswer.setOnClickListener {
             dialogListener?.checkAnswer()
+            dismissListener?.let { /* 호출하지 않음 */ }
+            dismissWithoutListener()
         }
 
         binding.btnGoHome.setOnClickListener {
-            dismiss()
             dialogListener?.moveHome()
+            dismiss() // 이때는 dismissListener 호출 가능
         }
 
         setOnShowListener(this)
     }
 
     override fun onShow(dialog: DialogInterface?) {
+        isAutoDismiss = true
         handler.removeCallbacksAndMessages(null)
-        handler.sendMessageDelayed(Message(), 60_000)
+        handler.sendMessageDelayed(Message(), 20_000)
     }
 
     override fun dismiss() {
         super.dismiss()
         handler.removeCallbacksAndMessages(null)
-        dismissListener?.onDismiss()
+        if (isAutoDismiss) {
+            dismissListener?.onDismiss()
+        }
+    }
+
+    private fun dismissWithoutListener() {
+        isAutoDismiss = false
+        super.dismiss()
+        handler.removeCallbacksAndMessages(null)
     }
 
     fun setDialogListener(dialogListener: DialogListener?) {

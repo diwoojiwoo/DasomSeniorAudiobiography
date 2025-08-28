@@ -32,7 +32,8 @@ class MainViewModel : BaseViewModel() {
             RxEvent.AppDestroy -> {
                 handler.removeMessages(MESSAGE_WHAT_TERMINATE_APP)
                 SceneHelper.switchOut()
-                App.instance.currentActivity?.finish()
+                App.instance.currentActivity?.finishAffinity()
+                android.os.Process.killProcess(android.os.Process.myPid())
             }
 
             RxEvent.AppDestroyUpdate -> {

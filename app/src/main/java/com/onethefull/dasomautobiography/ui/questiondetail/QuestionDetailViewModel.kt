@@ -111,8 +111,7 @@ class QuestionDetailViewModel(
         DWLog.d("connect")
         GCTextToSpeech.getInstance()?.setCallback(this)
         GCTextToSpeech.getInstance()?.start(context)
-        // TEST
-        RxBus.publish(RxEvent.Event(RxEvent.AppDestroyUpdate, 900 * 1000L, "AppDestroyUpdate"))
+        RxBus.publish(RxEvent.Event(RxEvent.AppDestroyUpdate, 90 * 1000L, "AppDestroyUpdate"))
     }
 
     fun disconnect() {

@@ -33,6 +33,7 @@ class MainActivity : BaseActivity() {
         binding = setContentView(this, R.layout.activity_main)
         navController = Navigation.findNavController(this, R.id.nav_host)
         setupViewModel()
+        viewModel.start()
     }
 
     override fun onResume() {
@@ -51,8 +52,6 @@ class MainActivity : BaseActivity() {
             navController.setGraph(R.navigation.nav_graph, bundle)
             isGraphSet = true
         }
-
-        viewModel.start()
     }
 
     fun navigateToSpeechFragment(reason: String? = null, motionDetected: Boolean = false) {
@@ -84,8 +83,11 @@ class MainActivity : BaseActivity() {
         overridePendingTransition(0, 0)
         GCTextToSpeech.getInstance()?.release()
         App.instance.isRunning = false
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
         viewModel.release()
-//        Process.killProcess(Process.myPid())
     }
 
     private fun setupViewModel() {

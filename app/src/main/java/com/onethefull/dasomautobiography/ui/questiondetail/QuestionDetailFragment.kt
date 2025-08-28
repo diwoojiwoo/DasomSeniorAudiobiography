@@ -192,7 +192,6 @@ class QuestionDetailFragment : Fragment() {
                             window?.requestFeature(Window.FEATURE_NO_TITLE)
                             setDialogListener(object : ResponseEditDialog.DialogListener {
                                 override fun checkAnswer() {
-                                    dismiss()
                                     binding.customToolbar.visibility = View.VISIBLE
                                     binding.layoutQuestionDetail.visibility = View.VISIBLE
                                     binding.layoutAnswerDetail.visibility = View.VISIBLE
@@ -202,6 +201,14 @@ class QuestionDetailFragment : Fragment() {
                                 }
 
                                 override fun moveHome() {
+                                    findNavController().navigate(
+                                        QuestionDetailFragmentDirections.actionDetailFragmentToMenuFragment()
+                                    )
+                                }
+                            })
+                            setDismissListener(object : ResponseEditDialog.DialogDismissListener {
+                                override fun onDismiss() {
+                                    DWLog.d("20초 뒤 자동 onDismiss 호출")
                                     findNavController().navigate(QuestionDetailFragmentDirections.actionDetailFragmentToMenuFragment())
                                 }
                             })
@@ -270,9 +277,23 @@ class QuestionDetailFragment : Fragment() {
                     binding.btnDelete.isEnabled = false
                     binding.btnDelete.isClickable = false
 
-                    binding.tvAnswerStatus.isEnabled = false
-                    binding.tvAnswerStatus.isClickable = false
-                    binding.tvAnswerStatus.alpha = 0.5f // 회색 느낌
+                    binding.tvAnswerStatus.apply {
+                        alpha = 0.5f
+                        isEnabled = false
+                        isClickable = false
+                    }
+
+                    binding.btnLeft.apply {
+                        alpha = 0.5f
+                        isEnabled = false
+                        isClickable = false
+                    }
+
+                    binding.btnRight.apply {
+                        alpha = 0.5f
+                        isEnabled = false
+                        isClickable = false
+                    }
                 }
 
                 else -> {
@@ -297,9 +318,23 @@ class QuestionDetailFragment : Fragment() {
                     binding.btnDelete.isEnabled = true
                     binding.btnDelete.isClickable = true
 
-                    binding.tvAnswerStatus.isEnabled = true
-                    binding.tvAnswerStatus.isClickable = true
-                    binding.tvAnswerStatus.alpha = 1f
+                    binding.tvAnswerStatus.apply {
+                        alpha = 1f
+                        isEnabled = true
+                        isClickable = true
+                    }
+
+                    binding.btnLeft.apply {
+                        alpha = 1f
+                        isEnabled = true
+                        isClickable = true
+                    }
+
+                    binding.btnRight.apply {
+                        alpha = 1f
+                        isEnabled = true
+                        isClickable = true
+                    }
                 }
             }
         }
@@ -343,6 +378,11 @@ class QuestionDetailFragment : Fragment() {
 
             binding.btnLeft.visibility = View.GONE
             binding.btnRight.visibility = View.GONE
+
+            initView()
+            viewModel.stopRecording()
+            viewModel.stopWavFile()
+            viewModel.resetTimer()
         }
 
         /**
@@ -507,7 +547,7 @@ class QuestionDetailFragment : Fragment() {
     }
 
     private fun updateAnswerDisplay() {
-        val maxLength = 18
+        val maxLength = 20
         val event = viewModel.logDtlEvent.value ?: return
         val answers = event.autobiographyMap?.list ?: emptyList()
 
@@ -518,13 +558,13 @@ class QuestionDetailFragment : Fragment() {
 
             val currentAnswer = answers[currentAnswerIndex]
             binding.tvAnswer.text = if (currentAnswer.transText.length > maxLength) {
-                currentAnswer.transText.take(maxLength) + "…" // 20자 넘어가면 끝에 … 붙임
+                requireContext().getString(R.string.prefix_title_answer) + currentAnswer.transText.take(maxLength) + "…" // 20자 넘어가면 끝에 … 붙임
             } else {
-                currentAnswer.transText
+                requireContext().getString(R.string.prefix_title_answer) + currentAnswer.transText
             }
 
             binding.tvAnswerStatus.visibility = View.VISIBLE
-            val tvSpeech =  when (currentAnswerIndex) {
+            val tvSpeech = when (currentAnswerIndex) {
                 0 -> requireContext().getString(R.string.text_reading_your_answer_1)
                 1 -> requireContext().getString(R.string.text_reading_your_answer_2)
                 2 -> requireContext().getString(R.string.text_reading_your_answer_3)
