@@ -139,20 +139,21 @@
                 android:textSize="40sp"
                 android:textStyle="normal"
                 android:gravity ="center"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_answer"
-                android:layout_width="690dp"
+                android:layout_width="750dp"
                 android:layout_height="wrap_content"
                 android:textColor="#333333"
                 android:textSize="40sp"
                 android:gravity="center_vertical"
                 android:fontFamily="@font/notosans_kr_b"
                 android:maxLines="1"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="40dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/tv_listen_answer"
                 app:layout_constraintHorizontal_bias="0.1"

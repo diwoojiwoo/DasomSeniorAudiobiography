@@ -68,8 +68,11 @@ class MenuFragment : Fragment() {
                     RxBus.publish(RxEvent.destroyShortAppUpdate)
                 }
 
-                else -> {
+                0 -> {}
 
+                else -> {
+                    Toasty.error(requireContext(), ("status :: " + event.status + ", status code :: " + event.status_code) ?: getString(R.string.message_network_error)).show()
+                    RxBus.publish(RxEvent.destroyShortAppUpdate)
                 }
             }
         }
