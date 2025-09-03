@@ -9,14 +9,22 @@ import android.view.View
  * Created by sjw on 2025. 6. 4.
  */
 
-fun View.setOnSingleClickListener(interval: Long = 5000L, listener: (View) -> Unit) {
-    var lastClickTime = 0L
-    setOnClickListener {
+private var lastClickTimeMap = mutableMapOf<Int, Long>()
+
+
+fun View.setOnSingleClickListener(delay: Long = 3000L, onClick: (View) -> Unit) {
+    this.setOnClickListener {
+        val viewId = this.id
         val currentTime = System.currentTimeMillis()
-        if (currentTime - lastClickTime > interval) {
-            lastClickTime = currentTime
-            listener(it)
+        val lastClickTime = lastClickTimeMap[viewId] ?: 0L
+
+        if (currentTime - lastClickTime < delay) {
+            // 중복 클릭 방지
+            return@setOnClickListener
         }
+
+        lastClickTimeMap[viewId] = currentTime
+        onClick(this)
     }
 }
 

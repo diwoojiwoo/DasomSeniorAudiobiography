@@ -31,6 +31,7 @@ import com.onethefull.dasomautobiography.utils.InjectorUtils
 import com.onethefull.dasomautobiography.utils.bus.RxBus
 import com.onethefull.dasomautobiography.utils.bus.RxEvent
 import com.onethefull.dasomautobiography.utils.logger.DWLog
+import com.onethefull.dasomautobiography.utils.setOnSingleClickListener
 import com.onethefull.dasomautobiography.utils.speech.SpeakingTarget
 import com.onethefull.dasomautobiography.utils.speech.SpeechStatus
 import com.onethefull.wonderfulrobotmodule.ext.dasomLanguageCodeValue
@@ -242,14 +243,15 @@ class QuestionDetailFragment : Fragment() {
         /**
          * 문제 듣기 버튼 전체 클릭 리스너
          * */
-        binding.layoutQuestionDetail.setOnClickListener {
+        binding.layoutQuestionDetail.setOnSingleClickListener {
             if (viewModel.speechStatus.value == null || viewModel.speechStatus.value == SpeechStatus.WAITING) {
                 viewModel.startSpeech(sharedViewModel.selectedItem.value?.viewQuestion.toString())
                 viewModel.setSpeakingTarget(SpeakingTarget.QUESTION)
             } else {
-                DWLog.d("발화x")
+                DWLog.d("발화 중, 실행 안함")
             }
         }
+
 
         viewModel.speechStatus.observe(viewLifecycleOwner) { status ->
             when (status) {
