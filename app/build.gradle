@@ -20,8 +20,8 @@ android {
     defaultConfig {
         applicationId "com.onethefull.dasomautobiography"
         minSdkVersion 19
-        versionCode 32
-        versionName "32.prevent_double_clicks"
+        versionCode 33
+        versionName "33.fix_delete_event"
 
         multiDexEnabled true
         buildConfigField("String", "CHARACTER_TYPE", '"NewDasom"') // Dasom,Secretary

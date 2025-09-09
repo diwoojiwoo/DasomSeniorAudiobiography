@@ -24,6 +24,7 @@ import com.onethefull.dasomautobiography.contents.dialog.FullTextDialog
 import com.onethefull.dasomautobiography.contents.dialog.PopupDialog
 import com.onethefull.dasomautobiography.contents.dialog.ResponseEditDialog
 import com.onethefull.dasomautobiography.contents.toast.Toasty
+import com.onethefull.dasomautobiography.data.model.audiobiography.Entry
 import com.onethefull.dasomautobiography.databinding.FragmentQuestionDetailBinding
 import com.onethefull.dasomautobiography.ui.speech.SpeechViewModel
 import com.onethefull.dasomautobiography.utils.Constant
@@ -127,25 +128,33 @@ class QuestionDetailFragment : Fragment() {
                 0 -> {
                     val list = viewModel.logDtlEvent.value?.autobiographyMap?.list
                     if (list.isNullOrEmpty()) {
-                        // 리스트 비어있으면 QuestionListFragment로 이동
-                        val selectedEntry = sharedViewModel.selectedItem.value
-                        if (selectedEntry != null) {
-                            DWLog.d("${selectedEntry.autobiographyId}")
-                            DWLog.d("${selectedEntry.audioUrl}")
-                            DWLog.d("${selectedEntry.imgUrl}")
-
-                            findNavController().navigate(
-                                QuestionDetailFragmentDirections.actionDetailFragmentToListFragment(
-                                    selectedEntry.copy(
-                                        typeName = selectedEntry.typeName ?: ""
-                                    )
+                        val selectedEntry =
+                            sharedViewModel.selectedItem.value?.let { selected ->
+                                Entry(
+                                    autobiographyId = 0,
+                                    audioUrl = "",
+                                    transText = "",
+                                    imgUrl = "",
+                                    question = "",
+                                    answerYn = "",
+                                    sort = "",
+                                    type = selected.type,
+                                    typeName = selected.typeName,
+                                    viewQuestion = "",
                                 )
+                            } ?: Entry( // null일 때 기본값
+                                autobiographyId = 0,
+                                audioUrl = "",
+                                transText = "",
+                                imgUrl = "",
+                                question = "",
+                                answerYn = "",
+                                sort = "",
+                                type = "",
+                                typeName = "",
+                                viewQuestion = "",
                             )
-                        } else {
-                            // fallback: 그냥 앱 종료
-                            RxBus.publish(RxEvent.destroyApp)
-                        }
-
+                        findNavController().navigate(QuestionDetailFragmentDirections.actionDetailFragmentToListFragment(selectedEntry))
                     } else {
                         currentAnswerIndex = 0
                         updateAnswerDisplay()

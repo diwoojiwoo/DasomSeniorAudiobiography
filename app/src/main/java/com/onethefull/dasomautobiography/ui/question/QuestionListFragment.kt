@@ -20,6 +20,7 @@ import com.onethefull.dasomautobiography.R
 import com.onethefull.dasomautobiography.contents.toast.Toasty
 import com.onethefull.dasomautobiography.data.model.audiobiography.Entry
 import com.onethefull.dasomautobiography.utils.Constant
+import com.onethefull.dasomautobiography.utils.logger.DWLog
 
 class QuestionListFragment : Fragment(), ListAdapter.OnItemClickListener {
     private lateinit var binding: FragmentQuestionlistBinding
@@ -67,7 +68,7 @@ class QuestionListFragment : Fragment(), ListAdapter.OnItemClickListener {
         binding.toolbarTitle.text = mItem.typeName
 
         binding.btnBack.setOnClickListener {
-            (activity as MainActivity).back()
+            findNavController().navigate(R.id.action_questionlist_fragment_to_menu_fragment)
         }
 
         binding.btnHome.setOnClickListener {
@@ -100,6 +101,7 @@ class QuestionListFragment : Fragment(), ListAdapter.OnItemClickListener {
 
         // 데이터 로딩
         mItem.type.let { item ->
+            DWLog.d("mItem.type ${mItem.type}")
             binding.progressBar.visibility = View.VISIBLE
             viewModel.requestQuestionList(item)
         }

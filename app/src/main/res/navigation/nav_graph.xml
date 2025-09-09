@@ -63,6 +63,11 @@
             android:id="@+id/action_questionlist_fragment_to_detail_fragment"
             app:destination="@+id/question_detail_fragment"
             app:launchSingleTop="true"/>
+
+        <action
+            android:id="@+id/action_questionlist_fragment_to_menu_fragment"
+            app:destination="@+id/menu_fragment"
+            app:launchSingleTop="true"/>
     </fragment>
 
     <!-- QuestionDetailFragment   -->

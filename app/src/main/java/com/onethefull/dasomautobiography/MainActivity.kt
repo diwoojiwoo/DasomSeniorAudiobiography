@@ -74,10 +74,6 @@ class MainActivity : BaseActivity() {
             ?.navigate(R.id.action_global_new_speechFragment, bundle)
     }
 
-    fun back() {
-        navController.navigateUp()
-    }
-
     override fun onPause() {
         super.onPause()
         overridePendingTransition(0, 0)
