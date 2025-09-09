@@ -28,6 +28,7 @@ import com.onethefull.dasomautobiography.databinding.FragmentQuestionDetailBindi
 import com.onethefull.dasomautobiography.ui.speech.SpeechViewModel
 import com.onethefull.dasomautobiography.utils.Constant
 import com.onethefull.dasomautobiography.utils.InjectorUtils
+import com.onethefull.dasomautobiography.utils.MenuItemToEntryMapper
 import com.onethefull.dasomautobiography.utils.bus.RxBus
 import com.onethefull.dasomautobiography.utils.bus.RxEvent
 import com.onethefull.dasomautobiography.utils.logger.DWLog
@@ -126,7 +127,25 @@ class QuestionDetailFragment : Fragment() {
                 0 -> {
                     val list = viewModel.logDtlEvent.value?.autobiographyMap?.list
                     if (list.isNullOrEmpty()) {
-                        (activity as MainActivity).back()
+                        // 리스트 비어있으면 QuestionListFragment로 이동
+                        val selectedEntry = sharedViewModel.selectedItem.value
+                        if (selectedEntry != null) {
+                            DWLog.d("${selectedEntry.autobiographyId}")
+                            DWLog.d("${selectedEntry.audioUrl}")
+                            DWLog.d("${selectedEntry.imgUrl}")
+
+                            findNavController().navigate(
+                                QuestionDetailFragmentDirections.actionDetailFragmentToListFragment(
+                                    selectedEntry.copy(
+                                        typeName = selectedEntry.typeName ?: ""
+                                    )
+                                )
+                            )
+                        } else {
+                            // fallback: 그냥 앱 종료
+                            RxBus.publish(RxEvent.destroyApp)
+                        }
+
                     } else {
                         currentAnswerIndex = 0
                         updateAnswerDisplay()

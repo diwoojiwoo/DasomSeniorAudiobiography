@@ -75,6 +75,11 @@
             android:id="@+id/action_detail_fragment_to_menu_fragment"
             app:destination="@+id/menu_fragment"
             app:launchSingleTop="true"/>
+
+        <action
+            android:id="@+id/action_detail_fragment_to_list_fragment"
+            app:destination="@+id/questionlist_fragment"
+            app:launchSingleTop="true"/>
     </fragment>
 
     <!-- SpeechFragment   -->

@@ -96,8 +96,8 @@ class NewSpeechViewModel(
 
     fun fetchDataFromSharedViewModel(sharedViewModel: MainViewModel) {
         sharedViewModel.selectedItem.value?.let { item ->
-            _currentItem.value = item  // SpeechViewModel 내부 LiveData에 저장
-            DWLog.d("SpeechViewModel: sharedViewModel에서 데이터 가져옴 -> $item")
+            _currentItem.value = item  // NewSpeechViewModel 내부 LiveData에 저장
+            DWLog.d("NewSpeechViewModel: sharedViewModel에서 데이터 가져옴 -> $item")
         }
     }
 
