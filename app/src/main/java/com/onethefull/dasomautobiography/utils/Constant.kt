@@ -15,6 +15,8 @@ object Constant {
 
     const val PARAM_MOTION_DETECTED = "isMotionDetected"
     const val PARAM_EFFECT_ON = "isEffectOn"
+
+    const val EFFECT_SOUND_DELAY_MS = 2000L // 밀리초 단위
 }
 
 object Product {

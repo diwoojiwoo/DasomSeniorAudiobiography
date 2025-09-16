@@ -5,6 +5,7 @@ import android.media.MediaPlayer
 import android.os.Build
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.onethefull.dasomautobiography.base.BaseViewModel
 import com.onethefull.dasomautobiography.contents.toast.Toasty
 import com.onethefull.dasomautobiography.data.model.audiobiography.Entry
@@ -46,11 +47,13 @@ class SplashViewModel(
     }
 
     private fun connect() {
-        Thread.sleep(500L)
-        DWLog.d("connect")
-        GCTextToSpeech.getInstance()?.setCallback(this)
-        GCTextToSpeech.getInstance()?.start(context)
-        BaseRobotController.initialize(App.instance)
+        viewModelScope.launch {
+            delay(500L)
+            DWLog.d("connect")
+            GCTextToSpeech.getInstance()?.setCallback(this@SplashViewModel)
+            GCTextToSpeech.getInstance()?.start(context)
+            BaseRobotController.initialize(App.instance)
+        }
     }
 
     fun disconnect() {
@@ -65,11 +68,7 @@ class SplashViewModel(
             if (_isMotionDetected.value == false) _speechType.value = SpeechType.INTRO_SPEECH
             val check204 = repository.check204() ?: false
             if (check204) {
-                repository.getContent(
-                    DasomProviderHelper.getCustomerCode(context),
-                    DasomProviderHelper.getDeviceCode(context),
-                    Build.SERIAL,
-                ).let { response ->
+                repository.getContent().let { response ->
                     when (response.statusCode) {
                         0 -> {
                             response.autobiography?.let { item ->

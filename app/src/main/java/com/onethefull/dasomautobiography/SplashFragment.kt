@@ -42,6 +42,19 @@ class SplashFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         DWLog.d("SplashFragment onViewCreated")
+
+        processArguments()
+
+        when {
+            !nextAction.isNullOrEmpty() -> handleVoiceCommandScenario()
+            motionDetected -> handleMotionDetectionScenario()
+            else -> handleDefaultScenario()
+        }
+
+        observeViewModel()
+    }
+
+    private fun processArguments() {
         arguments?.let {
             nextAction = it.getString(OnethefullBase.PARAM_NEXT_SCENE_ACTION, "")
             motionDetected = it.getBoolean(OnethefullBase.PARAM_MOTION_DETECTED, false)
@@ -49,46 +62,64 @@ class SplashFragment : Fragment() {
 
             viewModel.setMotionDetected(motionDetected)
             viewModel.setEffectOn(effectOn)
-        }
 
-        DWLog.d("nextAction = $nextAction, motionDetected=$motionDetected, effectOn= $effectOn ")
-        if (!nextAction.isNullOrEmpty()) {
-            // 1. "자서전 실행" 음성 명령 으로 실행 => 인트로 재생 후 자서전 문제 발화
-            DWLog.d(" 1. 자서전 실행 음성 명령 으로 실행 => 인트로 재생 후 자서전 문제 발화")
-            viewModel.getContent()
-        } else {
-            if (motionDetected) {
-                // 2.  상황인식-자서전
-                DWLog.e("2.  상황인식-자서전")
-                if (effectOn) {
-                    val mediaPlayer = MediaPlayer.create(App.instance, R.raw.effect)
-                    mediaPlayer.setOnCompletionListener { it.release() }
-                    MainScope().launch {
-                        delay(2000)
-                        mediaPlayer.start()
-                    }
-                }
-                viewLifecycleOwner.lifecycleScope.launch {
-                    viewModel.startMotionIntro()
-                }
-            } else {
-                // 3.  메뉴 > 자서전 선택 > 메뉴 화면 이동
-                DWLog.e("3.  메뉴 > 자서전 선택 > 메뉴 화면 이동")
-                viewLifecycleOwner.lifecycleScope.launch {
-                    delay(1500)
-                    findNavController().navigate(R.id.action_splashFragment_to_menuFragment)
-                }
-            }
+            DWLog.d("nextAction = $nextAction, motionDetected=$motionDetected, effectOn= $effectOn ")
         }
+    }
 
+    private fun handleVoiceCommandScenario() {
+        // 1. "자서전 실행" 음성 명령 으로 실행 => 인트로 재생 후 자서전 문제 발화
+//        DWLog.d(" 1. 자서전 실행 음성 명령 으로 실행 => 인트로 재생 후 자서전 문제 발화")
+        viewModel.getContent()
+    }
+
+    private fun handleMotionDetectionScenario() {
+        // 2.  상황인식-자서전
+//        DWLog.e("2.  상황인식-자서전")
+        if (effectOn) {
+            playEffectSound()
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.startMotionIntro()
+        }
+    }
+
+    private fun playEffectSound() {
+        val mediaPlayer = MediaPlayer.create(App.instance, R.raw.effect)
+        mediaPlayer.setOnCompletionListener { mp ->
+            mp.release() // 리소스 해제 확인
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            delay(Constant.EFFECT_SOUND_DELAY_MS) // 2초 대기 후 효과음 재생
+            mediaPlayer.start()
+        }
+    }
+
+    private fun handleDefaultScenario() {
+        // 3.  메뉴 > 자서전 선택 > 메뉴 화면 이동
+        DWLog.e("3.  메뉴 > 자서전 선택 > 메뉴 화면 이동")
+        viewLifecycleOwner.lifecycleScope.launch {
+            delay(1500)
+            findNavController().navigate(R.id.action_splashFragment_to_menuFragment)
+        }
+    }
+
+    private fun observeViewModel() {
         var hasNavigated = false
         viewModel.speechType.observe(viewLifecycleOwner) { event ->
             if (event == SpeechType.CONTENT && !hasNavigated) {
                 hasNavigated = true
-                viewLifecycleOwner.lifecycleScope.launch {
-                    (activity as? MainActivity)?.navigateToNewSpeechFragment(Constant.MOVE_REASON_STT, motionDetected = motionDetected)
-                }
+                navigateToNewSpeechFragment()
             }
+        }
+    }
+
+    private fun navigateToNewSpeechFragment() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            (activity as? MainActivity)?.navigateToNewSpeechFragment(
+                Constant.MOVE_REASON_STT,
+                motionDetected = motionDetected
+            )
         }
     }
 
