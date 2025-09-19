@@ -14,6 +14,7 @@ import com.onethefull.dasomautobiography.repository.QuestionListRepository
 import com.onethefull.dasomautobiography.utils.bus.RxBus
 import com.onethefull.dasomautobiography.utils.bus.RxEvent
 import com.onethefull.dasomautobiography.utils.logger.DWLog
+import com.onethefull.dasomautobiography.utils.network.NetworkStatusCode
 import kotlinx.coroutines.launch
 
 /**
@@ -56,21 +57,22 @@ class QuestionListViewModel(
                     Build.SERIAL,
                     type
                 ).let { response ->
-                    when(response.statusCode) {
-                        1001 -> {
+                    when (response.statusCode) {
+                        NetworkStatusCode.ERROR_ELDERLY_INFO_NOT_EXIST -> {
                             Toasty.error(context, context.getString(R.string.message_not_exist_elderly_info)).show()
                             RxBus.publish(RxEvent.destroyApp)
                         }
 
-                        -3 -> {
+                        NetworkStatusCode.ERROR_ELDERLY_NOT_REGISTERED -> {
                             Toasty.error(context, context.getString(R.string.message_not_registration_elderly)).show()
                             RxBus.publish(RxEvent.destroyApp)
                         }
 
-                        0 -> {
+                        NetworkStatusCode.SUCCESS -> {
                             _itemList.value = response.list ?: emptyList()
                             _questionListEvent.postValue(Status(0, "success"))
                         }
+
                         else -> {
                             _questionListEvent.postValue(Status(response.statusCode, response.status ?: "알 수 없는 오류"))
                         }
@@ -78,7 +80,7 @@ class QuestionListViewModel(
 
                 }
             } else {
-                _questionListEvent.postValue(Status(-1, context.getString(R.string.message_network_error)))
+                _questionListEvent.postValue(Status(NetworkStatusCode.ERROR_NETWORK, context.getString(R.string.message_network_error)))
             }
         }
     }

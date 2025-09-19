@@ -14,6 +14,7 @@ import com.onethefull.dasomautobiography.repository.SplashRepository
 import com.onethefull.dasomautobiography.utils.bus.RxBus
 import com.onethefull.dasomautobiography.utils.bus.RxEvent
 import com.onethefull.dasomautobiography.utils.logger.DWLog
+import com.onethefull.dasomautobiography.utils.network.NetworkStatusCode
 import com.onethefull.dasomautobiography.utils.speech.GCTextToSpeech
 import com.onethefull.wonderfulrobotmodule.robot.BaseRobotController
 import com.onethefull.wonderfulrobotmodule.robot.IMotionCallback
@@ -70,7 +71,7 @@ class SplashViewModel(
             if (check204) {
                 repository.getContent().let { response ->
                     when (response.statusCode) {
-                        0 -> {
+                        NetworkStatusCode.SUCCESS -> {
                             response.autobiography?.let { item ->
                                 (context as MainActivity).viewModel.selectItem(
                                     Entry(
@@ -95,6 +96,11 @@ class SplashViewModel(
                                 return@let
                             }
                             GCTextToSpeech.getInstance()?.speech(response.introMent.toString())
+                        }
+
+                        NetworkStatusCode.ERROR_AUTOBIOGRAPHY_QUESTION_NOT_EXIST -> {
+                            Toasty.error(context, response.message ?: context.getString(R.string.message_not_exist_question)).show()
+                            RxBus.publish(RxEvent.destroyApp)
                         }
 
                         else -> {

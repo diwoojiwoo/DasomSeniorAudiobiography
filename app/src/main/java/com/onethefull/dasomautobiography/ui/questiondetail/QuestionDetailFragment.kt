@@ -33,6 +33,7 @@ import com.onethefull.dasomautobiography.utils.MenuItemToEntryMapper
 import com.onethefull.dasomautobiography.utils.bus.RxBus
 import com.onethefull.dasomautobiography.utils.bus.RxEvent
 import com.onethefull.dasomautobiography.utils.logger.DWLog
+import com.onethefull.dasomautobiography.utils.network.NetworkStatusCode
 import com.onethefull.dasomautobiography.utils.setOnSingleClickListener
 import com.onethefull.dasomautobiography.utils.speech.SpeakingTarget
 import com.onethefull.dasomautobiography.utils.speech.SpeechStatus
@@ -125,7 +126,7 @@ class QuestionDetailFragment : Fragment() {
         viewModel.deleteEvent.observe(viewLifecycleOwner) { event ->
             binding.progressBar.visibility = View.GONE
             when (event) {
-                0 -> {
+                NetworkStatusCode.SUCCESS -> {
                     val list = viewModel.logDtlEvent.value?.autobiographyMap?.list
                     if (list.isNullOrEmpty()) {
                         val selectedEntry =
@@ -142,7 +143,8 @@ class QuestionDetailFragment : Fragment() {
                                     typeName = selected.typeName,
                                     viewQuestion = "",
                                 )
-                            } ?: Entry( // null일 때 기본값
+                            } ?: Entry(
+                                // null일 때 기본값
                                 autobiographyId = 0,
                                 audioUrl = "",
                                 transText = "",
@@ -161,7 +163,7 @@ class QuestionDetailFragment : Fragment() {
                     }
                 }
 
-                -3 -> {
+                NetworkStatusCode.ERROR_ELDERLY_NOT_REGISTERED -> {
                     Toasty.error(requireContext(), requireContext().getString(R.string.message_not_registration_elderly)).show()
                     RxBus.publish(RxEvent.destroyShortAppUpdate)
                 }
@@ -174,17 +176,17 @@ class QuestionDetailFragment : Fragment() {
 
         viewModel.logDtlEvent.observe(viewLifecycleOwner) { event ->
             when (event.statusCode) {
-                1001 -> {
+                NetworkStatusCode.ERROR_ELDERLY_INFO_NOT_EXIST -> {
                     Toasty.error(activity as MainActivity, event.message.toString()).show()
                     RxBus.publish(RxEvent.destroyShortAppUpdate)
                 }
 
-                -3 -> {
+                NetworkStatusCode.ERROR_ELDERLY_NOT_REGISTERED -> {
                     Toasty.error(activity as MainActivity, event.message.toString()).show()
                     RxBus.publish(RxEvent.destroyShortAppUpdate)
                 }
 
-                0 -> {
+                NetworkStatusCode.SUCCESS -> {
                     val answers = event.autobiographyMap?.list ?: emptyList()
                     currentAnswerIndex = if (isFromBroadcast) {
                         isFromBroadcast = false
@@ -205,7 +207,9 @@ class QuestionDetailFragment : Fragment() {
         viewModel.insertLogEvent.observe(viewLifecycleOwner) { event ->
             binding.btnSave.isEnabled = true
             when (event.status_code) {
-                -99, -3, -104 -> {
+                NetworkStatusCode.ERROR_INSERT_LOG_FAILED_SPECIFIC,
+                NetworkStatusCode.ERROR_ELDERLY_NOT_REGISTERED,
+                NetworkStatusCode.ERROR_SOME_SPECIFIC_ISSUE_NEGATIVE_104 -> {
                     Toasty.error(activity as MainActivity, event.status.toString()).show()
                     binding.customToolbar.visibility = View.VISIBLE
                     binding.layoutQuestionDetail.visibility = View.VISIBLE
@@ -215,7 +219,7 @@ class QuestionDetailFragment : Fragment() {
                     binding.layoutRecording.visibility = View.GONE
                 }
 
-                0 -> {
+                NetworkStatusCode.SUCCESS -> {
                     activity?.let { activity ->
                         ResponseEditDialog(activity).apply {
                             window?.requestFeature(Window.FEATURE_NO_TITLE)

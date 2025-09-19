@@ -27,6 +27,7 @@ import com.onethefull.dasomautobiography.utils.WMediaPlayer
 import com.onethefull.dasomautobiography.utils.bus.RxBus
 import com.onethefull.dasomautobiography.utils.bus.RxEvent
 import com.onethefull.dasomautobiography.utils.logger.DWLog
+import com.onethefull.dasomautobiography.utils.network.NetworkStatusCode
 import com.onethefull.dasomautobiography.utils.record.VoiceRecorder
 import com.onethefull.dasomautobiography.utils.record.WavFileUitls
 import com.onethefull.dasomautobiography.utils.speech.GCSpeechToText
@@ -410,7 +411,7 @@ class QuestionDetailViewModel(
                     autobiographyId
                 ).let { response ->
                     when (response.statusCode) {
-                        1001 -> {
+                        NetworkStatusCode.ERROR_ELDERLY_INFO_NOT_EXIST -> {
                             _logDtlEvent.postValue(
                                 GetAutobiographyLogDtlResponseV2(
                                     statusCode = response.statusCode,
@@ -422,7 +423,7 @@ class QuestionDetailViewModel(
                             )
                         }
 
-                        -3 -> {
+                        NetworkStatusCode.ERROR_ELDERLY_NOT_REGISTERED -> {
                             _logDtlEvent.postValue(
                                 GetAutobiographyLogDtlResponseV2(
                                     statusCode = response.statusCode,
@@ -434,7 +435,7 @@ class QuestionDetailViewModel(
                             )
                         }
 
-                        0 -> {
+                        NetworkStatusCode.SUCCESS -> {
                             response.autobiographyMap?.let { map ->
                                 _logDtlEvent.postValue(
                                     GetAutobiographyLogDtlResponseV2(
@@ -515,15 +516,15 @@ class QuestionDetailViewModel(
                     wavUtils.getMultipartWaveFile()
                 ).let { response ->
                     when (response.statusCode) {
-                        -99, -104-> {
+                        NetworkStatusCode.ERROR_INSERT_LOG_FAILED_SPECIFIC, NetworkStatusCode.ERROR_SOME_SPECIFIC_ISSUE_NEGATIVE_104 -> {
                             _insertLogEvent.postValue(Status(response.statusCode, response.message))
                         }
 
-                        -3 -> {
+                        NetworkStatusCode.ERROR_ELDERLY_NOT_REGISTERED -> {
                             _insertLogEvent.postValue(Status(response.statusCode, context.getString(R.string.message_not_registration_elderly)))
                         }
 
-                        0 -> {
+                        NetworkStatusCode.SUCCESS -> {
                             _insertLogEvent.postValue(Status(response.statusCode, "success"))
                         }
 
@@ -596,6 +597,7 @@ class QuestionDetailViewModel(
             _logDtlEvent.value = _logDtlEvent.value
         }
     }
+
     private suspend fun isServiceAvailable(): Boolean {
         return repository.check204() ?: false
     }

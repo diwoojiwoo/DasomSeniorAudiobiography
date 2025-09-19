@@ -19,6 +19,7 @@ import com.onethefull.dasomautobiography.utils.MenuItemToEntryMapper
 import com.onethefull.dasomautobiography.utils.bus.RxBus
 import com.onethefull.dasomautobiography.utils.bus.RxEvent
 import com.onethefull.dasomautobiography.utils.logger.DWLog
+import com.onethefull.dasomautobiography.utils.network.NetworkStatusCode
 import com.onethefull.wonderfulrobotmodule.scene.SceneHelper
 
 class MenuFragment : Fragment() {
@@ -58,17 +59,17 @@ class MenuFragment : Fragment() {
         viewModel.getCategoryList()
         viewModel.categoryStatusEvent.observe(viewLifecycleOwner) { event ->
             when (event.status_code) {
-                1001, -3 -> {
+                NetworkStatusCode.ERROR_ELDERLY_INFO_NOT_EXIST, NetworkStatusCode.ERROR_ELDERLY_NOT_REGISTERED -> {
                     Toasty.error(requireContext(), event.status ?: "status is null, code :: ${event.status_code}").show()
                     RxBus.publish(RxEvent.destroyShortAppUpdate)
                 }
 
-                -1 -> {
+                NetworkStatusCode.ERROR_NETWORK -> {
                     Toasty.error(requireContext(), event.status ?: getString(R.string.message_network_error)).show()
                     RxBus.publish(RxEvent.destroyShortAppUpdate)
                 }
 
-                0 -> {}
+                NetworkStatusCode.SUCCESS -> {}
 
                 else -> {
                     Toasty.error(requireContext(), ("status :: " + event.status + ", status code :: " + event.status_code) ?: getString(R.string.message_network_error)).show()

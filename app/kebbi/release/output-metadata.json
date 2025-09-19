@@ -11,9 +11,9 @@
       "type": "SINGLE",
       "filters": [],
       "attributes": [],
-      "versionCode": 21,
-      "versionName": "21.ja-jp",
-      "outputFile": "kebbi_DasomAutobiography_21.ja-jp_21.apk"
+      "versionCode": 33,
+      "versionName": "33.fix_delete_event",
+      "outputFile": "kebbi_DasomAutobiography_33.fix_delete_event_33.apk"
     }
   ],
   "elementType": "File"

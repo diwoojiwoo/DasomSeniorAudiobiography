@@ -34,6 +34,7 @@ import androidx.navigation.NavOptions
 import com.onethefull.dasomautobiography.data.model.audiobiography.Entry
 import com.onethefull.dasomautobiography.databinding.FragmentNewSpeechBinding
 import com.onethefull.dasomautobiography.utils.dpToPx
+import com.onethefull.dasomautobiography.utils.network.NetworkStatusCode
 import com.onethefull.wonderfulrobotmodule.ext.dasomLanguageCodeValue
 
 
@@ -118,12 +119,12 @@ class NewSpeechFragment : Fragment() {
         viewModel.insertLogEvent.observe(viewLifecycleOwner) { event ->
             binding.includeNewRecord.layoutSend.isEnabled = true
             when (event.status_code) {
-                -99, -3 -> {
+                NetworkStatusCode.ERROR_INSERT_LOG_FAILED_SPECIFIC, NetworkStatusCode.ERROR_ELDERLY_NOT_REGISTERED -> {
                     Toasty.error(activity as MainActivity, event.status.toString()).show()
                     findNavController().navigate(NewSpeechFragmentDirections.actionNewSpeechToMenuFragment())
                 }
 
-                0 -> {
+                NetworkStatusCode.SUCCESS -> {
                     activity?.let { activity ->
                         ResultDialog(activity).apply {
                             window?.requestFeature(Window.FEATURE_NO_TITLE)

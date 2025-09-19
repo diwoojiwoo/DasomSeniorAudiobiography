@@ -33,6 +33,7 @@ import com.onethefull.dasomautobiography.utils.bus.RxEvent.Companion.NavigateToM
 import com.onethefull.dasomautobiography.utils.bus.RxEvent.Companion.RemoveNavigateToMenuFragment
 import com.onethefull.dasomautobiography.utils.bus.RxEvent.Event
 import com.onethefull.dasomautobiography.utils.logger.DWLog
+import com.onethefull.dasomautobiography.utils.network.NetworkStatusCode
 import com.onethefull.dasomautobiography.utils.record.VoiceRecorder
 import com.onethefull.dasomautobiography.utils.record.WavFileUitls
 import com.onethefull.dasomautobiography.utils.record.WavFileUitls.Companion
@@ -389,9 +390,9 @@ class NewSpeechViewModel(
                     wavUtils.getMultipartWaveFile()
                 ).let { response ->
                     when (response.statusCode) {
-                        -99 -> _insertLogEvent.postValue(Status(response.statusCode, response.message))
-                        -3 -> _insertLogEvent.postValue(Status(response.statusCode, context.getString(R.string.message_not_registration_elderly)))
-                        0 -> _insertLogEvent.postValue(Status(response.statusCode, response.message ?: ""))
+                        NetworkStatusCode.ERROR_INSERT_LOG_FAILED_SPECIFIC -> _insertLogEvent.postValue(Status(response.statusCode, response.message))
+                        NetworkStatusCode.ERROR_ELDERLY_NOT_REGISTERED -> _insertLogEvent.postValue(Status(response.statusCode, context.getString(R.string.message_not_registration_elderly)))
+                        NetworkStatusCode.SUCCESS -> _insertLogEvent.postValue(Status(response.statusCode, response.message ?: ""))
                         else -> _insertLogEvent.postValue(Status(response.statusCode, response.message ?: ""))
                     }
                 }

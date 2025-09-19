@@ -3,6 +3,7 @@
     <string name="app_name">自叙伝</string>
     <string name="title_make_autobiography">自伝を作る</string>
     <string name="message_network_error">ネットワーク状態を確認してください。</string>
+    <string name="message_not_exist_question">"自伝の質問はありません。"</string> <!-- 일본어 -->
     <string name="message_not_exist_elderly_info">ご高齢者の性別と生年月日を入力してください。</string>
     <string name="message_not_registration_elderly">ご高齢者を登録してください。</string>
     <string name="message_max_answer_3">回答は最大3件まで可能です。</string>

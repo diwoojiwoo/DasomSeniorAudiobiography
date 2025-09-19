@@ -21,6 +21,7 @@ import com.onethefull.dasomautobiography.contents.toast.Toasty
 import com.onethefull.dasomautobiography.data.model.audiobiography.Entry
 import com.onethefull.dasomautobiography.utils.Constant
 import com.onethefull.dasomautobiography.utils.logger.DWLog
+import com.onethefull.dasomautobiography.utils.network.NetworkStatusCode
 
 class QuestionListFragment : Fragment(), ListAdapter.OnItemClickListener {
     private lateinit var binding: FragmentQuestionlistBinding
@@ -83,12 +84,12 @@ class QuestionListFragment : Fragment(), ListAdapter.OnItemClickListener {
         viewModel.questionListEvent.observe(viewLifecycleOwner) { event ->
             binding.progressBar.visibility = View.GONE
             when (event.status_code) {
-                1001, -3 -> {
+                NetworkStatusCode.ERROR_ELDERLY_INFO_NOT_EXIST, NetworkStatusCode.ERROR_ELDERLY_NOT_REGISTERED -> {
                     Toasty.error(requireContext(), event.status.toString()).show()
                     RxBus.publish(RxEvent.destroyShortAppUpdate)
                 }
 
-                -1 -> {
+                NetworkStatusCode.ERROR_NETWORK -> {
                     Toasty.error(requireContext(), event.status ?: getString(R.string.message_network_error)).show()
                     RxBus.publish(RxEvent.destroyShortAppUpdate)
                 }
