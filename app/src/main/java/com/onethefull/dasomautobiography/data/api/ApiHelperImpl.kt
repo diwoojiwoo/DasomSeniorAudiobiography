@@ -13,6 +13,7 @@ import com.onethefull.dasomautobiography.data.model.audiobiography.GetAutobiogra
 import com.onethefull.dasomautobiography.data.model.audiobiography.GetCategoryListResponse
 import com.onethefull.dasomautobiography.data.model.audiobiography.GetCategoryListResponseV2
 import com.onethefull.dasomautobiography.data.model.audiobiography.InsertLogResponse
+import com.onethefull.dasomautobiography.utils.Constant
 import com.onethefull.wonderfulrobotmodule.ext.dasomLangValue
 import com.onethefull.wonderfulrobotmodule.ext.dasomLanguageCodeValue
 import okhttp3.MultipartBody
@@ -44,6 +45,7 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
     ): GetCategoryListResponse = apiService.getCategoryList(
         lang = App.instance.getLocale()?.dasomLangValue() ?: "ko",
         languageCode = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
+        characterCode =  Constant.CHARACTER_CODE_SONO,
         customerCode,
         deviceCode,
         serialNum
@@ -56,6 +58,7 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
     ): GetCategoryListResponseV2 = apiService.getCategoryListV2(
         lang = App.instance.getLocale()?.dasomLangValue() ?: "ko",
         languageCode = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
+        characterCode =  Constant.CHARACTER_CODE_SONO,
         customerCode,
         deviceCode,
         serialNum
@@ -69,6 +72,7 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
     ): GetAutobiographyMenuResponse = apiService.getQuestionList(
         lang = App.instance.getLocale()?.dasomLangValue() ?: "ko",
         languageCode = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
+        characterCode =  Constant.CHARACTER_CODE_SONO,
         customerCode,
         deviceCode,
         serialNum,
@@ -83,6 +87,7 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
     ): GetAutobiographyMenuResponseV2 = apiService.getQuestionListV2(
         lang = App.instance.getLocale()?.dasomLangValue() ?: "ko",
         languageCode = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
+        characterCode =  Constant.CHARACTER_CODE_SONO,
         customerCode,
         deviceCode,
         serialNum,
@@ -100,6 +105,7 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
     ): InsertLogResponse = apiService.insertLogV2(
         lang = App.instance.getLocale()?.dasomLangValue() ?: "ko",
         languageCode = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
+        characterCode =  Constant.CHARACTER_CODE_SONO,
         customerCode,
         deviceCode,
         serialNum,
@@ -118,6 +124,7 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
     ): DeleteLogResponse = apiService.deleteLogV2(
         lang = App.instance.getLocale()?.dasomLangValue() ?: "ko",
         languageCode = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
+        characterCode =  Constant.CHARACTER_CODE_SONO,
         customerCode,
         deviceCode,
         ParamGeneratorUtils.getDeleteLogParam(serialNum, autobiographyId, logId)
@@ -131,6 +138,7 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
     ): GetAutobiographyLogDtlResponse = apiService.getLogDtl(
         lang = App.instance.getLocale()?.dasomLangValue() ?: "ko",
         languageCode = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
+        characterCode =  Constant.CHARACTER_CODE_SONO,
         customerCode,
         deviceCode,
         serialNum,
@@ -145,6 +153,7 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
     ): GetAutobiographyLogDtlResponseV2 = apiService.getLogDtlV2(
         lang = App.instance.getLocale()?.dasomLangValue() ?: "ko",
         languageCode = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
+        characterCode =  Constant.CHARACTER_CODE_SONO,
         customerCode,
         deviceCode,
         serialNum,
@@ -160,6 +169,7 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
     ): GetAutobiographyContentResponse = apiService.getContent(
         lang = App.instance.getLocale()?.dasomLangValue() ?: "ko",
         languageCode = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
+        characterCode =  Constant.CHARACTER_CODE_SONO,
         customerCode,
         deviceCode,
         serialNum

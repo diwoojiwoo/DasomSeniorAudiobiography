@@ -25,6 +25,7 @@ interface ApiService {
     suspend fun getCategoryList(
         @Header("lang") lang: String,
         @Header("languageCode") languageCode: String,
+        @Header("characterCode") characterCode: String,
         @Path("CUSTOMER_CODE") customerCode: String,
         @Path("DEVICE_CODE") deviceCode: String,
         @Path("serialNum") serialNum: String,
@@ -36,6 +37,7 @@ interface ApiService {
     suspend fun getCategoryListV2(
         @Header("lang") lang: String,
         @Header("languageCode") languageCode: String,
+        @Header("characterCode") characterCode: String,
         @Path("CUSTOMER_CODE") customerCode: String,
         @Path("DEVICE_CODE") deviceCode: String,
         @Path("serialNum") serialNum: String,
@@ -49,6 +51,7 @@ interface ApiService {
     suspend fun getQuestionList(
         @Header("lang") lang: String,
         @Header("languageCode") languageCode: String,
+        @Header("characterCode") characterCode: String,
         @Path("CUSTOMER_CODE") customerCode: String,
         @Path("DEVICE_CODE") deviceCode: String,
         @Path("serialNum") serialNum: String,
@@ -64,6 +67,7 @@ interface ApiService {
     suspend fun getQuestionListV2(
         @Header("lang") lang: String,
         @Header("languageCode") languageCode: String,
+        @Header("characterCode") characterCode: String,
         @Path("CUSTOMER_CODE") customerCode: String,
         @Path("DEVICE_CODE") deviceCode: String,
         @Path("serialNum") serialNum: String,
@@ -78,6 +82,7 @@ interface ApiService {
     suspend fun insertLog(
         @Header("lang") lang: String,
         @Header("languageCode") languageCode: String,
+        @Header("characterCode") characterCode: String,
         @Path("CUSTOMER_CODE") customerCode: String,
         @Path("DEVICE_CODE") deviceCode: String,
         @Part("serialNum") serialNum: RequestBody,
@@ -95,6 +100,7 @@ interface ApiService {
     suspend fun insertLogV2(
         @Header("lang") lang: String,
         @Header("languageCode") languageCode: String,
+        @Header("characterCode") characterCode: String,
         @Path("CUSTOMER_CODE") customerCode: String,
         @Path("DEVICE_CODE") deviceCode: String,
         @Part("serialNum") serialNum: RequestBody,
@@ -113,6 +119,7 @@ interface ApiService {
     suspend fun deleteLog(
         @Header("lang") lang: String,
         @Header("languageCode") languageCode: String,
+        @Header("characterCode") characterCode: String,
         @Path("CUSTOMER_CODE") customerCode: String,
         @Path("DEVICE_CODE") deviceCode: String,
         @Body body: Map<String, String>
@@ -127,6 +134,7 @@ interface ApiService {
     suspend fun deleteLogV2(
         @Header("lang") lang: String,
         @Header("languageCode") languageCode: String,
+        @Header("characterCode") characterCode: String,
         @Path("CUSTOMER_CODE") customerCode: String,
         @Path("DEVICE_CODE") deviceCode: String,
         @Body body: Map<String, String>
@@ -140,6 +148,7 @@ interface ApiService {
     suspend fun getList(
         @Header("lang") lang: String,
         @Header("languageCode") languageCode: String,
+        @Header("characterCode") characterCode: String,
         @Path("CUSTOMER_CODE") customerCode: String,
         @Path("DEVICE_CODE") deviceCode: String,
         @Path("serialNum") serialNum: String,
@@ -154,6 +163,7 @@ interface ApiService {
     suspend fun getLogDtl(
         @Header("lang") lang: String,
         @Header("languageCode") languageCode: String,
+        @Header("characterCode") characterCode: String,
         @Path("CUSTOMER_CODE") customerCode: String,
         @Path("DEVICE_CODE") deviceCode: String,
         @Path("serialNum") serialNum: String,
@@ -170,6 +180,7 @@ interface ApiService {
     suspend fun getLogDtlV2(
         @Header("lang") lang: String,
         @Header("languageCode") languageCode: String,
+        @Header("characterCode") characterCode: String,
         @Path("CUSTOMER_CODE") customerCode: String,
         @Path("DEVICE_CODE") deviceCode: String,
         @Path("serialNum") serialNum: String,
@@ -184,6 +195,7 @@ interface ApiService {
     suspend fun getContent(
         @Header("lang") lang: String,
         @Header("languageCode") languageCode: String,
+        @Header("characterCode") characterCode: String,
         @Path("CUSTOMER_CODE") customerCode: String,
         @Path("DEVICE_CODE") deviceCode: String,
         @Path("serialNum") type: String,
