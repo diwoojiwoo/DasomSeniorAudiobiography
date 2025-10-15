@@ -13,6 +13,7 @@ object Constant {
     const val MOVE_REASON_NO_ANSWER = "no_answer"
 
     const val CHARACTER_CODE_SONO = "Sono"
+    const val CHARACTER_CODE_CHIRP3 = "Chirp3"
 }
 
 object Product {

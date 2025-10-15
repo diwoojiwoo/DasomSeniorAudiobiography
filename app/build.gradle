@@ -21,7 +21,7 @@ android {
         applicationId "com.onethefull.dasomautobiography"
         minSdkVersion 19
         versionCode 18
-        versionName "18.0.sono.tomenu"
+        versionName "18.ch_tts_dnmk"
 
         multiDexEnabled true
         buildConfigField("String", "CHARACTER_TYPE", '"NewDasom"') // Dasom,Secretary
