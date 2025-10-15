@@ -45,7 +45,7 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
     ): GetCategoryListResponse = apiService.getCategoryList(
         lang = App.instance.getLocale()?.dasomLangValue() ?: "ko",
         languageCode = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
-        characterCode =  Constant.CHARACTER_CODE_SONO,
+        characterCode =  Constant.CHARACTER_CODE_CHIRP3,
         customerCode,
         deviceCode,
         serialNum
@@ -58,7 +58,7 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
     ): GetCategoryListResponseV2 = apiService.getCategoryListV2(
         lang = App.instance.getLocale()?.dasomLangValue() ?: "ko",
         languageCode = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
-        characterCode =  Constant.CHARACTER_CODE_SONO,
+        characterCode =  Constant.CHARACTER_CODE_CHIRP3,
         customerCode,
         deviceCode,
         serialNum
@@ -72,7 +72,7 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
     ): GetAutobiographyMenuResponse = apiService.getQuestionList(
         lang = App.instance.getLocale()?.dasomLangValue() ?: "ko",
         languageCode = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
-        characterCode =  Constant.CHARACTER_CODE_SONO,
+        characterCode =  Constant.CHARACTER_CODE_CHIRP3,
         customerCode,
         deviceCode,
         serialNum,
@@ -87,7 +87,7 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
     ): GetAutobiographyMenuResponseV2 = apiService.getQuestionListV2(
         lang = App.instance.getLocale()?.dasomLangValue() ?: "ko",
         languageCode = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
-        characterCode =  Constant.CHARACTER_CODE_SONO,
+        characterCode =  Constant.CHARACTER_CODE_CHIRP3,
         customerCode,
         deviceCode,
         serialNum,
@@ -105,7 +105,7 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
     ): InsertLogResponse = apiService.insertLogV2(
         lang = App.instance.getLocale()?.dasomLangValue() ?: "ko",
         languageCode = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
-        characterCode =  Constant.CHARACTER_CODE_SONO,
+        characterCode =  Constant.CHARACTER_CODE_CHIRP3,
         customerCode,
         deviceCode,
         serialNum,
@@ -124,7 +124,7 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
     ): DeleteLogResponse = apiService.deleteLogV2(
         lang = App.instance.getLocale()?.dasomLangValue() ?: "ko",
         languageCode = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
-        characterCode =  Constant.CHARACTER_CODE_SONO,
+        characterCode =  Constant.CHARACTER_CODE_CHIRP3,
         customerCode,
         deviceCode,
         ParamGeneratorUtils.getDeleteLogParam(serialNum, autobiographyId, logId)
@@ -138,7 +138,7 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
     ): GetAutobiographyLogDtlResponse = apiService.getLogDtl(
         lang = App.instance.getLocale()?.dasomLangValue() ?: "ko",
         languageCode = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
-        characterCode =  Constant.CHARACTER_CODE_SONO,
+        characterCode =  Constant.CHARACTER_CODE_CHIRP3,
         customerCode,
         deviceCode,
         serialNum,
@@ -153,7 +153,7 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
     ): GetAutobiographyLogDtlResponseV2 = apiService.getLogDtlV2(
         lang = App.instance.getLocale()?.dasomLangValue() ?: "ko",
         languageCode = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
-        characterCode =  Constant.CHARACTER_CODE_SONO,
+        characterCode =  Constant.CHARACTER_CODE_CHIRP3,
         customerCode,
         deviceCode,
         serialNum,
@@ -169,7 +169,7 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
     ): GetAutobiographyContentResponse = apiService.getContent(
         lang = App.instance.getLocale()?.dasomLangValue() ?: "ko",
         languageCode = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko",
-        characterCode =  Constant.CHARACTER_CODE_SONO,
+        characterCode =  Constant.CHARACTER_CODE_CHIRP3,
         customerCode,
         deviceCode,
         serialNum
