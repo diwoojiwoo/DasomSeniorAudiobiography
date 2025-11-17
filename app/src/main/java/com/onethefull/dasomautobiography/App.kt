@@ -13,6 +13,7 @@ import com.onethefull.dasomautobiography.base.OnethefullBase
 import com.onethefull.dasomautobiography.utils.settings.BaseSettings
 import com.onethefull.dasomautobiography.utils.VolumeManager
 import com.onethefull.dasomautobiography.utils.logger.DWLog
+import com.onethefull.wonderfulrobotmodule.provider.DasomProvider
 import com.onethefull.wonderfulrobotmodule.scene.SceneHelper
 import com.onethefull.wonderfulrobotmodule.scene.SceneEventListener
 import java.io.Serializable
@@ -23,12 +24,14 @@ import java.util.*
  */
 
 class App : MultiDexApplication() {
+    lateinit var provider : DasomProvider
     var currentActivity: Activity? = null
     var defaultLanguage: Locale? = null
 
     override fun onCreate() {
         super.onCreate()
         instance = this
+        provider = DasomProvider(this)
         initSceneHelper()
 //        updateLocale()
     }
