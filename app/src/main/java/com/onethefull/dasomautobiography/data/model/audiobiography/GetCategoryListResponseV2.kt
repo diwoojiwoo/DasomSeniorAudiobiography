@@ -26,6 +26,16 @@ import com.onethefull.dasomautobiography.ui.menu.MenuItem2
 data class GetCategoryListResponseV2(
     @SerializedName("status_code") @Expose var statusCode: Int,
     @SerializedName("status") @Expose var status: String,
-    @SerializedName("message") @Nullable var message : String?,
-    @SerializedName("autobiographyCateList") @Nullable var cateList : List<MenuItem2>?,
+    @SerializedName("message") var message: String?,
+    @SerializedName("autobiographyCateList") @Nullable var cateList: List<MenuItem2>?,
+    @SerializedName("smartfriendMent") var smartfriendMent : Ment?,
+    @SerializedName("commandMent") var commandMent : Ment?,
+)
+
+data class Ment(
+    @SerializedName("start") var start: String?,
+    @SerializedName("end") var end: String?,
+    @SerializedName("confirmAnswer") var confirmAnswer: String?,
+    @SerializedName("appendAnswer") var appendAnswer: String?,
+    @SerializedName("saveAddedAnswer") var saveAddedAnswer: String?,
 )
