@@ -25,14 +25,25 @@ class SplashRepository(
         customerCode: String,
         deviceCode: String,
         serialNum: String,
-    ) : GetAutobiographyContentResponse{
-        return  apiHelper.getContent(
+    ): GetAutobiographyContentResponse {
+        return apiHelper.getContent(
             customerCode,
             deviceCode,
             serialNum
         )
     }
 
+    suspend fun getCategoryListV2(
+        customerCode: String,
+        deviceCode: String,
+        serialNum: String,
+    ): GetCategoryListResponseV2 {
+        return apiHelper.getCategoryListV2(
+            customerCode,
+            deviceCode,
+            serialNum
+        )
+    }
 
     companion object {
         @SuppressLint("StaticFieldLeak")

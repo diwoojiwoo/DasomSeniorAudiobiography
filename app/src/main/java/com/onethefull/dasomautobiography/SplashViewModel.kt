@@ -4,9 +4,12 @@ import android.app.Activity
 import android.os.Build
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.onethefull.dasomautobiography.base.BaseViewModel
+import com.onethefull.dasomautobiography.base.OnethefullBase
 import com.onethefull.dasomautobiography.contents.toast.Toasty
 import com.onethefull.dasomautobiography.data.model.audiobiography.Entry
+import com.onethefull.dasomautobiography.manager.MentManager
 import com.onethefull.dasomautobiography.provider.DasomProviderHelper
 import com.onethefull.dasomautobiography.repository.SplashRepository
 import com.onethefull.dasomautobiography.utils.bus.RxBus
@@ -71,11 +74,70 @@ class SplashViewModel(
                                 Toasty.error(context, context.getString(R.string.message_network_error)).show()
                                 RxBus.publish(RxEvent.destroyApp)
                             }
-                            GCTextToSpeech.getInstance()?.speech(response.introMent.toString())
                         }
+
                         else -> {
                             Toasty.error(context, context.getString(R.string.message_network_error)).show()
                             RxBus.publish(RxEvent.destroyApp)
+                        }
+                    }
+                }
+            } else {
+                Toasty.error(context, context.getString(R.string.message_network_error)).show()
+                RxBus.publish(RxEvent.destroyApp)
+            }
+        }
+    }
+
+    /*
+    * 인트로, 시작, 멘트 가져오는용
+    * */
+    fun getCategoryList(actionName: String) {
+        uiScope.launch {
+            val check204 = repository.check204() ?: false
+            if (check204) {
+                repository.getCategoryListV2(
+                    DasomProviderHelper.getCustomerCode(context),
+                    DasomProviderHelper.getDeviceCode(context),
+                    Build.SERIAL,
+                ).let { response ->
+                    when (response.statusCode) {
+                        1001 -> {
+                            Toasty.error(context, context.getString(R.string.message_not_exist_elderly_info)).show()
+                            RxBus.publish(RxEvent.destroyShortAppUpdate)
+                        }
+
+                        -3 -> {
+                            Toasty.error(context, context.getString(R.string.message_not_registration_elderly)).show()
+                            RxBus.publish(RxEvent.destroyShortAppUpdate)
+                        }
+
+                        0 -> {
+                            if (actionName == OnethefullBase.ACTION_SMARTFRIEND) {
+                                response.smartfriendMent?.let { smartMent ->
+                                    MentManager.smartfriendMent = smartMent
+                                    val startText = smartMent.start ?: ""
+                                    if (startText.isNotEmpty()) {
+                                        GCTextToSpeech.getInstance()?.speech(startText)
+                                    }
+                                }
+                            } else if (actionName == OnethefullBase.ACTION_COMMAND) {
+                                response.commandMent?.let { cmdMent ->
+                                    MentManager.commandMent = cmdMent
+                                    val startText = cmdMent.start ?: ""
+                                    if (startText.isNotEmpty()) {
+                                        GCTextToSpeech.getInstance()?.speech(startText)
+                                    }
+                                }
+                            } else {
+                                Toasty.error(context, "Unexpected actionName: $actionName").show()
+                                RxBus.publish(RxEvent.destroyShortAppUpdate)
+                            }
+                        }
+
+                        else -> {
+                            Toasty.error(context, response.status).show()
+                            RxBus.publish(RxEvent.destroyShortAppUpdate)
                         }
                     }
                 }

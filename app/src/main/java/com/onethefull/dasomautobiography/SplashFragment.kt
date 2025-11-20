@@ -36,8 +36,11 @@ class SplashFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         DWLog.d("SplashFragment onViewCreated")
+        val actionName = arguments?.getString(OnethefullBase.PARAM_ACTION_NAME)
         val nextAction = arguments?.getString(OnethefullBase.PARAM_NEXT_SCENE_ACTION)
-        DWLog.d("nextAction = $nextAction")
+        DWLog.d("actionName = ${actionName}, nextAction = $nextAction")
+
+        viewModel.getCategoryList(actionName.toString())
 
         if (!nextAction.isNullOrEmpty()) {
             viewModel.getContent()

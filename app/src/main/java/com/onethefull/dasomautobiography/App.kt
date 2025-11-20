@@ -24,7 +24,7 @@ import java.util.*
  */
 
 class App : MultiDexApplication() {
-    lateinit var provider : DasomProvider
+    lateinit var provider: DasomProvider
     var currentActivity: Activity? = null
     var defaultLanguage: Locale? = null
 
@@ -78,21 +78,27 @@ class App : MultiDexApplication() {
         val send = Intent(instance, MainActivity::class.java)
         send.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
         send.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        DWLog.w("onCommand action:$action")
+        DWLog.w(
+            "onCommand action: $action, " +
+                    "nextSceneAction: ${params?.getString(OnethefullBase.PARAM_NEXT_SCENE_ACTION) ?: ""}"
+        )
 
         when (action) {
-            OnethefullBase.ACTION_OPEN -> {
+            OnethefullBase.ACTION_OPEN, OnethefullBase.ACTION_COMMAND, OnethefullBase.ACTION_SMARTFRIEND -> {
+                val actionName = if (action == OnethefullBase.ACTION_COMMAND || action == OnethefullBase.ACTION_SMARTFRIEND) {
+                    action
+                } else {
+                    OnethefullBase.ACTION_COMMAND
+                }
+
                 send.putExtra(
                     OnethefullBase.PARAM_ACTION_NAME,
-                    action
+                    actionName
                 )
                 send.putExtra(
                     OnethefullBase.PARAM_NEXT_SCENE_ACTION,
-                    params?.getString(OnethefullBase.PARAM_NEXT_SCENE_ACTION,"")
+                    params?.getString(OnethefullBase.PARAM_NEXT_SCENE_ACTION, "")
                 )
-            }
-            else -> {
-
             }
         }
         params?.let {
