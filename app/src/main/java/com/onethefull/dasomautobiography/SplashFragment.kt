@@ -6,10 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.onethefull.dasomautobiography.base.OnethefullBase
+import com.onethefull.dasomautobiography.data.model.audiobiography.Ment
 import com.onethefull.dasomautobiography.databinding.FragmentSplashBinding
+import com.onethefull.dasomautobiography.manager.MentManager
 import com.onethefull.dasomautobiography.utils.Constant
 import com.onethefull.dasomautobiography.utils.InjectorUtils
 import com.onethefull.dasomautobiography.utils.logger.DWLog
@@ -41,25 +44,38 @@ class SplashFragment : Fragment() {
         DWLog.d("actionName = ${actionName}, nextAction = $nextAction")
 
         viewModel.getCategoryList(actionName.toString())
+        viewModel.contentLoaded.observe(viewLifecycleOwner) { loaded ->
+            if (!loaded) return@observe
 
+            val hasStartMent = when(actionName) {
+                OnethefullBase.ACTION_SMARTFRIEND -> !MentManager.smartfriendMent?.start.isNullOrEmpty()
+                OnethefullBase.ACTION_COMMAND -> !MentManager.commandMent?.start.isNullOrEmpty()
+                else -> false
+            }
+
+            if (hasStartMent) {
+                val observer = object : Observer<Boolean> {
+                    override fun onChanged(finished: Boolean) {
+                        if (finished) {
+                            viewModel.isSpeechFinished.removeObserver(this)
+                            processNext(nextAction)
+                        }
+                    }
+                }
+                viewModel.isSpeechFinished.observe(viewLifecycleOwner, observer)
+            } else {
+                processNext(nextAction)
+            }
+        }
+    }
+
+    private fun processNext(nextAction: String?) {
         if (!nextAction.isNullOrEmpty()) {
             viewModel.getContent()
         } else {
             viewLifecycleOwner.lifecycleScope.launch {
                 delay(1500)
                 findNavController().navigate(R.id.action_splashFragment_to_menuFragment)
-            }
-        }
-
-        // 중복 이동 방지 플래그
-        var hasNavigated = false
-
-        viewModel.isSpeechFinished.observe(viewLifecycleOwner) { event ->
-            if (event && !hasNavigated) {
-                hasNavigated = true
-                viewLifecycleOwner.lifecycleScope.launch {
-                    (activity as? MainActivity)?.navigateToSpeechFragment(Constant.MOVE_REASON_STT)
-                }
             }
         }
     }

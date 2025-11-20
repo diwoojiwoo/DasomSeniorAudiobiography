@@ -28,6 +28,9 @@ class SplashViewModel(
     private val _isSpeechFinished = MutableLiveData(false)
     val isSpeechFinished: LiveData<Boolean> = _isSpeechFinished
 
+    private val _contentLoaded = MutableLiveData(false)
+    val contentLoaded: LiveData<Boolean> = _contentLoaded
+
     init {
         connect()
     }
@@ -74,6 +77,7 @@ class SplashViewModel(
                                 Toasty.error(context, context.getString(R.string.message_network_error)).show()
                                 RxBus.publish(RxEvent.destroyApp)
                             }
+                            _contentLoaded.postValue(true)
                         }
 
                         else -> {
