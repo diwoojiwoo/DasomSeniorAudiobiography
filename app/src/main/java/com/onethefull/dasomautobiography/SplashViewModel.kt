@@ -96,7 +96,7 @@ class SplashViewModel(
     /*
     * 인트로, 시작, 멘트 가져오는용
     * */
-    fun getCategoryList(actionName: String) {
+    fun getCategoryList() {
         uiScope.launch {
             val check204 = repository.check204() ?: false
             if (check204) {
@@ -117,25 +117,31 @@ class SplashViewModel(
                         }
 
                         0 -> {
-                            if (actionName == OnethefullBase.ACTION_SMARTFRIEND) {
-                                response.smartfriendMent?.let { smartMent ->
-                                    MentManager.smartfriendMent = smartMent
-                                    val startText = smartMent.start ?: ""
-                                    if (startText.isNotEmpty()) {
-                                        GCTextToSpeech.getInstance()?.speech(startText)
+                            when (MentManager.currentActionName) {
+                                OnethefullBase.ACTION_SMARTFRIEND -> {
+                                    response.smartfriendMent?.let { smartMent ->
+                                        MentManager.smartfriendMent = smartMent
+                                        val startText = smartMent.start ?: ""
+                                        if (startText.isNotEmpty()) {
+                                            GCTextToSpeech.getInstance()?.speech(startText)
+                                        }
                                     }
                                 }
-                            } else if (actionName == OnethefullBase.ACTION_COMMAND) {
-                                response.commandMent?.let { cmdMent ->
-                                    MentManager.commandMent = cmdMent
-                                    val startText = cmdMent.start ?: ""
-                                    if (startText.isNotEmpty()) {
-                                        GCTextToSpeech.getInstance()?.speech(startText)
+
+                                OnethefullBase.ACTION_COMMAND -> {
+                                    response.commandMent?.let { cmdMent ->
+                                        MentManager.commandMent = cmdMent
+                                        val startText = cmdMent.start ?: ""
+                                        if (startText.isNotEmpty()) {
+                                            GCTextToSpeech.getInstance()?.speech(startText)
+                                        }
                                     }
                                 }
-                            } else {
-                                Toasty.error(context, "Unexpected actionName: $actionName").show()
-                                RxBus.publish(RxEvent.destroyShortAppUpdate)
+
+                                else -> {
+                                    Toasty.error(context, "Unexpected currentActionName: ${MentManager.currentActionName}").show()
+                                    RxBus.publish(RxEvent.destroyShortAppUpdate)
+                                }
                             }
                         }
 

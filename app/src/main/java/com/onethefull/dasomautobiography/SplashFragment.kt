@@ -41,32 +41,24 @@ class SplashFragment : Fragment() {
         DWLog.d("SplashFragment onViewCreated")
         val actionName = arguments?.getString(OnethefullBase.PARAM_ACTION_NAME)
         val nextAction = arguments?.getString(OnethefullBase.PARAM_NEXT_SCENE_ACTION)
+
+        actionName?.let {
+            MentManager.currentActionName = it
+        }
         DWLog.d("actionName = ${actionName}, nextAction = $nextAction")
 
-        viewModel.getCategoryList(actionName.toString())
-        viewModel.contentLoaded.observe(viewLifecycleOwner) { loaded ->
-            if (!loaded) return@observe
+        viewModel.getCategoryList()
 
-            val hasStartMent = when(actionName) {
-                OnethefullBase.ACTION_SMARTFRIEND -> !MentManager.smartfriendMent?.start.isNullOrEmpty()
-                OnethefullBase.ACTION_COMMAND -> !MentManager.commandMent?.start.isNullOrEmpty()
-                else -> false
-            }
-
-            if (hasStartMent) {
-                val observer = object : Observer<Boolean> {
-                    override fun onChanged(finished: Boolean) {
-                        if (finished) {
-                            viewModel.isSpeechFinished.removeObserver(this)
-                            processNext(nextAction)
-                        }
-                    }
-                }
-                viewModel.isSpeechFinished.observe(viewLifecycleOwner, observer)
-            } else {
-                processNext(nextAction)
-            }
+        viewModel.isSpeechFinished.observe(viewLifecycleOwner) { isSpeechFinished ->
+            if(!isSpeechFinished) return@observe
+            viewModel.getContent()
         }
+
+        viewModel.contentLoaded.observe(viewLifecycleOwner) { loaded ->
+            if(!loaded) return@observe
+            processNext(nextAction)
+        }
+
     }
 
     private fun processNext(nextAction: String?) {

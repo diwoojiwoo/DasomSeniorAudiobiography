@@ -8,6 +8,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.onethefull.dasomautobiography.base.BaseActivity
+import com.onethefull.dasomautobiography.base.OnethefullBase
 import com.onethefull.dasomautobiography.databinding.ActivityMainBinding
 import com.onethefull.dasomautobiography.utils.Constant
 import com.onethefull.dasomautobiography.utils.logger.DWLog
@@ -30,6 +31,22 @@ class MainActivity : BaseActivity() {
         binding = setContentView(this, R.layout.activity_main)
         navController = Navigation.findNavController(this, R.id.nav_host)
         setupViewModel()
+
+        val actionName = intent.getStringExtra(OnethefullBase.PARAM_ACTION_NAME)
+            ?: OnethefullBase.ACTION_COMMAND
+
+        val nextAction = intent.getStringExtra(OnethefullBase.PARAM_NEXT_SCENE_ACTION)
+
+        val bundle = Bundle().apply {
+            putString(OnethefullBase.PARAM_ACTION_NAME, actionName)
+            putString(OnethefullBase.PARAM_NEXT_SCENE_ACTION, nextAction)
+        }
+
+        navController.currentDestination?.id?.let { currentId ->
+            if (currentId == R.id.splash_fragment) {
+                navController.navigate(R.id.splash_fragment, bundle)
+            }
+        }
     }
 
     override fun onResume() {

@@ -10,10 +10,12 @@ import com.onethefull.dasomautobiography.BuildConfig
 import com.onethefull.dasomautobiography.MainViewModel
 import com.onethefull.dasomautobiography.R
 import com.onethefull.dasomautobiography.base.BaseViewModel
+import com.onethefull.dasomautobiography.base.OnethefullBase
 import com.onethefull.dasomautobiography.contents.toast.Toasty
 import com.onethefull.dasomautobiography.data.model.Status
 import com.onethefull.dasomautobiography.data.model.audiobiography.Entry
 import com.onethefull.dasomautobiography.data.model.audiobiography.Item
+import com.onethefull.dasomautobiography.manager.MentManager
 import com.onethefull.dasomautobiography.provider.DasomProviderHelper
 import com.onethefull.dasomautobiography.repository.SpeechRepository
 import com.onethefull.dasomautobiography.utils.Constant
@@ -394,6 +396,19 @@ class SpeechViewModel(
                         }
 
                         0 -> {
+                            when (MentManager.currentActionName) {
+                                OnethefullBase.ACTION_SMARTFRIEND -> {
+                                    GCTextToSpeech.getInstance()?.speech(MentManager.smartfriendMent?.end.toString())
+                                }
+
+                                OnethefullBase.ACTION_COMMAND -> {
+                                    GCTextToSpeech.getInstance()?.speech(MentManager.commandMent?.end.toString())
+                                }
+                                else -> {
+                                    Toasty.error(context, "Unexpected currentActionName: ${MentManager.currentActionName}").show()
+                                    RxBus.publish(RxEvent.destroyShortAppUpdate)
+                                }
+                            }
                             _insertLogEvent.postValue(Status(response.statusCode, ""))
                         }
 

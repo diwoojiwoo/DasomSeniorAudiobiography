@@ -20,16 +20,19 @@ import com.onethefull.dasomautobiography.App
 import com.onethefull.dasomautobiography.MainActivity
 import com.onethefull.dasomautobiography.MainViewModel
 import com.onethefull.dasomautobiography.R
+import com.onethefull.dasomautobiography.base.OnethefullBase
 import com.onethefull.dasomautobiography.contents.dialog.PopupDialog
 import com.onethefull.dasomautobiography.contents.dialog.ResponseEditDialog
 import com.onethefull.dasomautobiography.contents.toast.Toasty
 import com.onethefull.dasomautobiography.databinding.FragmentQuestionDetailBinding
+import com.onethefull.dasomautobiography.manager.MentManager
 import com.onethefull.dasomautobiography.utils.Constant
 import com.onethefull.dasomautobiography.utils.InjectorUtils
 import com.onethefull.dasomautobiography.utils.bus.RxBus
 import com.onethefull.dasomautobiography.utils.bus.RxEvent
 import com.onethefull.dasomautobiography.utils.logger.DWLog
 import com.onethefull.dasomautobiography.utils.setOnSingleClickListener
+import com.onethefull.dasomautobiography.utils.speech.GCTextToSpeech
 import com.onethefull.dasomautobiography.utils.speech.SpeechStatus
 import com.onethefull.wonderfulrobotmodule.ext.dasomLanguageCodeValue
 
@@ -104,10 +107,18 @@ class QuestionDetailFragment : Fragment() {
         sharedViewModel.selectedItem.observe(viewLifecycleOwner) { item ->
             if (item != null) {
                 DWLog.d("Received item [name]:: ${itemName}, [title]:: ${item.type}  ${item.sort}, ${item.autobiographyId} [question]::${item.viewQuestion}")
-                binding.tvListenAnswer.background = ContextCompat.getDrawable(activity as MainActivity, R.drawable.icon_convert)
 
-                binding.layoutAnswerDetail.background = ContextCompat.getDrawable(activity as MainActivity, R.drawable.new_answer_convert_background)
-                binding.tvAnswer.text = requireContext().getString(R.string.message_registering_answer)
+                val speechText = when (MentManager.currentActionName) {
+                    OnethefullBase.ACTION_SMARTFRIEND -> MentManager.smartfriendMent?.confirmAnswer.orEmpty()
+                    OnethefullBase.ACTION_COMMAND -> MentManager.commandMent?.confirmAnswer.orEmpty()
+                    else -> ""
+                }
+                synchronized(this) {
+                    binding.tvListenAnswer.background = ContextCompat.getDrawable(activity as MainActivity, R.drawable.icon_convert)
+                    binding.layoutAnswerDetail.background = ContextCompat.getDrawable(activity as MainActivity, R.drawable.new_answer_convert_background)
+                    binding.tvAnswer.text = requireContext().getString(R.string.message_registering_answer)
+                    viewModel.speech(speechText)
+                }
                 binding.tvAnswer.setTextColor(Color.WHITE)
                 binding.toolbarTitle.text = item.typeName
                 binding.tvQuestion.text = requireContext().getString(R.string.prefix_title_question) + item.viewQuestion
@@ -332,6 +343,13 @@ class QuestionDetailFragment : Fragment() {
         binding.cbRecording.setOnCheckedChangeListener { cb, isChecked ->
             if (cb.isChecked) {
 //                DWLog.d("답변 하기")
+                val speechText = when (MentManager.currentActionName) {
+                    OnethefullBase.ACTION_SMARTFRIEND -> MentManager.smartfriendMent?.appendAnswer.toString().replace("#ment#", sharedViewModel.selectedItem.value?.question.toString())
+                    OnethefullBase.ACTION_COMMAND -> MentManager.commandMent?.appendAnswer.toString().replace("#ment#", sharedViewModel.selectedItem.value?.question.toString())
+                    else -> ""
+                }
+                viewModel.speech(speechText)
+
                 // 듣기 버튼 상태
                 binding.btnPlay.isEnabled = false
                 binding.btnPlay.isChecked = false
