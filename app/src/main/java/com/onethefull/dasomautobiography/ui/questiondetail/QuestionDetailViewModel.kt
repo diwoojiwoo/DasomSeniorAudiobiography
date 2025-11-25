@@ -193,6 +193,10 @@ class QuestionDetailViewModel(
         GCTextToSpeech.getInstance()?.speech(text)
     }
 
+    fun requestReleaseSpeech() {
+        GCTextToSpeech.getInstance()?.requestReleaseSpeech()
+    }
+
     /**
      * 음성입력 처리 콜백
      */

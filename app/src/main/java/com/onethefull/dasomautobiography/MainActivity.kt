@@ -34,19 +34,8 @@ class MainActivity : BaseActivity() {
 
         val actionName = intent.getStringExtra(OnethefullBase.PARAM_ACTION_NAME)
             ?: OnethefullBase.ACTION_COMMAND
-
         val nextAction = intent.getStringExtra(OnethefullBase.PARAM_NEXT_SCENE_ACTION)
-
-        val bundle = Bundle().apply {
-            putString(OnethefullBase.PARAM_ACTION_NAME, actionName)
-            putString(OnethefullBase.PARAM_NEXT_SCENE_ACTION, nextAction)
-        }
-
-        navController.currentDestination?.id?.let { currentId ->
-            if (currentId == R.id.splash_fragment) {
-                navController.navigate(R.id.splash_fragment, bundle)
-            }
-        }
+        DWLog.d("MainActivity onCreate: actionName=$actionName, nextAction=$nextAction")
     }
 
     override fun onResume() {

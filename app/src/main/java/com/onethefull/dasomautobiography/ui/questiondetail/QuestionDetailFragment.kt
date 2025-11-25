@@ -197,6 +197,13 @@ class QuestionDetailFragment : Fragment() {
 
                 0 -> {
                     activity?.let { activity ->
+                        if (MentManager.currentActionName == OnethefullBase.ACTION_COMMAND) {
+                            val saveAddedAnswer = MentManager.commandMent?.saveAddedAnswer ?: ""
+                            if (saveAddedAnswer.isNotEmpty()) {
+                                GCTextToSpeech.getInstance()?.speech(saveAddedAnswer)
+                            }
+                        }
+
                         ResponseEditDialog(activity).apply {
                             window?.requestFeature(Window.FEATURE_NO_TITLE)
                             setDialogListener(object : ResponseEditDialog.DialogListener {
@@ -309,14 +316,23 @@ class QuestionDetailFragment : Fragment() {
          * "추가 답변" 버튼 클릭 리스너
          */
         binding.tvRetry.setOnClickListener {
-            binding.customToolbar.visibility = View.GONE
-            binding.layoutQuestionDetail.visibility = View.GONE
-            binding.layoutAnswerDetail.visibility = View.GONE
-            binding.layoutSelectDetail.visibility = View.GONE
-            binding.layoutRecording.visibility = View.VISIBLE
+            val speechText = when (MentManager.currentActionName) {
+                OnethefullBase.ACTION_SMARTFRIEND -> MentManager.smartfriendMent?.appendAnswer.toString().replace("#ment#", sharedViewModel.selectedItem.value?.question.toString())
+                OnethefullBase.ACTION_COMMAND -> MentManager.commandMent?.appendAnswer.toString().replace("#ment#", sharedViewModel.selectedItem.value?.question.toString())
+                else -> ""
+            }
+            synchronized(this) {
+                viewModel.speech(speechText)
 
-            binding.btnLeft.visibility = View.GONE
-            binding.btnRight.visibility = View.GONE
+                binding.customToolbar.visibility = View.GONE
+                binding.layoutQuestionDetail.visibility = View.GONE
+                binding.layoutAnswerDetail.visibility = View.GONE
+                binding.layoutSelectDetail.visibility = View.GONE
+                binding.layoutRecording.visibility = View.VISIBLE
+
+                binding.btnLeft.visibility = View.GONE
+                binding.btnRight.visibility = View.GONE
+            }
         }
 
         /**
@@ -343,13 +359,6 @@ class QuestionDetailFragment : Fragment() {
         binding.cbRecording.setOnCheckedChangeListener { cb, isChecked ->
             if (cb.isChecked) {
 //                DWLog.d("답변 하기")
-                val speechText = when (MentManager.currentActionName) {
-                    OnethefullBase.ACTION_SMARTFRIEND -> MentManager.smartfriendMent?.appendAnswer.toString().replace("#ment#", sharedViewModel.selectedItem.value?.question.toString())
-                    OnethefullBase.ACTION_COMMAND -> MentManager.commandMent?.appendAnswer.toString().replace("#ment#", sharedViewModel.selectedItem.value?.question.toString())
-                    else -> ""
-                }
-                viewModel.speech(speechText)
-
                 // 듣기 버튼 상태
                 binding.btnPlay.isEnabled = false
                 binding.btnPlay.isChecked = false
@@ -420,6 +429,8 @@ class QuestionDetailFragment : Fragment() {
         }
 
         binding.ivCancel.setOnClickListener {
+            viewModel.requestReleaseSpeech()
+
             binding.customToolbar.visibility = View.VISIBLE
             binding.layoutQuestionDetail.visibility = View.VISIBLE
             binding.layoutAnswerDetail.visibility = View.VISIBLE

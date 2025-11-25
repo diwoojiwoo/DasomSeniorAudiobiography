@@ -3,7 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/splash_fragment">
+    app:startDestination="@id/empty_fragment">
+
+    <fragment
+        android:id="@+id/empty_fragment"
+        android:name="com.onethefull.dasomautobiography.EmptyFragment"
+        tools:layout="@layout/fragment_empty" />
 
     <!--    SplashFragment-->
     <fragment
