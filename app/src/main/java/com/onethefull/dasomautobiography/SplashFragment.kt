@@ -36,11 +36,10 @@ class SplashFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         DWLog.d("SplashFragment onViewCreated")
         val actionName = arguments?.getString(OnethefullBase.PARAM_ACTION_NAME)
-        val nextAction = arguments?.getString(OnethefullBase.PARAM_NEXT_SCENE_ACTION)
 
         MentManager.clear()
         actionName?.let { MentManager.currentActionName = it }
-        DWLog.d("SplashFragment initialized: actionName=$actionName, nextAction=$nextAction")
+        DWLog.d("SplashFragment initialized: actionName=$actionName")
 
         // --- 인트로 멘트 가져오기 ---
         viewModel.getCategoryList()
@@ -48,7 +47,7 @@ class SplashFragment : Fragment() {
         // --- 발화 끝나면 getContent() 실행 ---
         viewModel.isSpeechFinished.observe(viewLifecycleOwner) { isSpeechFinished ->
             if(isSpeechFinished) {
-                if (!nextAction.isNullOrEmpty()) {
+                if (actionName == OnethefullBase.ACTION_COMMAND) {
                     viewModel.getContent()
                 } else {
                     viewLifecycleOwner.lifecycleScope.launch {

@@ -80,6 +80,7 @@ class App : MultiDexApplication() {
         send.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         DWLog.w(
             "onCommand action: $action, " +
+                    "nextSceneName: ${params?.getString(OnethefullBase.PARAM_NEXT_SCENE_NAME) ?: ""}, " +
                     "nextSceneAction: ${params?.getString(OnethefullBase.PARAM_NEXT_SCENE_ACTION) ?: ""}"
         )
 
@@ -94,6 +95,10 @@ class App : MultiDexApplication() {
                 send.putExtra(
                     OnethefullBase.PARAM_ACTION_NAME,
                     actionName
+                )
+                send.putExtra(
+                    OnethefullBase.PARAM_NEXT_SCENE_NAME,
+                    params?.getString(OnethefullBase.PARAM_NEXT_SCENE_NAME, "")
                 )
                 send.putExtra(
                     OnethefullBase.PARAM_NEXT_SCENE_ACTION,
