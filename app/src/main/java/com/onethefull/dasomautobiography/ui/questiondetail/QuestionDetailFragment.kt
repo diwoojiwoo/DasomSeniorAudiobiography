@@ -26,6 +26,7 @@ import com.onethefull.dasomautobiography.contents.dialog.ResponseEditDialog
 import com.onethefull.dasomautobiography.contents.toast.Toasty
 import com.onethefull.dasomautobiography.databinding.FragmentQuestionDetailBinding
 import com.onethefull.dasomautobiography.manager.MentManager
+import com.onethefull.dasomautobiography.ui.speech.SpeechFragmentDirections
 import com.onethefull.dasomautobiography.utils.Constant
 import com.onethefull.dasomautobiography.utils.InjectorUtils
 import com.onethefull.dasomautobiography.utils.bus.RxBus
@@ -221,6 +222,10 @@ class QuestionDetailFragment : Fragment() {
                                     findNavController().navigate(QuestionDetailFragmentDirections.actionDetailFragmentToMenuFragment())
                                 }
                             })
+                            onAutoDismiss = {
+                                DWLog.d("[QuestionDetailFragment] 자동 20초 후 메뉴 이동")
+                                findNavController().navigate(SpeechFragmentDirections.actionSpeechToMenuFragment())
+                            }
                             show()
                         }
                     }

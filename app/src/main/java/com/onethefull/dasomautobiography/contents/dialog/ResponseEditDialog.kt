@@ -14,13 +14,15 @@ import com.onethefull.dasomautobiography.App
 import com.onethefull.dasomautobiography.databinding.DialogResponseEditBinding
 import com.onethefull.dasomautobiography.databinding.DialogResultBinding
 import com.onethefull.dasomautobiography.utils.logger.DWLog
+import androidx.core.graphics.drawable.toDrawable
 
 /**
  * Created by sjw on 2024/12/25.
  */
 class ResponseEditDialog(context: Context) : BaseDialog<DialogResponseEditBinding>(context), DialogInterface.OnShowListener {
     private var dialogListener: DialogListener? = null
-    private var dismissListener: DialogDismissListener? = null
+
+    var onAutoDismiss: (() -> Unit)? = null
 
     var handler = Handler(Looper.getMainLooper()) {
         if (App.instance.currentActivity != null) this.dismiss()
@@ -33,7 +35,7 @@ class ResponseEditDialog(context: Context) : BaseDialog<DialogResponseEditBindin
         window?.apply {
             setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
             addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
-            setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
         }
 
         binding.btnCheckAnswer.setOnClickListener {
@@ -50,30 +52,24 @@ class ResponseEditDialog(context: Context) : BaseDialog<DialogResponseEditBindin
 
     override fun onShow(dialog: DialogInterface?) {
         handler.removeCallbacksAndMessages(null)
-        handler.sendMessageDelayed(Message(), 60_000)
+        handler.postDelayed({
+            dismiss()
+            onAutoDismiss?.invoke()
+        }, 20_000) // 20초 후 자동 dismiss
     }
 
     override fun dismiss() {
         super.dismiss()
+        DWLog.d("dismiss")
         handler.removeCallbacksAndMessages(null)
-        dismissListener?.onDismiss()
     }
 
     fun setDialogListener(dialogListener: DialogListener?) {
         this.dialogListener = dialogListener
     }
 
-    fun setDismissListener(dismissListener: DialogDismissListener?): ResponseEditDialog {
-        this.dismissListener = dismissListener
-        return this
-    }
-
     interface DialogListener {
         fun checkAnswer()
         fun moveHome()
-    }
-
-    interface DialogDismissListener {
-        fun onDismiss()
     }
 }

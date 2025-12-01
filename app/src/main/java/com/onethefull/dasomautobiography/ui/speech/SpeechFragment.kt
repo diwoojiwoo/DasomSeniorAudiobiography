@@ -131,9 +131,10 @@ class SpeechFragment : Fragment() {
                                     findNavController().navigate(SpeechFragmentDirections.actionSpeechToMenuFragment())
                                 }
                             })
-                            setDismissListener(object : ResultDialog.DialogDismissListener {
-                                override fun onDismiss() {}
-                            })
+                            onAutoDismiss = {
+                                DWLog.d("[SpeechFragment] 자동 20초 후 메뉴 이동")
+                                findNavController().navigate(SpeechFragmentDirections.actionSpeechToMenuFragment())
+                            }
                             show()
                         }
                     }

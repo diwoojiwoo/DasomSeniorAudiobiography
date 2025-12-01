@@ -22,7 +22,8 @@ class ResultDialog(context: Context) : BaseDialog<DialogResultBinding>(context),
     var message1: String? = ""
     var message2: String? = ""
     private var dialogListener: DialogListener? = null
-    private var dismissListener: DialogDismissListener? = null
+
+    var onAutoDismiss: (() -> Unit)? = null
 
     var handler = Handler(Looper.getMainLooper()) {
         if (App.instance.currentActivity != null) this.dismiss()
@@ -63,31 +64,24 @@ class ResultDialog(context: Context) : BaseDialog<DialogResultBinding>(context),
 
     override fun onShow(dialog: DialogInterface?) {
         handler.removeCallbacksAndMessages(null)
-        handler.sendMessageDelayed(Message(), 20_000)
+        handler.postDelayed({
+            dismiss()
+            onAutoDismiss?.invoke()
+        }, 20_000) // 20초 후 자동 dismiss
     }
 
     override fun dismiss() {
         super.dismiss()
         DWLog.e("dismiss")
         handler.removeCallbacksAndMessages(null)
-        dismissListener?.onDismiss()
     }
 
     fun setDialogListener(dialogListener: DialogListener?) {
         this.dialogListener = dialogListener
     }
 
-    fun setDismissListener(dismissListener: DialogDismissListener?): ResultDialog {
-        this.dismissListener = dismissListener
-        return this
-    }
-
     interface DialogListener {
         fun checkAnswer()
         fun moveHome()
-    }
-
-    interface DialogDismissListener {
-        fun onDismiss()
     }
 }
