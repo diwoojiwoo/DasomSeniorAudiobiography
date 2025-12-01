@@ -47,7 +47,7 @@ class SplashFragment : Fragment() {
         // --- 발화 끝나면 getContent() 실행 ---
         viewModel.isSpeechFinished.observe(viewLifecycleOwner) { isSpeechFinished ->
             if(isSpeechFinished) {
-                if (actionName == OnethefullBase.ACTION_COMMAND) {
+                if (actionName == OnethefullBase.ACTION_SMARTFRIEND) {
                     viewModel.getContent()
                 } else {
                     viewLifecycleOwner.lifecycleScope.launch {
