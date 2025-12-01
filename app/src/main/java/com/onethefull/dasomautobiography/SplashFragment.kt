@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.onethefull.dasomautobiography.base.OnethefullBase
 import com.onethefull.dasomautobiography.databinding.FragmentSplashBinding
 import com.onethefull.dasomautobiography.manager.MentManager
+import com.onethefull.dasomautobiography.utils.Constant
 import com.onethefull.dasomautobiography.utils.InjectorUtils
 import com.onethefull.dasomautobiography.utils.logger.DWLog
 import kotlinx.coroutines.delay
@@ -37,10 +38,14 @@ class SplashFragment : Fragment() {
         val actionName = arguments?.getString(OnethefullBase.PARAM_ACTION_NAME)
         val nextAction = arguments?.getString(OnethefullBase.PARAM_NEXT_SCENE_ACTION)
 
+        MentManager.clear()
         actionName?.let { MentManager.currentActionName = it }
         DWLog.d("SplashFragment initialized: actionName=$actionName, nextAction=$nextAction")
+
+        // --- 인트로 멘트 가져오기 ---
         viewModel.getCategoryList()
 
+        // --- 발화 끝나면 getContent() 실행 ---
         viewModel.isSpeechFinished.observe(viewLifecycleOwner) { isSpeechFinished ->
             if(isSpeechFinished) {
                 if (!nextAction.isNullOrEmpty()) {
@@ -50,6 +55,16 @@ class SplashFragment : Fragment() {
                         delay(1500)
                         findNavController().navigate(R.id.action_splashFragment_to_menuFragment)
                     }
+                }
+            }
+        }
+
+        // --- getContent 완료 후 화면 이동 ---
+        viewModel.contentLoaded.observe(viewLifecycleOwner) { loaded ->
+            if (loaded) {
+                viewModel.resetContentLoaded()
+                viewLifecycleOwner.lifecycleScope.launch {
+                    (activity as? MainActivity)?.navigateToSpeechFragment(Constant.MOVE_REASON_STT)
                 }
             }
         }

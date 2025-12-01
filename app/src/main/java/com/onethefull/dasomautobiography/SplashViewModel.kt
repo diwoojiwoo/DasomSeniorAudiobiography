@@ -140,6 +140,7 @@ class SplashViewModel(
 
                                 else -> {
                                     Toasty.error(context, "Unexpected currentActionName: ${MentManager.currentActionName}").show()
+                                    DWLog.e("Unexpected currentActionName: ${MentManager.currentActionName}")
                                     RxBus.publish(RxEvent.destroyShortAppUpdate)
                                 }
                             }
@@ -147,6 +148,7 @@ class SplashViewModel(
 
                         else -> {
                             Toasty.error(context, response.status).show()
+                            DWLog.e("response.status: ${response.status}")
                             RxBus.publish(RxEvent.destroyShortAppUpdate)
                         }
                     }
@@ -166,6 +168,10 @@ class SplashViewModel(
     override fun onSpeechFinish() {
         DWLog.d("onSpeechFinish")
         _isSpeechFinished.value = true
+    }
+
+    fun resetContentLoaded() {
+        _contentLoaded.value = false
     }
 
     override fun onFinishService() {
