@@ -21,8 +21,8 @@ android {
 
         applicationId "com.onethefull.dasomautobiography"
         minSdkVersion 19
-        versionCode 24
-        versionName "24.fix_smartfriend"
+        versionCode 25
+        versionName "25.provider_getSerial"
 
         multiDexEnabled true
         buildConfigField("String", "CHARACTER_TYPE", '"NewDasom"') // Dasom,Secretary

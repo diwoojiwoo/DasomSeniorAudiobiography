@@ -53,7 +53,7 @@ class MenuViewModel(
                 repository.getCategoryListV2(
                     DasomProviderHelper.getCustomerCode(context),
                     DasomProviderHelper.getDeviceCode(context),
-                    Build.SERIAL,
+                    DasomProviderHelper.getSerialNumber(context)
                 ).let { response ->
                     when (response.statusCode) {
                         1001 -> {

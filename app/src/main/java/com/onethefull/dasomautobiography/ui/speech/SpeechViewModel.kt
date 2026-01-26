@@ -367,7 +367,7 @@ class SpeechViewModel(
 //                    Build.SERIAL,
                     RequestBody.create(
                         MediaType.parse("text/plain"),
-                        ParamGeneratorUtils.SERIAL_NUMBER
+                        DasomProviderHelper.getSerialNumber(context)
                     ),
 //                    _currentItem.value?.id.toString(),
                     RequestBody.create(

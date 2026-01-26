@@ -30,23 +30,6 @@ object BaseSettings {
         }
     }
 
-
-    private fun getOrionStarSerial(): String {
-        var serialNum: String
-        if (Build.VERSION.SDK_INT < 26) {
-            serialNum = getSystemProperties("ro.serialno.robot", "")
-            if (TextUtils.isEmpty(serialNum) || serialNum.startsWith("Error")) {
-                serialNum = getSystemProperties("ro.serialno", "")
-            }
-        } else {
-            serialNum = getSystemProperties("ro.robot.serialno", "")
-            if (TextUtils.isEmpty(serialNum) || serialNum.startsWith("Error")) {
-                serialNum = Build.SERIAL
-            }
-        }
-        return serialNum
-    }
-
     @SuppressLint("PrivateApi")
     private fun getSystemProperties(key: String, defaultVal: String): String {
         try {

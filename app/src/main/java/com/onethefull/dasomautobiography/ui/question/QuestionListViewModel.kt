@@ -47,7 +47,7 @@ class QuestionListViewModel(
                 repository.getQuestionListV2(
                     DasomProviderHelper.getCustomerCode(context),
                     DasomProviderHelper.getDeviceCode(context),
-                    Build.SERIAL,
+                    DasomProviderHelper.getSerialNumber(context),
                     type
                 ).let { response ->
                     when(response.statusCode) {

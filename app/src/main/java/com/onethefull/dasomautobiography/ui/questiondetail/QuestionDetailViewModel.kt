@@ -386,7 +386,7 @@ class QuestionDetailViewModel(
                 repository.getLogDtlV2(
                     DasomProviderHelper.getCustomerCode(context),
                     DasomProviderHelper.getDeviceCode(context),
-                    Build.SERIAL,
+                    DasomProviderHelper.getSerialNumber(context),
                     autobiographyId
                 ).let { response ->
                     when (response.statusCode) {
@@ -477,7 +477,7 @@ class QuestionDetailViewModel(
 //                    Build.SERIAL,
                     RequestBody.create(
                         MediaType.parse("text/plain"),
-                        ParamGeneratorUtils.SERIAL_NUMBER
+                        DasomProviderHelper.getSerialNumber(context)
                     ),
 //                    _currentItem.value?.id.toString(),
                     RequestBody.create(
@@ -535,7 +535,7 @@ class QuestionDetailViewModel(
             val response = repository.deleteLog(
                 DasomProviderHelper.getCustomerCode(context),
                 DasomProviderHelper.getDeviceCode(context),
-                Build.SERIAL,
+                DasomProviderHelper.getSerialNumber(context),
                 _currentItem.value?.autobiographyId.toString(),
                 logId,
             )
