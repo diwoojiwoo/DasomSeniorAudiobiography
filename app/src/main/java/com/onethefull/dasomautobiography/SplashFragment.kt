@@ -16,6 +16,7 @@ import com.onethefull.dasomautobiography.utils.InjectorUtils
 import com.onethefull.dasomautobiography.utils.logger.DWLog
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.math.PI
 
 class SplashFragment : Fragment() {
 
@@ -38,15 +39,19 @@ class SplashFragment : Fragment() {
         val actionName = arguments?.getString(OnethefullBase.PARAM_ACTION_NAME)
 
         MentManager.clear()
-        actionName?.let { MentManager.currentActionName = it }
-        DWLog.d("SplashFragment initialized: actionName=$actionName")
+        MentManager.currentActionName =
+            if (actionName.isNullOrEmpty())
+                OnethefullBase.ACTION_SMARTFRIEND
+            else
+                actionName
+        DWLog.d("SplashFragment initialized: actionName=$actionName, MentManager.currentActionName ${MentManager.currentActionName} ")
 
         // --- 인트로 멘트 가져오기 ---
         viewModel.getCategoryList()
 
         // --- 발화 끝나면 getContent() 실행 ---
         viewModel.isSpeechFinished.observe(viewLifecycleOwner) { isSpeechFinished ->
-            if(isSpeechFinished) {
+            if (isSpeechFinished) {
                 if (actionName == OnethefullBase.ACTION_SMARTFRIEND) {
                     viewModel.getContent()
                 } else {

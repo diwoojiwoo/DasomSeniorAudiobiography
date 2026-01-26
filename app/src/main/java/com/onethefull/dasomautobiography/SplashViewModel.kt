@@ -119,23 +119,45 @@ class SplashViewModel(
                         0 -> {
                             when (MentManager.currentActionName) {
                                 OnethefullBase.ACTION_SMARTFRIEND -> {
-                                    response.smartfriendMent?.let { smartMent ->
-                                        MentManager.smartfriendMent = smartMent
-                                        val startText = smartMent.start ?: ""
-                                        if (startText.isNotEmpty()) {
-                                            GCTextToSpeech.getInstance()?.speech(startText)
+                                    response.smartfriendMent
+                                        ?.takeIf { !it.start.isNullOrBlank() || !it.end.isNullOrBlank() }
+                                        ?.let { smartMent ->
+                                            MentManager.smartfriendMent = smartMent
+                                            smartMent.start
+                                                ?.takeIf { it.isNotBlank() }
+                                                ?.let {
+                                                    GCTextToSpeech.getInstance()?.speech(it)
+                                                }
+                                                ?: run {
+                                                    DWLog.d("start는 없지만 end만 있는 경우 등")
+                                                    _isSpeechFinished.value = true
+                                                }
                                         }
-                                    }
+                                        ?: run {
+                                            DWLog.d("smartfriendMent가 null 이거나 {} 인 경우 ")
+                                            _isSpeechFinished.value = true
+                                        }
                                 }
 
                                 OnethefullBase.ACTION_COMMAND -> {
-                                    response.commandMent?.let { cmdMent ->
-                                        MentManager.commandMent = cmdMent
-                                        val startText = cmdMent.start ?: ""
-                                        if (startText.isNotEmpty()) {
-                                            GCTextToSpeech.getInstance()?.speech(startText)
+                                    response.commandMent
+                                        ?.takeIf { !it.start.isNullOrBlank() || !it.end.isNullOrBlank() }
+                                        ?.let { cmdMent ->
+                                            MentManager.commandMent = cmdMent
+                                            cmdMent.start
+                                                ?.takeIf { it.isNotBlank() }
+                                                ?.let {
+                                                    GCTextToSpeech.getInstance()?.speech(it)
+                                                }
+                                                ?: run {
+                                                    DWLog.d("start는 없지만 end만 있는 경우 등")
+                                                    _isSpeechFinished.value = true
+                                                }
                                         }
-                                    }
+                                        ?: run {
+                                            DWLog.d("commandMent null 이거나 {} 인 경우 ")
+                                            _isSpeechFinished.value = true
+                                        }
                                 }
 
                                 else -> {
