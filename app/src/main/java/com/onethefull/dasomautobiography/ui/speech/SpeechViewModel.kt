@@ -41,6 +41,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import java.io.File
 import java.io.IOException
 
 /**
@@ -294,23 +295,24 @@ class SpeechViewModel(
     }
 
     fun playWavFile() {
-        stopWavFile() // 기존 재생 중이면 정지
-
+        stopWavFile()
+        val wavFile = File(context.getExternalFilesDir("audio/temp"), "${wavFileName}${wavExt}")
+        if (!wavFile.exists()) {
+            DWLog.e("WAV 파일 없음: ${wavFile.absolutePath}") return
+        }
         mediaPlayer = MediaPlayer().apply {
             try {
-                setDataSource("${wavDirPath}${wavFileName}${wavExt}") // WAV 파일 경로 설정
-                prepare() // 미디어 준비
-                start() // 재생
+                setDataSource(wavFile.absolutePath)
+                prepare()
+                start()
                 _isPlaying.value = true
-
-                DWLog.d("WAV 파일 재생 시작: ${wavDirPath}${wavFileName}${wavExt}")
-
                 setOnCompletionListener {
-                    _isPlaying.value = false
+                    _isPlaying.postValue(false)
                     releaseMediaPlayer()
                 }
-            } catch (e: IOException) {
-                DWLog.e("WAV 파일 재생 실패: ${e.message}")
+            } catch (e: Exception) {
+                DWLog.e("WAV 재생 실패: ${e.message}")
+                release()
             }
         }
     }
@@ -318,11 +320,12 @@ class SpeechViewModel(
     fun stopWavFile() {
         mediaPlayer?.apply {
             stop()
-            releaseMediaPlayer()
-            DWLog.d("WAV 파일 정지")
+            reset()
+            release()
         }
+        mediaPlayer = null
+        _isPlaying.value = false
     }
-
     fun pauseWavFile() {
         mediaPlayer?.apply {
             if (isPlaying) {
@@ -404,6 +407,7 @@ class SpeechViewModel(
                                 OnethefullBase.ACTION_COMMAND -> {
                                     GCTextToSpeech.getInstance()?.speech(MentManager.commandMent?.end.toString())
                                 }
+
                                 else -> {
                                     Toasty.error(context, "Unexpected currentActionName: ${MentManager.currentActionName}").show()
                                     RxBus.publish(RxEvent.destroyShortAppUpdate)
