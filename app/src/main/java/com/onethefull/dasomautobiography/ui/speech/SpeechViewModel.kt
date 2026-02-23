@@ -1,9 +1,14 @@
 package com.onethefull.dasomautobiography.ui.speech
 
 import android.app.Activity
+import android.content.Context
+import android.media.AudioFormat
+import android.media.AudioManager
+import android.media.AudioTrack
 import android.media.MediaPlayer
 import android.os.Build
 import android.os.RemoteException
+import android.speech.tts.Voice
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.onethefull.dasomautobiography.BuildConfig
@@ -42,6 +47,7 @@ import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import java.io.File
+import java.io.FileInputStream
 import java.io.IOException
 
 /**
@@ -296,25 +302,61 @@ class SpeechViewModel(
 
     fun playWavFile() {
         stopWavFile()
-        val wavFile = File(context.getExternalFilesDir("audio/temp"), "${wavFileName}${wavExt}")
-        if (!wavFile.exists()) {
-            DWLog.e("WAV 파일 없음: ${wavFile.absolutePath}"); return
-        }
+
         mediaPlayer = MediaPlayer().apply {
             try {
-                setDataSource(wavFile.absolutePath)
-                prepare()
-                start()
+                setDataSource("${wavDirPath}${wavFileName}${wavExt}") // WAV 파일 경로 설정
+                prepare() // 미디어 준비
+                start() // 재생
                 _isPlaying.value = true
+
+                DWLog.d("WAV 파일 재생 시작: ${wavDirPath}${wavFileName}${wavExt}")
+
                 setOnCompletionListener {
-                    _isPlaying.postValue(false)
+                    _isPlaying.value = false
                     releaseMediaPlayer()
                 }
-            } catch (e: Exception) {
-                DWLog.e("WAV 재생 실패: ${e.message}")
-                release()
+            } catch (e: IOException) {
+                DWLog.e("WAV 파일 재생 실패: ${e.message}")
             }
         }
+    }
+
+    fun playPcmWavFile() {
+        val file = File("$wavDirPath$wavFileName$wavExt")
+        if (!file.exists()) return
+
+        val buffer = ByteArray(VoiceRecorder.BUFFER_SIZE)
+        val fis = FileInputStream(file)
+
+        // WAV 헤더(44byte) 건너뛰기
+        fis.skip(44)
+
+        val minBufferSize = AudioTrack.getMinBufferSize(
+            VoiceRecorder.CURRENT_SAMPLE_RATE,
+            AudioFormat.CHANNEL_OUT_MONO,
+            AudioFormat.ENCODING_PCM_16BIT
+        )
+
+        val audioTrack = AudioTrack(
+            AudioManager.STREAM_MUSIC,
+            VoiceRecorder.CURRENT_SAMPLE_RATE,
+            AudioFormat.CHANNEL_OUT_MONO,
+            AudioFormat.ENCODING_PCM_16BIT,
+            minBufferSize,
+            AudioTrack.MODE_STREAM
+        )
+
+        audioTrack.play()
+
+        var read: Int
+        while (fis.read(buffer).also { read = it } > 0) {
+            audioTrack.write(buffer, 0, read)
+        }
+
+        audioTrack.stop()
+        audioTrack.release()
+        fis.close()
     }
 
     fun stopWavFile() {
