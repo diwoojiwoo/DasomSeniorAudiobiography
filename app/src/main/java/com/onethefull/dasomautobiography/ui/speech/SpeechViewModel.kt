@@ -298,7 +298,7 @@ class SpeechViewModel(
         stopWavFile()
         val wavFile = File(context.getExternalFilesDir("audio/temp"), "${wavFileName}${wavExt}")
         if (!wavFile.exists()) {
-            DWLog.e("WAV 파일 없음: ${wavFile.absolutePath}") return
+            DWLog.e("WAV 파일 없음: ${wavFile.absolutePath}"); return
         }
         mediaPlayer = MediaPlayer().apply {
             try {
