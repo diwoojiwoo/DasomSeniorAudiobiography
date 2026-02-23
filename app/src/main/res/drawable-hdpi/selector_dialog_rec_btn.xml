@@ -1,0 +1,13 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 체크됨 && 비활성화 상태 -->
+    <item android:state_checked="true" android:state_enabled="false" android:drawable="@drawable/btn_dialog_rec_end_disable"/>
+
+    <!-- 체크되지 않음 && 비활성화 상태 -->
+    <item android:state_checked="false" android:state_enabled="false" android:drawable="@drawable/btn_dialog_rec_start_disable"/>
+
+    <!-- 체크됨 && 활성화 상태 -->
+    <item android:state_checked="true" android:drawable="@drawable/btn_dialog_rec_end_pressed"/>
+
+    <!-- 체크되지 않음 && 활성화 상태 -->
+    <item android:state_checked="false" android:drawable="@drawable/btn_dialog_rec_start_pressed"/>
+</selector>
