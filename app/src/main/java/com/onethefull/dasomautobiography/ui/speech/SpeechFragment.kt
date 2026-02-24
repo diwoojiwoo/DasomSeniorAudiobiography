@@ -142,7 +142,8 @@ class SpeechFragment : Fragment() {
                 }
 
                 else -> {
-                    RxBus.publish(RxEvent.destroyApp)
+                    Toasty.error(activity as MainActivity, "status_code :: ${event.status_code}, status :: ${event.status}, message :: ${event.message} ").show()
+                    RxBus.publish(RxEvent.destroyShortAppUpdate)
                 }
             }
         }

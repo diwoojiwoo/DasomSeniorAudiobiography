@@ -404,16 +404,17 @@ class SpeechViewModel(
                                 OnethefullBase.ACTION_COMMAND -> {
                                     GCTextToSpeech.getInstance()?.speech(MentManager.commandMent?.end.toString())
                                 }
+
                                 else -> {
                                     Toasty.error(context, "Unexpected currentActionName: ${MentManager.currentActionName}").show()
                                     RxBus.publish(RxEvent.destroyShortAppUpdate)
                                 }
                             }
-                            _insertLogEvent.postValue(Status(response.statusCode, ""))
+                            _insertLogEvent.postValue(Status(response.statusCode, response.status, response.message ?: ""))
                         }
 
                         else -> {
-                            _insertLogEvent.postValue(Status(response.statusCode, ""))
+                            _insertLogEvent.postValue(Status(response.statusCode, response.status, response.message ?: ""))
                         }
                     }
                 }

@@ -8,5 +8,6 @@ import com.google.gson.annotations.SerializedName
  */
 data class Status(
     @SerializedName("status_code") @Expose var status_code: Int?,
-    @SerializedName("status") @Expose var status: String?
+    @SerializedName("status") @Expose var status: String?,
+    @SerializedName("message") @Expose var message: String?
 )
