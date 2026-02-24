@@ -85,6 +85,7 @@ class SpeechFragment : Fragment() {
                 .load(item.imgUrl)
                 .placeholder(ContextCompat.getDrawable(requireContext(), R.color.transparent))
                 .error(ContextCompat.getDrawable(requireContext(), R.drawable.item))
+                .centerCrop()
                 .into(binding.ivBg)
             viewModel.speech(item.question)
         }
