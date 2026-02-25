@@ -246,8 +246,8 @@
                 <!--    듣기 이미지  -->
                 <CheckBox
                     android:id="@+id/btn_play"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="180dp"
+                    android:layout_height="180dp"
                     android:layout_gravity="start"
                     android:layout_marginTop="201dp"
                     android:layout_marginStart="108dp"
