@@ -8,7 +8,8 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="140dp">
 
         <!-- Toolbar -->
         <androidx.appcompat.widget.Toolbar
@@ -66,14 +67,14 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_question_detail"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:background="@drawable/new_answer_detail_background"
-            android:padding="30dp"
-            android:gravity="center">
+            android:padding="30dp">
 
             <CheckBox
                 android:id="@+id/tv_listen_question"
@@ -95,12 +96,13 @@
             <TextView
                 android:id="@+id/tv_question"
                 android:layout_width="820dp"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:textColor="#333333"
                 android:textSize="40sp"
                 android:fontFamily="@font/notosans_kr_b"
                 android:maxLines="4"
                 android:layout_marginStart="20dp"
+                android:gravity="center_vertical|start"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/tv_listen_question"
                 app:layout_constraintTop_toTopOf="parent"
@@ -115,12 +117,14 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_answer_detail"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:gravity="center"
             android:background="@drawable/new_answer_detail_background"
+            android:padding="30dp"
             app:layout_constraintTop_toBottomOf="@+id/layout_question_detail">
 
             <CheckBox
@@ -131,7 +135,6 @@
                 android:fontFamily="@font/notosans_kr_b"
                 android:lineSpacingExtra="19sp"
                 android:scaleType="centerCrop"
-                android:layout_marginStart="30dp"
                 android:textColor="#ffffff"
                 android:textSize="40sp"
                 android:textStyle="normal"
@@ -144,15 +147,15 @@
             <TextView
                 android:id="@+id/tv_answer"
                 android:layout_width="820dp"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:textColor="#333333"
                 android:textSize="40sp"
                 android:fontFamily="@font/notosans_kr_b"
                 android:maxLines="4"
                 android:layout_marginStart="20dp"
+                android:gravity="center_vertical|start"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/tv_listen_answer"
-                app:layout_constraintHorizontal_bias="0.1"
                 app:layout_constraintTop_toTopOf="parent"
                 android:autoSizeTextType="uniform"
                 android:autoSizeMaxTextSize="40sp"
@@ -160,8 +163,9 @@
                 android:autoSizeStepGranularity="2sp"
                 tools:targetApi="o" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
-        <!-- 녹음 레이아웃 -->
+    <!-- 녹음 레이아웃 -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_recording"
             android:layout_width="match_parent"
@@ -327,7 +331,6 @@
                     android:gravity="center_horizontal" />
             </FrameLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </LinearLayout>
 
     <!-- 삭제 / 추가 버튼: 하단 고정 -->
     <LinearLayout

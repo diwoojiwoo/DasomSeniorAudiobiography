@@ -388,11 +388,11 @@ class SpeechViewModel(
                 ).let { response ->
                     when (response.statusCode) {
                         -99 -> {
-                            _insertLogEvent.postValue(Status(response.statusCode, response.message))
+                            _insertLogEvent.postValue(Status(response.statusCode, response.status, response.message))
                         }
 
                         -3 -> {
-                            _insertLogEvent.postValue(Status(response.statusCode, context.getString(R.string.message_not_registration_elderly)))
+                            _insertLogEvent.postValue(Status(response.statusCode, response.status, context.getString(R.string.message_not_registration_elderly)))
                         }
 
                         0 -> {

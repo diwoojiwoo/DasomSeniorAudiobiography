@@ -32,21 +32,19 @@
     <!-- 중앙 텍스트 -->
     <TextView
         android:id="@+id/tv_question"
-        android:layout_width="630dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textColor="#333333"
         android:textSize="40sp"
         android:fontFamily="@font/notosans_kr_r"
-        android:maxLines="3"
+        android:maxLines="4"
         android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_number"
+        app:layout_constraintEnd_toStartOf="@id/tv_answer_yn"
         app:layout_constraintTop_toTopOf="parent"
-        android:autoSizeTextType="uniform"
-        android:autoSizeMaxTextSize="40sp"
-        android:autoSizeMinTextSize="20sp"
-        android:autoSizeStepGranularity="2sp"
-        tools:targetApi="o" />
+        android:includeFontPadding="false" />
 
     <!-- 오른쪽 이미지 -->
     <TextView
@@ -57,8 +55,8 @@
         android:textColor="@android:color/white"
         android:fontFamily="@font/notosans_kr_r"
         android:textSize="32sp"
-        android:paddingStart="30dp"
-        android:paddingEnd="30dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:layout_marginEnd="12dp"
