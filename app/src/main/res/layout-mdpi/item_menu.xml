@@ -16,7 +16,7 @@
             android:layout_width="280dp"
             android:layout_height="280dp"
             android:background="@color/transparent"
-            android:scaleType="fitCenter" />
+            android:scaleType="centerCrop" />
 
         <!-- 메뉴 이름  -->
         <TextView
