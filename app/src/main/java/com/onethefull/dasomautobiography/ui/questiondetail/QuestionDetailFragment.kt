@@ -51,6 +51,7 @@ class QuestionDetailFragment : Fragment() {
     private val sharedViewModel: MainViewModel by activityViewModels()
 
     private var currentAnswerIndex = 0
+    private var isPendingRecordingUI = false // speech 종료 후 녹음 레이아웃 표시 대기 플래그
 
     var isFromBroadcast = false
 
@@ -286,6 +287,18 @@ class QuestionDetailFragment : Fragment() {
                 else -> {
                     binding.tvListenQuestion.isChecked = false
                     binding.tvListenAnswer.isChecked = false
+
+                    // speech 종료 후 녹음 레이아웃 표시 (tvRetry 클릭으로 대기 중인 경우)
+                    if (isPendingRecordingUI) {
+                        isPendingRecordingUI = false
+                        binding.customToolbar.visibility = View.GONE
+                        binding.layoutQuestionDetail.visibility = View.GONE
+                        binding.layoutAnswerDetail.visibility = View.GONE
+                        binding.layoutSelectDetail.visibility = View.GONE
+                        binding.layoutRecording.visibility = View.VISIBLE
+                        binding.btnLeft.visibility = View.GONE
+                        binding.btnRight.visibility = View.GONE
+                    }
                 }
             }
         }
@@ -327,16 +340,8 @@ class QuestionDetailFragment : Fragment() {
                 else -> ""
             }
             synchronized(this) {
+                isPendingRecordingUI = true // speech 종료 후 녹음 레이아웃 표시 예약
                 viewModel.speech(speechText)
-
-                binding.customToolbar.visibility = View.GONE
-                binding.layoutQuestionDetail.visibility = View.GONE
-                binding.layoutAnswerDetail.visibility = View.GONE
-                binding.layoutSelectDetail.visibility = View.GONE
-                binding.layoutRecording.visibility = View.VISIBLE
-
-                binding.btnLeft.visibility = View.GONE
-                binding.btnRight.visibility = View.GONE
             }
         }
 
