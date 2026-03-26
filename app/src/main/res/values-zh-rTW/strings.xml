@@ -37,6 +37,5 @@
     <string name="btn_another_question">查看其他問題</string>
     <string name="text_additional_answer">追加回答</string>
     <string name="recording_start_do">開始回答</string>
-
-
+    <string name="text_destroy">"退出"</string>
 </resources>

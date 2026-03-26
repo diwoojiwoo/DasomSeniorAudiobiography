@@ -30,24 +30,25 @@
                 android:visibility="gone"/>
         </FrameLayout>
 
-        <FrameLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/fl_title"
-            android:layout_width="366dp"
+            android:layout_width="wrap_content"
             android:layout_height="88dp"
+            android:minWidth="366dp"
             android:layout_marginStart="24dp"
             android:background="@drawable/speech_title_background"
-            android:fontFamily="@font/pretendard_bold"
-            android:gravity="center"
-            android:lineSpacingExtra="32sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
+                android:id="@+id/iv_book_icon"
                 android:layout_width="36dp"
                 android:layout_height="40dp"
                 android:src="@drawable/icon_book"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="32dp"/>
+                android:layout_marginStart="32dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
             <TextView
                 android:id="@+id/tv_title_speech"
@@ -59,18 +60,32 @@
                 android:textSize="44sp"
                 android:textColor="#ffffff"
                 android:lineSpacingExtra="12sp"
-                android:layout_gravity="center_vertical|end"
-                android:layout_marginEnd="40dp"/>
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="40dp"
+                app:layout_constraintStart_toEndOf="@id/iv_book_icon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"/>
 
-        </FrameLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <FrameLayout
+        <TextView
             android:id="@+id/btn_stop"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/btn_destroy"
+            android:layout_height="72dp"
+            android:minWidth="200dp"
+            android:paddingStart="32dp"
+            android:paddingEnd="32dp"
+            android:background="@drawable/btn_new_destroy"
             android:layout_marginEnd="24dp"
             android:layout_marginTop="32dp"
+            android:text="@string/text_destroy"
+            android:textColor="@color/black"
+            android:textSize="28sp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:fontFamily="@font/pretendard_bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Autobiografía</string>
+    <string name="title_make_autobiography">Crear una Autobiografía</string>
+    <string name="message_network_error">"Por favor, compruebe su conexión de red."</string>
+    <string name="message_not_exist_elderly_info">"Por favor, introduzca el género y la fecha de nacimiento del adulto mayor."</string>
+    <string name="message_not_registration_elderly">"Por favor, registre al adulto mayor."</string>
+    <string name="message_max_answer_3">Se permite un máximo de 3 respuestas.</string>
+    <string name="status_answered">"Respondido"</string>
+    <string name="status_unanswered">"Sin responder"</string>
+    <string name="message_registering_answer">"Registrando respuesta."</string>
+    <string name="prefix_title_question">"Pregunta : "</string>
+    <string name="prefix_title_answer">"Respuesta : "</string>
+    <string name="title_left_time">"Tiempo restante " </string>
+    <string name="title_end_answer">"Fin de la respuesta"</string>
+    <string name="title_start_answer">"Responder"</string>
+    <string name="title_stop_answer">"Detener"</string>
+    <string name="title_additional_answer">"Respuesta adicional"</string>
+    <string name="title_listen_answer">"Escuchar"</string>
+    <string name="message_success_to_answer">"¡Tu autobiografía ha sido guardada!"</string>
+    <string name="message_check_answer">"Comprueba tu respuesta"</string>
+    <string name="message_back_to_home">"Volver al inicio"</string>
+
+    <string name="message_title_remove_answer">"La respuesta guardada será eliminada."</string>
+    <string name="message_content_remove_answer">"Por favor, envíe su respuesta de nuevo."</string>
+
+    <string name="recording_start">Iniciar respuesta</string>
+    <string name="recording_end">Finalizar respuesta</string>
+    <string name="recording_save">Guardar</string>
+    <string name="recording_listen">Escuchar</string>
+    <string name="answer_remove">Eliminar</string>
+    <string name="dialog_popup_cancel">Cancelar</string>
+    <string name="dialog_popup_confirm">Confirmar</string>
+    <string name="dialog_response_edit_answer">Tu respuesta ha sido actualizada.</string>
+    <string name="dialog_response_check_answer">Comprobar respuesta</string>
+    <string name="dialog_response_go_main">Ir al menú principal</string>
+    <string name="btn_another_question">Ver otra pregunta</string>
+    <string name="text_additional_answer">Añadir otra respuesta</string>
+    <string name="recording_start_do">Responder</string>
+    <string name="text_destroy">"Salir"</string>
+</resources>

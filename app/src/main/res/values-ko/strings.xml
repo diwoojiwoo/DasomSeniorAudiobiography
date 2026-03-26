@@ -38,4 +38,5 @@
 
     <string name="text_additional_answer">추가 답변</string>
     <string name="recording_start_do">답변하기</string>
+    <string name="text_destroy">"그만하기"</string>
 </resources>

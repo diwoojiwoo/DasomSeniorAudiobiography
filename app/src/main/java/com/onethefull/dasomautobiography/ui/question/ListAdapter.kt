@@ -33,19 +33,9 @@ class ListAdapter(
             val language = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko"
             when (language) {
                 "ko-KR" ->  {
-                    val dpWidth = 630
-                    val scale = itemView.resources.displayMetrics.density
-                    val pxWidth = (dpWidth * scale).toInt()
-                    tvQuestion.layoutParams?.width = pxWidth
-                    tvQuestion.requestLayout()
                     tvQuestion.setTextSize(TypedValue.COMPLEX_UNIT_SP, 40f)
                 }
                 else -> {
-                    val dpWidth = 550
-                    val scale = itemView.resources.displayMetrics.density
-                    val pxWidth = (dpWidth * scale).toInt()
-                    tvQuestion.layoutParams?.width = pxWidth
-                    tvQuestion.requestLayout()
                     tvQuestion.setTextSize(TypedValue.COMPLEX_UNIT_SP, 35f)
                 }
             }
