@@ -94,17 +94,6 @@ class QuestionDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val language = App.instance.getLocale()?.dasomLanguageCodeValue() ?: "ko"
-        when (language) {
-            "ko-KR" -> {
-                binding.tvLeftTime.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32f)
-                binding.tvContent.setTextSize(TypedValue.COMPLEX_UNIT_SP, 40f)
-            }
-
-            else -> {
-                binding.tvLeftTime.setTextSize(TypedValue.COMPLEX_UNIT_SP, 28f)
-                binding.tvContent.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
-            }
-        }
 
         sharedViewModel.selectedItem.observe(viewLifecycleOwner) { item ->
             if (item != null) {

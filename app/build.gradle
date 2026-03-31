@@ -7,7 +7,8 @@ plugins {
 }
 
 android {
-    compileSdkVersion 33
+    namespace 'com.onethefull.dasomautobiography'
+    compileSdkVersion 34
     signingConfigs {
         release {
             storeFile file("/Users/sjw/Desktop/beanQ_platform_key.jks")
@@ -36,6 +37,8 @@ android {
     }
 
     buildFeatures {
+        buildConfig true
+        aidl true
         dataBinding true
         viewBinding true
     }
@@ -55,6 +58,19 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
+        }
+    }
+
+    packaging {
+        resources {
+            excludes += '/META-INF/LICENSE.md'
+            excludes += '/META-INF/LICENSE-NOTICE.md'
+            excludes += '/META-INF/NOTICE.md'
+            excludes += '/META-INF/LICENSE'
+            excludes += '/META-INF/NOTICE'
+            excludes += '/META-INF/ASL2.0'
+            excludes += '/META-INF/AL2.0'
+            excludes += '/META-INF/LGPL2.1'
         }
     }
 
@@ -130,7 +146,8 @@ android {
 
 dependencies {
     // Wonderful SDK
-    implementation 'com.onethefull:wonderfulrobot:1.0.38-host'
+//    implementation 'com.onethefull:wonderfulrobot:1.0.38-host'
+    implementation("com.onethefull:wonderfulrobot:1.0.47")
 
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofit_version"

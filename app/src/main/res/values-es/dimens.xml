@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="recording_button_text_size">24sp</dimen>
+    <dimen name="recording_button_margin_horizontal">20dp</dimen>
+    <dimen name="dialog_title_text_size">28sp</dimen>
+    <dimen name="dialog_left_time_text_size">26sp</dimen>
+    <dimen name="dialog_recording_text_size">26sp</dimen>
+    <dimen name="dialog_recording_width">300dp</dimen>
+    <dimen name="dialog_recording_margin_start">290dp</dimen>
+    <dimen name="dialog_content_text_size">24sp</dimen>
+    <dimen name="dialog_header_time_margin_top">20dp</dimen>
+    <dimen name="dialog_header_title_margin_top">75dp</dimen>
+    <dimen name="dialog_content_margin_top">115dp</dimen>
+    <dimen name="dialog_content_height">120dp</dimen>
+    <dimen name="dialog_button_margin_top">245dp</dimen>
+    <dimen name="dialog_label_margin_top">420dp</dimen>
 </resources>
