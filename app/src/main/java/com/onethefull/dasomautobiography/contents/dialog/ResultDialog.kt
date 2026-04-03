@@ -13,6 +13,7 @@ import android.view.WindowManager
 import com.onethefull.dasomautobiography.App
 import com.onethefull.dasomautobiography.databinding.DialogResultBinding
 import com.onethefull.dasomautobiography.utils.logger.DWLog
+import androidx.core.graphics.drawable.toDrawable
 
 /**
  * Created by sjw on 2024/12/25.
@@ -43,7 +44,12 @@ class ResultDialog(context: Context) : BaseDialog<DialogResultBinding>(context),
         window?.apply {
             setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
             addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
-            setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
+            setFlags(
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+            )
+            setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
         }
         binding.tvTitle.text = title
         binding.btnCheckAnswer.text = message1

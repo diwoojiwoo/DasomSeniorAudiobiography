@@ -45,7 +45,7 @@ public class VoiceRecorder {
     public static int BUFFER_SIZE = 2048;
 //    public static int BUFFER_SIZE = 4096;
 
-    private static final int AMPLITUDE_THRESHOLD = 1500;
+    private static final int AMPLITUDE_THRESHOLD = 500;
     private static final int AMPLITUDE_THRESHOLD_GENIE = 1675;
 //    private static final int SPEECH_TIMEOUT_MILLIS = 2000;
 //    private static final int MAX_SPEECH_LENGTH_MILLIS = 10 * 1000;

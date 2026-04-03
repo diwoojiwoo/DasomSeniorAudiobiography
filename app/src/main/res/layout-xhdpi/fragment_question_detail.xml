@@ -1,0 +1,427 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- 기존 UI 전체를 감싸는 LinearLayout -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- Toolbar -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/customToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="126dp"
+            android:background="#ffffff"
+            android:elevation="0dp"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageButton
+                    android:id="@+id/btn_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="뒤로가기 버튼"
+                    android:src="@drawable/btn_back_black"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/btn_home"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="홈 버튼"
+                    android:src="@drawable/btn_home_black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+                <TextView
+                    android:id="@+id/toolbarTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/notosans_kr_medium"
+                    android:textColor="#333333"
+                    android:textSize="56sp"
+                    android:layout_marginBottom="39dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+        <!-- 질문 영역 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_question_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/new_answer_detail_background"
+            android:padding="30dp"
+            android:gravity="center">
+
+            <CheckBox
+                android:id="@+id/tv_listen_question"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:background="@drawable/btn_listen_checkbox"
+                android:fontFamily="@font/notosans_kr_b"
+                android:lineSpacingExtra="19sp"
+                android:scaleType="centerCrop"
+                android:textColor="#ffffff"
+                android:textSize="40sp"
+                android:textStyle="normal"
+                android:gravity ="center"
+                android:button="@null"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_question"
+                android:layout_width="820dp"
+                android:layout_height="wrap_content"
+                android:textColor="#333333"
+                android:textSize="40sp"
+                android:fontFamily="@font/notosans_kr_b"
+                android:maxLines="4"
+                android:layout_marginStart="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tv_listen_question"
+                app:layout_constraintTop_toTopOf="parent"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMaxTextSize="40sp"
+                android:autoSizeMinTextSize="16sp"
+                android:autoSizeStepGranularity="2sp"
+                tools:targetApi="o" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- 답변 영역 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_answer_detail"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:gravity="center"
+            android:background="@drawable/new_answer_detail_background"
+            app:layout_constraintTop_toBottomOf="@+id/layout_question_detail">
+
+            <CheckBox
+                android:id="@+id/tv_listen_answer"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:background="@drawable/btn_listen_checkbox"
+                android:fontFamily="@font/notosans_kr_b"
+                android:lineSpacingExtra="19sp"
+                android:scaleType="centerCrop"
+                android:layout_marginStart="30dp"
+                android:textColor="#ffffff"
+                android:textSize="40sp"
+                android:textStyle="normal"
+                android:gravity ="center"
+                android:button="@null"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_answer"
+                android:layout_width="820dp"
+                android:layout_height="wrap_content"
+                android:textColor="#333333"
+                android:textSize="40sp"
+                android:fontFamily="@font/notosans_kr_b"
+                android:maxLines="4"
+                android:layout_marginStart="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tv_listen_answer"
+                app:layout_constraintHorizontal_bias="0.1"
+                app:layout_constraintTop_toTopOf="parent"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMaxTextSize="40sp"
+                android:autoSizeMinTextSize="16sp"
+                android:autoSizeStepGranularity="2sp"
+                tools:targetApi="o" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- 녹음 레이아웃 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_recording"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#80000000"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone">
+
+            <FrameLayout
+                android:id="@+id/fl_layout"
+                android:layout_width="880dp"
+                android:layout_height="480dp"
+                android:background="@drawable/recording_dialog_background"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tv_left_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/notosans_kr_r"
+                    android:textStyle="normal"
+                    android:textSize="32sp"
+                    android:textColor="#ff6363"
+                    android:lineSpacingExtra="19sp"
+                    android:gravity="top|start"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="45dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|center_horizontal"
+                    android:layout_marginTop="48dp"
+                    android:fontFamily="@font/notosans_kr_r"
+                    android:gravity="center"
+                    android:lineHeight="59sp"
+                    android:text="@string/text_additional_answer"
+                    android:textAlignment="center"
+                    android:textColor="#333333"
+                    android:textSize="40sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_content"
+                    android:layout_width="740dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="top|center_horizontal"
+                    android:layout_marginTop="113dp"
+                    android:fontFamily="@font/notosans_kr_r"
+                    android:gravity="center"
+                    android:lineHeight="59sp"
+                    android:textAlignment="center"
+                    android:textColor="#333333"
+                    android:textSize="40sp"
+                    android:textStyle="normal"
+                    android:maxLines="3"
+                    android:autoSizeTextType="uniform"
+                    android:autoSizeMaxTextSize="40sp"
+                    android:autoSizeMinTextSize="20sp"
+                    android:autoSizeStepGranularity="2sp"
+                    tools:targetApi="o"/>
+
+
+                <ImageView
+                    android:id="@+id/iv_cancel"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:layout_gravity="top|end"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:background="@android:drawable/ic_menu_close_clear_cancel"/>
+
+                <!--    듣기 이미지  -->
+                <CheckBox
+                    android:id="@+id/btn_play"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginTop="201dp"
+                    android:layout_marginStart="108dp"
+                    android:button="@null"
+                    android:enabled="false"
+                    android:background="@drawable/selector_dialog_play_btn" />
+
+                <!--    듣기 텍스트-->
+                <TextView
+                    android:id="@+id/tv_play"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/notosans_kr_r"
+                    android:textStyle="bold"
+                    android:textSize="32sp"
+                    android:layout_gravity="start"
+                    android:layout_marginTop="385dp"
+                    android:layout_marginStart="163dp"
+                    android:text="@string/recording_listen"
+                    android:textColor="@android:color/darker_gray"
+                    android:lineSpacingExtra="15sp"
+                    android:gravity="center_horizontal" />
+
+                <!--    답변하기 이미지 -->
+                <CheckBox
+                    android:id="@+id/cb_recording"
+                    android:layout_width="168dp"
+                    android:layout_height="168dp"
+                    android:layout_gravity="start"
+                    android:layout_marginTop="201dp"
+                    android:layout_marginStart="356dp"
+                    android:button="@null"
+                    android:checked="false"
+                    android:background="@drawable/selector_dialog_rec_btn"/>
+
+                <!--   답변하기 텍스트-->
+                <TextView
+                    android:id="@+id/tv_recording"
+                    android:layout_width="178dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/notosans_kr_r"
+                    android:textStyle="bold"
+                    android:textSize="32sp"
+                    android:layout_gravity="start"
+                    android:layout_marginTop="385dp"
+                    android:layout_marginStart="356dp"
+                    android:text="@string/recording_start_do"
+                    android:textColor="#333333"
+                    android:lineSpacingExtra="15sp"
+                    android:gravity="center" />
+
+                <!--    저장하기  이미지  -->
+                <ImageButton
+                    android:id="@+id/btn_save"
+                    android:layout_width="168dp"
+                    android:layout_height="168dp"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="201dp"
+                    android:layout_marginEnd="108dp"
+                    android:enabled="false"
+                    android:background="@drawable/selector_dialog_save_btn" />
+
+                <!--    저장하기  텍스트  -->
+                <TextView
+                    android:id="@+id/tv_save"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/notosans_kr_r"
+                    android:textStyle="bold"
+                    android:textSize="32sp"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="385dp"
+                    android:layout_marginEnd="163dp"
+                    android:text="@string/recording_save"
+                    android:textColor="@android:color/darker_gray"
+                    android:lineSpacingExtra="15sp"
+                    android:gravity="center_horizontal" />
+            </FrameLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+    <!-- 삭제 / 추가 버튼: 하단 고정 -->
+    <LinearLayout
+        android:id="@+id/layout_select_detail"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="24dp"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:gravity="center"
+        android:background="@android:color/transparent">
+
+        <FrameLayout
+            android:id="@+id/btn_delete"
+            android:layout_width="0dp"
+            android:layout_height="108dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/remove_anwser_background">
+
+            <ImageView
+                android:id="@+id/iv_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|start"
+                android:layout_marginStart="122dp"
+                android:background="@drawable/icon_delete"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/tv_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|start"
+                android:layout_marginStart="191dp"
+                android:fontFamily="@font/notosans_kr_b"
+                android:textStyle="bold"
+                android:textSize="40sp"
+                android:textColor="#707070"
+                android:text="@string/answer_remove"/>
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/btn_retry"
+            android:layout_width="0dp"
+            android:layout_height="108dp"
+            android:layout_weight="1"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/add_anwser_background">
+
+            <TextView
+                android:id="@+id/tv_retry"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:fontFamily="@font/notosans_kr_b"
+                android:textStyle="bold"
+                android:textSize="40sp"
+                android:textColor="#ffffff"
+                android:text="@string/text_additional_answer"/>
+        </FrameLayout>
+    </LinearLayout>
+
+    <!-- 왼쪽 플로팅 버튼 -->
+    <ImageButton
+        android:id="@+id/btn_left"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="start|top"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="242dp"
+        android:background="@drawable/btn_left_pressed"
+        android:contentDescription="왼쪽 플로팅 버튼"
+        android:visibility="gone"/>
+
+    <!-- 오른쪽 플로팅 버튼 -->
+    <ImageButton
+        android:id="@+id/btn_right"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="end|top"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="242dp"
+        android:background="@drawable/btn_right_pressed"
+        android:contentDescription="오른쪽 플로팅 버튼"
+        android:visibility="gone"/>
+
+    <!-- ProgressBar -->
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:visibility="gone"/> <!-- 기본적으로 숨김 상태 -->
+</FrameLayout>

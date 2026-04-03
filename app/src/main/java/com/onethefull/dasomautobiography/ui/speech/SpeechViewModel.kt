@@ -1,9 +1,14 @@
 package com.onethefull.dasomautobiography.ui.speech
 
 import android.app.Activity
+import android.content.Context
+import android.media.AudioFormat
+import android.media.AudioManager
+import android.media.AudioTrack
 import android.media.MediaPlayer
 import android.os.Build
 import android.os.RemoteException
+import android.speech.tts.Voice
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.onethefull.dasomautobiography.BuildConfig
@@ -41,6 +46,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import java.io.File
+import java.io.FileInputStream
 import java.io.IOException
 
 /**
@@ -294,7 +301,7 @@ class SpeechViewModel(
     }
 
     fun playWavFile() {
-        stopWavFile() // 기존 재생 중이면 정지
+        stopWavFile()
 
         mediaPlayer = MediaPlayer().apply {
             try {
@@ -315,14 +322,52 @@ class SpeechViewModel(
         }
     }
 
+    fun playPcmWavFile() {
+        val file = File("$wavDirPath$wavFileName$wavExt")
+        if (!file.exists()) return
+
+        val buffer = ByteArray(VoiceRecorder.BUFFER_SIZE)
+        val fis = FileInputStream(file)
+
+        // WAV 헤더(44byte) 건너뛰기
+        fis.skip(44)
+
+        val minBufferSize = AudioTrack.getMinBufferSize(
+            VoiceRecorder.CURRENT_SAMPLE_RATE,
+            AudioFormat.CHANNEL_OUT_MONO,
+            AudioFormat.ENCODING_PCM_16BIT
+        )
+
+        val audioTrack = AudioTrack(
+            AudioManager.STREAM_MUSIC,
+            VoiceRecorder.CURRENT_SAMPLE_RATE,
+            AudioFormat.CHANNEL_OUT_MONO,
+            AudioFormat.ENCODING_PCM_16BIT,
+            minBufferSize,
+            AudioTrack.MODE_STREAM
+        )
+
+        audioTrack.play()
+
+        var read: Int
+        while (fis.read(buffer).also { read = it } > 0) {
+            audioTrack.write(buffer, 0, read)
+        }
+
+        audioTrack.stop()
+        audioTrack.release()
+        fis.close()
+    }
+
     fun stopWavFile() {
         mediaPlayer?.apply {
             stop()
-            releaseMediaPlayer()
-            DWLog.d("WAV 파일 정지")
+            reset()
+            release()
         }
+        mediaPlayer = null
+        _isPlaying.value = false
     }
-
     fun pauseWavFile() {
         mediaPlayer?.apply {
             if (isPlaying) {

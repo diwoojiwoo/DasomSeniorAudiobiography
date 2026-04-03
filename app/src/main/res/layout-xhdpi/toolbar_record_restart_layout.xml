@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/play"
+        android:layout_width="168dp"
+        android:layout_height="168dp"
+        android:layout_marginStart="140dp"
+        android:layout_marginTop="120dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical"
+        android:background="@drawable/btn_rec_play_selector"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="97dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/notosans_kr_b"
+            android:gravity="center"
+            android:lineHeight="47sp"
+            android:text="@string/recording_listen"
+            android:textColor="#333333"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/restart"
+        android:layout_width="192dp"
+        android:layout_height="192dp"
+        android:layout_marginTop="108dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical"
+        android:background="@drawable/btn_rec_start_selector"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="109dp"/>
+
+        <TextView
+            android:id="@+id/tv_restart_answer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/notosans_kr_b"
+            android:gravity="center"
+            android:lineHeight="47sp"
+            android:text="@string/recording_start"
+            android:textColor="#ffffff"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/save"
+        android:layout_width="168dp"
+        android:layout_height="168dp"
+        android:layout_marginEnd="140dp"
+        android:layout_marginTop="120dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical"
+        android:background="@drawable/btn_rec_save_selector"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="97dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/notosans_kr_r"
+            android:gravity="center"
+            android:lineHeight="47sp"
+            android:text="@string/recording_save"
+            android:textColor="#333333"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
