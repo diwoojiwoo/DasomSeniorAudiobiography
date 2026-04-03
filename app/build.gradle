@@ -116,7 +116,7 @@ android {
             dimension "device"
             buildConfigField("String", "TARGET_DEVICE", '"CLOI"') // DASOM , CJ
             signingConfig signingConfigs.release
-            targetSdkVersion 21 // 빈큐 28 , 클로이 21
+            targetSdkVersion 24 // 빈큐 28 , 클로이 21
             multiDexEnabled = true
         }
     }
