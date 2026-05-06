@@ -51,6 +51,18 @@ class SplashViewModel(
         uiScope.launch {
             val check204 = repository.check204() ?: false
             if (check204) {
+                if (MentManager.smartfriendMent == null && MentManager.commandMent == null) {
+                    repository.getCategoryListV2(
+                        DasomProviderHelper.getCustomerCode(context),
+                        DasomProviderHelper.getDeviceCode(context),
+                        DasomProviderHelper.getSerialNumber(context),
+                    ).let { response ->
+                        if (response.statusCode == 0) {
+                            MentManager.smartfriendMent = response.smartfriendMent
+                            MentManager.commandMent = response.commandMent
+                        }
+                    }
+                }
                 repository.getContent(
                     DasomProviderHelper.getCustomerCode(context),
                     DasomProviderHelper.getDeviceCode(context),
@@ -117,12 +129,14 @@ class SplashViewModel(
                         }
 
                         0 -> {
+                            MentManager.smartfriendMent = response.smartfriendMent
+                            MentManager.commandMent = response.commandMent
+
                             when (MentManager.currentActionName) {
                                 OnethefullBase.ACTION_SMARTFRIEND -> {
                                     response.smartfriendMent
                                         ?.takeIf { !it.start.isNullOrBlank() || !it.end.isNullOrBlank() }
                                         ?.let { smartMent ->
-                                            MentManager.smartfriendMent = smartMent
                                             smartMent.start
                                                 ?.takeIf { it.isNotBlank() }
                                                 ?.let {
@@ -143,7 +157,6 @@ class SplashViewModel(
                                     response.commandMent
                                         ?.takeIf { !it.start.isNullOrBlank() || !it.end.isNullOrBlank() }
                                         ?.let { cmdMent ->
-                                            MentManager.commandMent = cmdMent
                                             cmdMent.start
                                                 ?.takeIf { it.isNotBlank() }
                                                 ?.let {

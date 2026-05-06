@@ -398,11 +398,15 @@ class SpeechViewModel(
                         0 -> {
                             when (MentManager.currentActionName) {
                                 OnethefullBase.ACTION_SMARTFRIEND -> {
-                                    GCTextToSpeech.getInstance()?.speech(MentManager.smartfriendMent?.end.toString())
+                                    MentManager.smartfriendMent?.end?.takeIf { it.isNotBlank() }?.let {
+                                        GCTextToSpeech.getInstance()?.speech(it)
+                                    }
                                 }
 
                                 OnethefullBase.ACTION_COMMAND -> {
-                                    GCTextToSpeech.getInstance()?.speech(MentManager.commandMent?.end.toString())
+                                    MentManager.commandMent?.end?.takeIf { it.isNotBlank() }?.let {
+                                        GCTextToSpeech.getInstance()?.speech(it)
+                                    }
                                 }
 
                                 else -> {

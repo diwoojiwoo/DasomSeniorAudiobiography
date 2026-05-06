@@ -100,15 +100,15 @@ class QuestionDetailFragment : Fragment() {
                 DWLog.d("Received item [name]:: ${itemName}, [title]:: ${item.type}  ${item.sort}, ${item.autobiographyId} [question]::${item.viewQuestion}")
 
                 val speechText = when (MentManager.currentActionName) {
-                    OnethefullBase.ACTION_SMARTFRIEND -> MentManager.smartfriendMent?.confirmAnswer.orEmpty()
-                    OnethefullBase.ACTION_COMMAND -> MentManager.commandMent?.confirmAnswer.orEmpty()
+                    OnethefullBase.ACTION_SMARTFRIEND -> MentManager.smartfriendMent?.confirmAnswer
+                    OnethefullBase.ACTION_COMMAND -> MentManager.commandMent?.confirmAnswer
                     else -> ""
                 }
                 synchronized(this) {
                     binding.tvListenAnswer.background = ContextCompat.getDrawable(activity as MainActivity, R.drawable.icon_convert)
                     binding.layoutAnswerDetail.background = ContextCompat.getDrawable(activity as MainActivity, R.drawable.new_answer_convert_background)
                     binding.tvAnswer.text = requireContext().getString(R.string.message_registering_answer)
-                    viewModel.speech(speechText)
+                    speechText?.takeIf { it.isNotBlank() }?.let { viewModel.speech(it) }
                 }
                 binding.tvAnswer.setTextColor(Color.WHITE)
                 binding.toolbarTitle.text = item.typeName
@@ -324,13 +324,24 @@ class QuestionDetailFragment : Fragment() {
          */
         binding.tvRetry.setOnClickListener {
             val speechText = when (MentManager.currentActionName) {
-                OnethefullBase.ACTION_SMARTFRIEND -> MentManager.smartfriendMent?.appendAnswer.toString().replace("#ment#", sharedViewModel.selectedItem.value?.question.toString())
-                OnethefullBase.ACTION_COMMAND -> MentManager.commandMent?.appendAnswer.toString().replace("#ment#", sharedViewModel.selectedItem.value?.question.toString())
+                OnethefullBase.ACTION_SMARTFRIEND -> MentManager.smartfriendMent?.appendAnswer?.replace("#ment#", sharedViewModel.selectedItem.value?.question.toString())
+                OnethefullBase.ACTION_COMMAND -> MentManager.commandMent?.appendAnswer?.replace("#ment#", sharedViewModel.selectedItem.value?.question.toString())
                 else -> ""
             }
-            synchronized(this) {
-                isPendingRecordingUI = true // speech 종료 후 녹음 레이아웃 표시 예약
-                viewModel.speech(speechText)
+            if (speechText.isNullOrBlank()) {
+                // speech가 없으면 바로 녹음 레이아웃 표시
+                binding.customToolbar.visibility = View.GONE
+                binding.layoutQuestionDetail.visibility = View.GONE
+                binding.layoutAnswerDetail.visibility = View.GONE
+                binding.layoutSelectDetail.visibility = View.GONE
+                binding.layoutRecording.visibility = View.VISIBLE
+                binding.btnLeft.visibility = View.GONE
+                binding.btnRight.visibility = View.GONE
+            } else {
+                synchronized(this) {
+                    isPendingRecordingUI = true // speech 종료 후 녹음 레이아웃 표시 예약
+                    viewModel.speech(speechText)
+                }
             }
         }
 
