@@ -14,6 +14,10 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.onethefull.dasomautobiography.App
 import com.onethefull.dasomautobiography.MainActivity
 import com.onethefull.dasomautobiography.MainViewModel
@@ -81,12 +85,36 @@ class SpeechFragment : Fragment() {
         viewModel.currentItem.observe(viewLifecycleOwner) { item ->
             binding.tvQuestionTitle.text = item.typeName
             binding.tvQuestion.text = item.viewQuestion
+            binding.pbLoading.visibility = View.VISIBLE
             Glide.with(requireContext())
                 .load(item.imgUrl)
                 .placeholder(ContextCompat.getDrawable(requireContext(), R.color.transparent))
                 .error(ContextCompat.getDrawable(requireContext(), R.drawable.item))
+                .listener(object : RequestListener<android.graphics.drawable.Drawable> {
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<android.graphics.drawable.Drawable>?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        binding.pbLoading.visibility = View.GONE
+                        return false
+                    }
+
+                    override fun onResourceReady(
+                        resource: android.graphics.drawable.Drawable?,
+                        model: Any?,
+                        target: Target<android.graphics.drawable.Drawable>?,
+                        dataSource: DataSource?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        binding.pbLoading.visibility = View.GONE
+                        return false
+                    }
+                })
                 .centerCrop()
                 .into(binding.ivBg)
+            
             viewModel.speech(item.question)
         }
 
